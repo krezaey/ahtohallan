@@ -13,12 +13,14 @@
     "url": "git+https://github.com/krezaey/ahtohallan"
   },
   "author": "Onariaginosa Igbinedion, Michael Elias, Ameya Mellachurvu, Keziah Rezaey, Elise Sawan, Salem Tesfu",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/krezaey/ahtohallan/issues"
   },
   "homepage": "https://github.com/krezaey/ahtohallan",
   "dependencies": {
+    "chai": "^4.3.0",
+    "esm": "^3.2.25",
     "ohm-js": "^0.14.0",
     "prettier": "^2.0.5",
     "pretty-js": "^0.2.1"
