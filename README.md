@@ -3,6 +3,29 @@
 ## Introduction
 
 ## Features
+Ahtohallan introduces these language features: 
+* Bullet 
+* Bullet
+
+## Key Words
+| Ahtohallan | Keywords |
+|------------|----------|
+| ```Ice```  | function |
+| ```Snow```          | class    |
+| ```Water```            | constructor     |
+| ```Arendelle```| return   |
+| ```Get~This~Right```           | if       |
+| ```The~Next~Right~Thing```           | else if  |
+| ```Into~The~Unknown~```           | else     |
+| ```All~Is~Found```           | switch   |
+|  ```Show~Yourself```          | case     |
+|  ```I~Seek~The~Truth```          | default  |
+|  ```Let~It~Go```          | for      |
+|  ```Lost~In~The~Woods```          | while    |
+|  ```sing```          | print    |
+|            | this     |
+|            | new      |
+|            | break    |
 
 ## Types and Variable Declaration
 
@@ -24,8 +47,6 @@ Variables at declaration should be indicated whether they are constants or not. 
 | ----------------------------- | ---------- | ------- | ------- |
 | ```Meltable``` | ```let``` | value may be changed |```Meltable Olaf x = "You may change my value ❅``` | 
 | ```Unmeltable``` | ```const``` | value may NOT be changed | ```Unmeltable Olaf y = "DO NOT CHANGE ME" ❅ ``` | 
-
-## Key Words
 
 ## Operators
 
