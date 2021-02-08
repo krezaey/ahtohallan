@@ -50,7 +50,7 @@ This is followed by a return type and a function name. The paramaters are in
 
 ## Examples
 
-1. Here is the iconic Hello, World! print statement
+### 1. Here is the iconic Hello, World! print statement
 
 Ahtohallan:
 
@@ -64,9 +64,9 @@ JavaScript:
 console.log("Hello, World!");
 ```
 
-2. Here is a simple function to square a number
+### 2. Here is a simple function to square a number
 
-Ahtohallan:
+  Ahtohallan:
 
 ```
 Ice Anna Square (Anna Number) {
@@ -74,7 +74,7 @@ Ice Anna Square (Anna Number) {
 }
 ```
 
-JavaScript:
+  JavaScript:
 
 ```
 function square (number) {
