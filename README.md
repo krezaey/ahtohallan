@@ -23,7 +23,7 @@
 ## Operators
 
 | Operation             | Operation in Ahtohallan | Performing Operation  |
-| --------------------- | ----------------------- | --------------------- | --- | ---------- | --- | ---------- |
+| --------------------- | ----------------------- | --------------------- | 
 | add                   | `+`                     | `Anna x = 2 + 3 ❅`    |
 | subtract              | `-`                     | `Elsa y = 10 - 5 ❅`   |
 | multiply              | `*`                     | `Anna z = 2 * 3 ❅`    |
@@ -35,7 +35,7 @@
 | less than or equal    | `<=`                    | `2 <= 2`              |
 | greater than or equal | `>=`                    | `4 >= 1`              |
 | logical and           | `&&`                    | `(1 < 2) && (2 < 3)`  |
-| logical or            | ```                     |                       | ``` | ```(1 < 2) |     | (2 < 3)``` |
+| logical or            | ```|| ```               | ```(1 < 2) || (2 < 3)``` |
 | logical not           | `!`                     | `Love x = !Hans ❅`    |
 
 ## Functions and Classes
