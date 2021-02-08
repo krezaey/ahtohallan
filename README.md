@@ -35,7 +35,7 @@
 | less than or equal    | `<=`                    | `2 <= 2`              |
 | greater than or equal | `>=`                    | `4 >= 1`              |
 | logical and           | `&&`                    | `(1 < 2) && (2 < 3)`  |
-| logical or            | ```|| ```               | ```(1 < 2) || (2 < 3)``` |
+| logical or            | `\|\|`                  | `(1 < 2) \|\| (2 < 3)`|
 | logical not           | `!`                     | `Love x = !Hans ❅`    |
 
 ## Functions and Classes
