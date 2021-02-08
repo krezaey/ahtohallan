@@ -15,7 +15,7 @@
 | true       | `Kristoff`            | `Love isGood = Kristoff ❅`                                                               |
 | false      | `Hans`                | `Love isEvil = Hans ❅`                                                                   |
 | array      | `Herd`                | `Olaf Herd[] = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                               |
-| dictionary | `Trolls[[Key:Value]]` | `Trolls[[Olaf:Love]] = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅` |
+| dictionary | `Trolls[[Key:Value]]` | `Trolls[[Olaf:Love]] annaLoveHistory = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅` |
 | none       | `Samantha`            | `Elsa a = Samantha ❅`                                                                    |
 
 ## Key Words
