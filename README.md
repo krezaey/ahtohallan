@@ -1,5 +1,6 @@
-
-# Ahtohallan
+<h1 align="center">
+Ahtohallan
+<h1>
 <p align="center">
    <img align="center" src="ahtohallan_logo.png" alt="logo" width="500" />
 <p>
