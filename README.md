@@ -1,6 +1,6 @@
 # Ahtohallan
 
-<img src="ahtohallan_logo.png" alt="drawing" width="1000"/>
+<img src="ahtohallan_logo.png" alt="drawing" width="500"/>
 
 ## Introduction
 Hello, hello, and welcome to the show! This is Ahtohallan, a 
