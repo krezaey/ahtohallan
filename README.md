@@ -1,5 +1,8 @@
+
 # Ahtohallan
-<img src="ahtohallan_logo.png" alt="logo" width="500" />
+<p align="center">
+   <img align="center" src="ahtohallan_logo.png" alt="logo" width="500" />
+<p>
 
 ## Introduction
 Hello, hello, and welcome to the show! This is Ahtohallan, a 
@@ -82,7 +85,7 @@ Variables at declaration should be indicated whether they are constants or not. 
 | logical not           | `!`                     | `Love x = !Hans ❅`    |
 | increment             | `++`                    | `x++ ❅`               |
 | decrement             | `--`                    | `x-- ❅`               |
-| increment assignment  | `+=`                    | `x += 1`              |
+| increment assignment  | `+=`                    | `x += 1 ❅`              |
 | decrement assignment  | `-=`                    | `x -= 1 ❅`            |
 
 
