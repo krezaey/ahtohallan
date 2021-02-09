@@ -97,6 +97,11 @@ Single and multi-lined comments are encased in ```~*``` and ```*~``` at the begi
  * multi-lined
  * comment. 
 *~
+
+~* This is also 
+   a multi-lined
+   comment.
+*~
 ```
 
 ## Functions and Classes
@@ -221,7 +226,7 @@ Ice Olaf Even~Odd(Anna num) {
     Arendell "This number is even." ❅
   }
   Into~The~Unknown {
-    Arendell "This number is odd." ❅
+    Arendelle "This number is odd." ❅
   }
 }
 ```
@@ -281,7 +286,7 @@ function fizzBuzz() {
 
 ### 5. Here is a ice block that handles a Herd and an instance of Trolls. 
 
-Ahtohalan:
+Ahtohallan:
 ```
 Meltable Herd[] Vegetables = ["Cabbage", "Turnip", "Radish", "Carrot"] ❅
 Sing(Vegetables) ❅
