@@ -1,3 +1,183 @@
 Ahtohallan {
+    Program = (Declaration)* Expression*
+
+    Declaration = Function | Class
+
+    Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
+
+    Class = classWord identifier "{" (Constructor | Method | VariableInstance )* "}" 
+
+    identifier = ~reservedWord identifierStart identifierCharacter*
+
+    type = "Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha"
+
+    Parameters = ListOf< type, identifier >
+
+    Body = (Expression )* 
+
+    Constructor = constructorWord (" Parameters? ")" "{" ClassBody "}"
+
+    Method = methodWord type identifier "(" Parameters? ")" "{" ClassBody "}"
+
+    VariableInstance = mutability type identifier "=" typeValue | NewInstance
+
+    NewInstance = "Open~Door" identifier "(" Arguments? ")"
+
+    Arguments = ListOf<identifier>
+
+    typeValue = int |  float | string | boolean | array | dictionary | noneType
+
+    Expression = (ParenthesisExpression | PlainExpression) " ❅"
     
+    PlainExpression = ...
+    
+    ParenthesisExpression = "(" PlainExpression ")"
+
+    ClassBody = (ClassExpression)*
+
+    mutability = "Unmeltable" | "Meltable"
+
+    reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
+
+    controlFlow = if | elseIf | else | while | switch | case | default | for
+
+    constructorWord = "Water" ~remainingCharacter
+ 
+    classWord = "Snow" ~remainingCharacter
+ 
+    functionWord = "Ice" ~remainingCharacter
+ 
+    methodWord = "Crystal" ~remainingCharacter
+ 
+    if = "Get~This~Right" ~remainingCharacter
+ 
+    else if = "The~Next~Right~Thing" ~remainingCharacter
+ 
+    else = "Into~The~Unknown" ~remainingCharacter
+ 
+    for = "Let~It~Go" ~remainingCharacter
+ 
+    while = "Lost~In~The~Woods" ~remainingCharacter
+ 
+    switch = "All~Is~Found" ~remainingCharacter
+ 
+    case = "Show~Yourself" ~remainingCharacter
+ 
+    default = "I~Seek~The~Truth" ~remainingCharacter
+ 
+    print = "Sing" ~remainingCharacter
+ 
+    this = "Frozen" ~remainingCharacter
+ 
+    new = "Open~Door" ~remainingCharacter
+ 
+    break = "Closed~Door" ~remainingCharacter
+ 
+    return = "Arendelle" ~remainingCharacter
+
+    remainingCharacter = "_" | alnum
+ 
+    identifierStart
+    
+    identifierCharacter
+
+    int = digit+
+      
+    float = int* "." int+
+    
+    // Change to String Literal Please!!!
+    String = """ (alnum | space)* """ 
+
+    boolean = "Kristoff" | "Hans"
+    
+    Array = "[" (ListOf<typeValue>)? "]"
+    
+    Dictionary = "[[" (ListOf<(string | identifier) ":" typeValue>)? "]]"
+    
+    noneType = "Samantha"
+
+}
+
+~********************** EXAMPLE BELOW THIS LINE **********************~
+
+LanguageName {
+
+    Program = (Declaration)* Expression
+
+    Declaration = func identifier  "(" Parameters ")" Body finish
+
+    Parameters = ListOf<identifier, ",">
+
+    Body = NonemptyListOf<PlainExpression, ";">  ";"?
+
+    PlainExpression = ParenthesisExpression | Expression
+
+    ParenthesisExpression = "(" Expression ")"
+
+    Expression = ConditionalExpression | SubExpression0
+
+    ConditionalExpression = PlainExpression if PlainExpression else PlainExpression
+
+    SubExpression0 = AdditiveOperator | SubExpression1
+
+    AdditiveOperator = SubExpression0 ("+" | "-") SubExpression1
+
+    SubExpression1 = MultiplicativeOperator | SubExpression2
+
+    MultiplicativeOperator = SubExpression1 ("" | "/") SubExpression2
+
+    SubExpression2 = Negation | SubExpression3
+
+    Negation = "-" SubExpression3
+
+    SubExpression3 = Factorial | SubExpression4
+
+    Factorial = SubExpression4 "!"
+
+    SubExpression4 = stringLiteral | numericLiteral | SubExpression5
+    
+    SubExpression5 = identifier FunctionCall?
+
+    numericLiteral = digit+ fractional? exponent?
+
+    exponent = "**" "-"? digit
+
+    fractional = "." digit+
+
+    FunctionCall = "[" Arguments "]"
+
+    Arguments = ListOf<identifier, ",">
+
+    space += comment
+
+    comment = "--" (~"\n" any) "\n"
+
+    reservedWord = func | finish | if | else
+
+    identifier = ~reservedWord identifierStart identifierCharacter*
+
+    identifierStart = letter | "@"
+
+    identifierCharacter = letter | "@" | digit | "_"  | "$"
+
+    hexExpression = "u{" hexDigit hexDigit? hexDigit? hexDigit? hexDigit? hexDigit? "}"
+
+    stringLiteral =  "\"" characterLiteral* "\""
+
+    func = "func" ~identifierCharacter ~remainingCharacter
+
+    finish = "end" ~identifierCharacter ~remainingCharacter
+
+    if = "if" ~identifierCharacter
+
+    else = "else" ~identifierCharacter
+    
+    remainingCharacter = "_" | alnum
+    
+    characterLiteral = subCharacterLiteral0| subCharacterLiteral1
+
+    subCharacterLiteral1 =  ~"\\" ~"\"" any
+    
+     subCharacterLiteral0 =  "\\" (hexExpression | "n" | "\"" | "\'" | "\\")
+
 }

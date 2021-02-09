@@ -1,6 +1,5 @@
 # Ahtohallan
-
-<img src="ahtohallan_logo.png" alt="drawing" width="500" align="middle"/>
+<img src="ahtohallan_logo.png" alt="logo" width="500" />
 
 ## Introduction
 Hello, hello, and welcome to the show! This is Ahtohallan, a 
@@ -16,9 +15,9 @@ Onariaginosa Igbinedion, & Elise Sawan
 
 ## Features
 Ahtohallan introduces these language features: 
-* An object oriented programming language reminiscent of JavaScript
+* An object oriented programming leanguage reminiscent of JavaScript
 * Frozen casing: A style of casing where everything is capitalized, and 
-seperated by `~` Like~This ! Additionally, all keywords should be capitalized. 
+separated by `~` Like~This ! Additionally, all keywords should be capitalized. 
 *  Like ice, the language is strong and dynamic 
 
 ## Key Words
@@ -27,14 +26,15 @@ seperated by `~` Like~This ! Additionally, all keywords should be capitalized.
 | ```Water```            | constructor     |
 | ```Snow```          | class    |
 | ```Ice```  | function |
+| ```Crystal``` | method | 
 | ```Get~This~Right```           | if       |
 | ```The~Next~Right~Thing```           | else if  |
 | ```Into~The~Unknown```           | else     |
+|  ```Let~It~Go```          | for      |
+|  ```Lost~In~The~Woods```          | while    |
 | ```All~Is~Found```           | switch   |
 |  ```Show~Yourself```          | case     |
 |  ```I~Seek~The~Truth```          | default  |
-|  ```Let~It~Go```          | for      |
-|  ```Lost~In~The~Woods```          | while    |
 |  ```Sing```          | print    |
 |  ```Frozen```          | this     |
 |  ```Open~Door```         | new      |
@@ -52,7 +52,7 @@ seperated by `~` Like~This ! Additionally, all keywords should be capitalized.
 | true       | `Kristoff`            | `Love isGood = Kristoff ❅`                                                               |
 | false      | `Hans`                | `Love isEvil = Hans ❅`                                                                   |
 | array      | `Herd`                | `Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                               |
-| dictionary | `Trolls[[Key:Value]]` | `Trolls[[]] annaLoveHistory = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅` |
+| dictionary | `Trolls[[]]` | `Trolls[[]] annaLoveHistory = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅` |
 | none       | `Samantha`            | `Elsa n = Samantha ❅`                                                                    |
 
 Variables at declaration should be indicated whether they are constants or not. The examples of types and variable declaration above do not include the ```Meltable``` and ```Unmeltable``` keywords but would be expected otherwise. 
@@ -80,6 +80,11 @@ Variables at declaration should be indicated whether they are constants or not. 
 | logical and           | `&&`                    | `(1 < 2) && (2 < 3)`  |
 | logical or            | `\|\|`                  | `(1 < 2) \|\| (2 < 3)`|
 | logical not           | `!`                     | `Love x = !Hans ❅`    |
+| increment             | `++`                    | `x++ ❅`               |
+| decrement             | `--`                    | `x-- ❅`               |
+| increment assignment  | `+=`                    | `x += 1`              |
+| decrement assignment  | `-=`                    | `x -= 1 ❅`            |
+
 
 ## Comments 
 Single and multi-lined comments are encased in ```~*``` and ```*~``` at the beginning and the end of comments respectively. With multi-lined comments, it is not required to insert ```*``` at the beginning of each new line, but it is recommended. 
@@ -99,7 +104,7 @@ Single and multi-lined comments are encased in ```~*``` and ```*~``` at the begi
 ### Functions
 
 In Ahtohallan functions are declared using the keyword `Ice`.
-This is followed by a return type and a function name. The paramaters are in `()` and each parameter has a type and a name. The function block is denoted by `{}`.
+This is followed by a return type and a function name. The parameters are in `()` and each parameter has a type and a name. The function block is denoted by `{}`.
 ```
 Ice Samantha Function~Name(Olaf String, Anna Int, Elsa Float) {
   ~* This is a comment *~
@@ -108,13 +113,11 @@ Ice Samantha Function~Name(Olaf String, Anna Int, Elsa Float) {
 ```
 
 ### Classes
-In Ahtohallan classes are declared using the keyword `Snow` followed by the class name. You can create a constructor using the keyword `Water`. Constructors use the same syntax as functions except there is no return type or name. Methods are instantiated using the keyword `Crystal`. (Isn't that so cute? To create an instance of snow you need water! Not only that, but a method of Snow is Crystal. You can have may Snow Crystals in an instance of Snow!) Fields are refered to as "Snowflakes"
+In Ahtohallan classes are declared using the keyword `Snow` followed by the class name. You can create a constructor using the keyword `Water`. Constructors use the same syntax as functions except there is no return type or name. Methods are instantiated using the keyword `Crystal`. (Isn't that so cute? To create an instance of snow you need water! Not only that, but a method of Snow is Crystal. You can have many Snow Crystals in an instance of Snow!) Fields are referred to as "Snowflakes"
 ```
 Snow Name {
   ~* Class Snowflakes go here *~
   Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me"
-
-  Water (Olaf String, Anna Int, Elsa Float) {
     ~* Instance Snowflakes go here *~
     Frozen.String = String ❅
     Frozen.Int = Int ❅
@@ -132,7 +135,7 @@ Snow Name {
 
 ### For Loops
 ```
-Let~It~Go(Anna i = 0 ❅ i < 10 ❅ i++) {
+Let~It~Go (Anna i = 0 ❅ i < 10 ❅ i++) {
   ~* Code block here *~
 }
 ```
@@ -141,10 +144,10 @@ Let~It~Go(Anna i = 0 ❅ i < 10 ❅ i++) {
 ```
 ~* This is an if statement, followed by an else if, than an else. *~
 
-Get~This~Right(x < 1) {
+Get~This~Right (x < 1) {
   Sing("X is less than 1!") ❅
 } 
-The~Next~Right~Thing(x == 1) {
+The~Next~Right~Thing (x == 1) {
   Sing("X is equal to 1!") ❅
 } 
 Into~The~Unknown {
@@ -169,7 +172,7 @@ All~Is~Found(expression) {
 
 ### While Loops
 ```
-Lost~In~The~Woods(x == Kristoff) {
+Lost~In~The~Woods (x == Kristoff) {
   ~* Code block here *~
 }
 ```
@@ -214,7 +217,7 @@ Athohallan:
 
 ```
 Ice Olaf Even~Odd(Anna num) {
-  Get~This~Right(num % 2 == 0) {
+  Get~This~Right (num % 2 == 0) {
     Arendell "This number is even." ❅
   }
   Into~The~Unknown {
@@ -241,14 +244,14 @@ Ahtohallan:
 
 ```
 Ice Samantha Fizz~Buzz() {
-  Let~It~Go(Anna i = 0 ❅ i <= 100 ❅ i++) {
-    Get~This~Right(i % 3 == 0 && i % 5 == 0) {
+  Let~It~Go (Anna i = 0 ❅ i <= 100 ❅ i++) {
+    Get~This~Right (i % 3 == 0 && i % 5 == 0) {
       Sing("FizzBuzz") ❅
     } 
-    The~Next~Right~Thing(i % 3 == 0) {
+    The~Next~Right~Thing (i % 3 == 0) {
       Sing("Fizz") ❅
     }  
-    The~Next~Right~Thing(i % 5 == 0) {
+    The~Next~Right~Thing (i % 5 == 0) {
       Sing("Buzz") ❅
     }   
     Into~The~Unknown {
@@ -265,14 +268,11 @@ function fizzBuzz() {
   for (let i = 1; i <= 100; i++) {
     if (i % 3 === 0 && i % 5 === 0) { 
       console.log("FizzBuzz");    
-    }
-    else if (i % 3 === 0) {
+    } else if (i % 3 === 0) {
       console.log("Fizz");
-    }
-    else if (i % 5 === 0) {
+    } else if (i % 5 === 0) {
       console.log("Buzz");
-    }
-    else {
+    } else {
       console.log(i);
     }
   }
