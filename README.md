@@ -1,5 +1,7 @@
 # Ahtohallan
 
+<img src="ahtohallan_logo.png" alt="drawing" width="200"/>
+
 ## Introduction
 Hello, hello, and welcome to the show! This is Ahtohallan, a 
 a magical language from the depths of the FCU (Frozen Cinematic 
