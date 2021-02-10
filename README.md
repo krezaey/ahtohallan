@@ -15,7 +15,8 @@ If you are, however, we hope you have fun seeing all the magical things
 water, code, and a little bit of love can offer!
 
 In no particular order, Ahtohallan was made by Keziah Rezaey, Salem Tesfu, Michael Elias, Ameya Mellacheruvu,
-Onariaginosa Igbinedion, & Elise Sawan
+Onariaginosa Igbi
+    nedion, & Elise Sawan
 
 ## Features
 
@@ -25,6 +26,9 @@ Ahtohallan introduces these language features:
 - Frozen casing: A style of casing where everything is capitalized, and
   separated by `~` Like~This ! Additionally, all keywords should be capitalized.
 - Like ice, the language is strong and dynamic
+- Typed parameters 
+- Function return types
+- Built-in Functions
 
 ## Key Words
 
@@ -78,6 +82,7 @@ Variables at declaration should be indicated whether they are constants or not. 
 | multiply              | `*`                     | `Anna z = 2 * 3 ❅`     |
 | divide                | `/`                     | `Elsa a = 100 / 10 ❅`  |
 | modulo                | `%`                     | `Anna b = 10 % 3 ❅ `   |
+| exponentiation        | ```**```                | ```y = x**2 ❅ ```      |
 | equals                | `==`                    | `x == y`               |
 | not equals            | `!=`                    | `x != y `              |
 | less than             | `<`                     | `1 < 2`                |
