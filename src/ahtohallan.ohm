@@ -1,46 +1,84 @@
 Ahtohallan {
-    Program = (Declaration)* Expression*
+    // -- Upper Level Definitions
+    Program = (Declaration | Expression)*
 
     Declaration = Function | Class
 
+    Expression = (ParenthesisExpression | PlainExpression) "❅"
+
+    // -- Function Specific Definitions
     Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
+
+    Body = (Expression | VariableInstance)* 
+
+    // -- Class Specific Definitions
 
     Class = classWord identifier "{" (Constructor | Method | VariableInstance )* "}" 
 
-    identifier = ~reservedWord identifierStart identifierCharacter*
-
-    type = "Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha"
-
-    Parameters = ListOf< type, identifier >
-
-    Body = (Expression )* 
-
-    Constructor = constructorWord (" Parameters? ")" "{" ClassBody "}"
+    Constructor = constructorWord "(" Parameters? ")" "{" ClassBody "}"
 
     Method = methodWord type identifier "(" Parameters? ")" "{" ClassBody "}"
 
-    VariableInstance = mutability type identifier "=" typeValue | NewInstance
+    ClassBody = (ClassExpression)*
 
     NewInstance = "Open~Door" identifier "(" Arguments? ")"
 
-    Arguments = ListOf<identifier>
+    // --Types and Mutability
 
     typeValue = int |  float | string | boolean | array | dictionary | noneType
-
-    Expression = (ParenthesisExpression | PlainExpression) " ❅"
     
+    Array = "[" (ListOf<typeValue>)? "]"
+    
+    Dictionary = "[[" (ListOf<(string | identifier) ":" typeValue>)? "]]"
+    
+    // --Control Flow
+
+    controlFlow = if | elseIf | else | while | switch | case | default | for
+
+    // -- Operators
+
+    AdditiveOperator = ...
+
+    MultiplicativeOperator = ...
+
+    ModuloOperator =...
+
+    RelationalOperator = ...
+
+    LogicalAndOr = ...
+
+    LogicalNegation = ...
+
+    IncrementDecrementOperator = ...
+
+    AssigmentAdditiveOperator = ...
+
+    // -- Generalized Definitions]
+
     PlainExpression = ...
     
     ParenthesisExpression = "(" PlainExpression ")"
 
-    ClassBody = (ClassExpression)*
+    identifier = ~reservedWord identifierStart identifierCharacter*
 
-    mutability = "Unmeltable" | "Meltable"
+    Parameters = ListOf< type, identifier >
+
+    VariableInstance = mutability type identifier "=" typeValue | NewInstance
+
+    Arguments = ListOf<identifier>
+
+    // -- Keywords
 
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
 
-    controlFlow = if | elseIf | else | while | switch | case | default | for
+    type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha") ~remainingCharacter
 
+    boolean = ("Kristoff" | "Hans") ~remainingCharacter
+
+    mutability = ("Unmeltable" | "Meltable") ~remainingCharacter
+
+    noneType = "Samantha" ~remainingCharacter
+    
     constructorWord = "Water" ~remainingCharacter
  
     classWord = "Snow" ~remainingCharacter
@@ -75,26 +113,21 @@ Ahtohallan {
  
     return = "Arendelle" ~remainingCharacter
 
+    // -- Character/Identifier Sub Definitions
+
     remainingCharacter = "_" | alnum
  
-    identifierStart
+    identifierStart = ""
     
-    identifierCharacter
+    identifierCharacter = ""
 
     int = digit+
       
     float = int* "." int+
     
-    // Change to String Literal Please!!!
-    String = """ (alnum | space)* """ 
+    // -- Change to String Literal Please!!!
+    string = """ (alnum | space)* """ 
 
-    boolean = "Kristoff" | "Hans"
-    
-    Array = "[" (ListOf<typeValue>)? "]"
-    
-    Dictionary = "[[" (ListOf<(string | identifier) ":" typeValue>)? "]]"
-    
-    noneType = "Samantha"
 
 }
 
@@ -178,6 +211,6 @@ LanguageName {
 
     subCharacterLiteral1 =  ~"\\" ~"\"" any
     
-     subCharacterLiteral0 =  "\\" (hexExpression | "n" | "\"" | "\'" | "\\")
+    subCharacterLiteral0 =  "\\" (hexExpression | "n" | "\"" | "\'" | "\\")
 
 }
