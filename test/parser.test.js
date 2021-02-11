@@ -6,14 +6,14 @@ const goodPrograms = [
     "Meltable Love bool = Hans ❅",
     "~* This is a comment *~",
     "Let~It~Go (Anna i = 0 ❅ i < 10 ❅ i++) {}",
-    "Lost~In~The~Woods (x == Kristoff) {}",
+    "Lost~In~The~Woods (x == Kristoff ❅) {}",
     'Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅',
     'Unmeltable Trolls[[]] annaLoveHistory = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅',
     "Meltable Elsa n = Samantha ❅",
     "Unmeltable Love x = !Hans ❅",
-    'Get~This~Right (x < 1) { Sing("X is less than 1!") ❅ }',
+    'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ }',
     'Meltable Herd[] Mixed~Casing = [2, "Sven", 1.7, Kristoff]',
-    'All~Is~Found(expression) { Show~Yourself(case1): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(case2): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅ }', "~* This is   a comment  *~", "~* This * is also * a comment *~"
+    'All~Is~Found(expression ❅) { Show~Yourself(Hans): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(Kristoff): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅ }', "~* This is   a comment  *~", "~* This * is also * a comment *~"
 ]
 
 const badPrograms = [
