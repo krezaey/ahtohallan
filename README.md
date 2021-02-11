@@ -15,8 +15,7 @@ If you are, however, we hope you have fun seeing all the magical things
 water, code, and a little bit of love can offer!
 
 In no particular order, Ahtohallan was made by Keziah Rezaey, Salem Tesfu, Michael Elias, Ameya Mellacheruvu,
-Onariaginosa Igbi
-    nedion, & Elise Sawan
+Onariaginosa Igbinedion, & Elise Sawan
 
 ## Features
 
@@ -180,7 +179,7 @@ Into~The~Unknown {
 ### Switch Statements
 
 ```
-All~Is~Found(expression) {
+All~Is~Found(expression ❅) {
   Show~Yourself(case1):
     ~* Code block for case 1 here *~
     Closed~Door ❅

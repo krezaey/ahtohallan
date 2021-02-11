@@ -1,5 +1,5 @@
 Ahtohallan { 
-    Program = ( Expression | Declaration | comment) *
+    Program = ( Expression | Declaration) *
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression 
     Expression = (ParenthesisExpression | PlainExpression) "❅"
@@ -10,16 +10,24 @@ Ahtohallan {
     Method = methodWord type identifier "(" Parameters? ")" "{" ClassBody "}"
     ClassBody = (ClassExpression)*
     ClassExpression = Expression
+    ControlFlowStatements = IfStatement | WhileLoop | ForLoop
+    IfStatement = if "(" Expression ")" "{"Body "}" ( ( elseIf  "(" Expression ")" "{"Body "}" )*)? ( else "{" Body "}" )?
+    WhileLoop = while "(" Expression ")" "{" Body "}"
+    ForLoop = for "("Variable RelationalOperator "❅" Incrementer ")" "{" Body "}"
+    Incrementer = IncrementalOperator | IncrementalAssignmentOperator
     NewInstance = "Open~Door" identifier "(" Arguments? ")"
     ObjectTypeValue = Array | Dictionary
     typeValue = int |  float | string | boolean | noneType
     Array = "[" ListOf<typeValue, ",">? "]"
     Dictionary = "[[" (((string | identifier) ":" typeValue)*)? "]]"
     controlFlow = if | elseIf | else | while | switch | case | default | for 
-    Expression0= (identifier incop)? Expression1
-    Expression1 = (Expression1 incAssignop)? Expression2
+    Expression0= IncrementalOperator | Expression1
+    IncrementalOperator = identifier incop Expression1
+    Expression1 = IncrementalAssignmentOperator | Expression2
+    IncrementalAssignmentOperator = Expression1 incAssignop Expression2
     Expression2 = NonemptyListOf<Expression2, logicalop>? Expression3
-    Expression3 = (Expression3 relop)? Expression4
+    Expression3 = RelationalOperator | Expression4
+    RelationalOperator = Expression3 relop Expression4
     Expression4 = (Expression4 addop)?  Expression5
     Expression5 = (Expression5 mulop)? Expression6
     Expression6 = (Expression6 exp)? Expression7
@@ -27,8 +35,7 @@ Ahtohallan {
     Expression8 = negop? Expression9
     Expression9 = prefixop? typeValue
     PlainExpression = Expression0
-    ParenthesisExpression =  PlainParenthesisExpression 
-    PlainParenthesisExpression = "(" PlainExpression ")" 
+    ParenthesisExpression =  "(" PlainExpression ")" 
     identifier = ~reservedWord identifierStart (identifierCharacter*)?
     Parameters = ListOf< type, identifier >
     Arguments = ListOf<identifier, ",">
