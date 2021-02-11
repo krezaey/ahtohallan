@@ -2,13 +2,14 @@ Ahtohallan {
     Program = ( Expression | Declaration) *
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression 
-    Expression = (ParenthesisExpression | PlainExpression) "❅"
+    Expression = RegularExpression | ControlFlowStatements
+    RegularExpression = (ParenthesisExpression | PlainExpression) "❅"
     Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
     Body = (Expression)* 
     Class = classWord identifier "{" (Constructor | Method | "Field" )* "}" 
     Constructor = constructorWord "(" Parameters? ")" "{" ClassBody "}"
     Method = methodWord type identifier "(" Parameters? ")" "{" ClassBody "}"
-    ClassBody = (ClassExpression)*
+    ClassBody = (ClassExpression )*
     ClassExpression = Expression
     ControlFlowStatements = IfStatement | WhileLoop | ForLoop
     IfStatement = if "(" Expression ")" "{"Body "}" ( ( elseIf  "(" Expression ")" "{"Body "}" )*)? ( else "{" Body "}" )?
@@ -17,7 +18,7 @@ Ahtohallan {
     Incrementer = IncrementalOperator | IncrementalAssignmentOperator
     NewInstance = "Open~Door" identifier "(" Arguments? ")"
     ObjectTypeValue = Array | Dictionary
-    typeValue = int |  float | string | boolean | noneType
+    typeValue = int |  float | string | boolean | noneType | identifier
     Array = "[" ListOf<typeValue, ",">? "]"
     Dictionary = "[[" (((string | identifier) ":" typeValue)*)? "]]"
     controlFlow = if | elseIf | else | while | switch | case | default | for 
