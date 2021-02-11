@@ -62,7 +62,7 @@ Ahtohallan introduces these language features:
 | true       | `Kristoff`          | `Love isGood = Kristoff ❅`                                                                      |
 | false      | `Hans`              | `Love isEvil = Hans ❅`                                                                          |
 | array      | `Herd`              | `Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                                        |
-| dictionary | `Trolls[[]]`        | `Trolls[[]] annaLoveHistory = ["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff] ❅` |
+| dictionary | `Trolls[[]]`        | `Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff]] ❅` |
 | none       | `Samantha`          | `Elsa n = Samantha ❅`                                                                           |
 
 Variables at declaration should be indicated whether they are constants or not. The examples of types and variable declaration above do not include the `Meltable` and `Unmeltable` keywords but would be expected otherwise.
@@ -165,10 +165,10 @@ Let~It~Go (Anna i = 0 ❅ i < 10 ❅ i++) {
 ```
 ~* This is an if statement, followed by an else if, than an else. *~
 
-Get~This~Right (x < 1) {
+Get~This~Right (x < 1 ❅) {
   Sing("X is less than 1!") ❅
 }
-The~Next~Right~Thing (x == 1) {
+The~Next~Right~Thing (x == 1 ❅) {
   Sing("X is equal to 1!") ❅
 }
 Into~The~Unknown {
