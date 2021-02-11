@@ -1,10 +1,11 @@
-ahtohallan { 
+Ahtohallan { 
     Program = (Declaration | Expression)*
-    Declaration = Function | Class
+    Declaration = Function | Class | Variable
+    Variable = mutability type identifier "=" typeValue 
     Expression = (ParenthesisExpression | PlainExpression) "❅"
     Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
-    Body = (Expression | VariableInstance)* 
-    Class = classWord identifier "{" (Constructor | Method | VariableInstance )* "}" 
+    Body = (Expression)* 
+    Class = classWord identifier "{" (Constructor | Method | "Field" )* "}" 
     Constructor = constructorWord "(" Parameters? ")" "{" ClassBody "}"
     Method = methodWord type identifier "(" Parameters? ")" "{" ClassBody "}"
     ClassBody = (ClassExpression)*
@@ -12,23 +13,25 @@ ahtohallan {
     NewInstance = "Open~Door" identifier "(" Arguments? ")"
     ObjectTypeValue = Array | Dictionary
     typeValue = int |  float | string | boolean | noneType
-    Array = "[" (ListOf<typeValue>)? "]"
-    Dictionary = "[[" (ListOf<(string | identifier) ":" typeValue>)? "]]"
+    Array = "[" ListOf<typeValue, ",">? "]"
+    Dictionary = "[[" (((string | identifier) ":" typeValue)*)? "]]"
     controlFlow = if | elseIf | else | while | switch | case | default | for
     Expression0 = (Expression0 incAssignop)? Expression1
     Expression1 = NonemptyListOf<PlainExpression, logicalop>? Expression2
     Expression2 = (Expression2 relop)? Expression3
     Expression3 = NonemptyListOf<Expression3, addop>?  Expression4
-    Expression4 = NonemptyListOf<Expression4, mulop>? SubExpression5
+    Expression4 = NonemptyListOf<Expression4, mulop>? Expression5
     Expression5 = (Expression5 exp)? Expression6
-    Expression6 = Expression7
+    Expression6 = NewInstance | "Expression7"
+    Expression7 = Expression7 incop
     StringExpression = string
     PlainExpression = StringExpression | Expression1
-    ParenthesisExpression = "(" PlainExpression ")" | "-"? "(" Expression1 ")"
+    ParenthesisExpression =  PlainParenthesisExpression | NegatedParenthesisExpression
+    PlainParenthesisExpression = "(" PlainExpression ")" | "(" Expression1 ")"
+    NegatedParenthesisExpression = "-"? "(" Expression1 ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
     Parameters = ListOf< type, identifier >
-    VariableInstance = mutability type identifier "=" typeValue | NewInstance
-    Arguments = ListOf<identifier>
+    Arguments = ListOf<identifier, ",">
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
     type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha") ~remainingCharacter
     boolean = ("Kristoff" | "Hans") ~remainingCharacter
@@ -52,8 +55,8 @@ ahtohallan {
     break = "Closed~Door" ~remainingCharacter
     return = "Arendelle" ~remainingCharacter
     remainingCharacter = "_" | alnum
-    identifierStart = ""
-    identifierCharacter = ""
+    identifierStart = "_" | "@"
+    identifierCharacter = alnum
     int = digit+
     float = int* "." int+
     char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
@@ -68,4 +71,5 @@ ahtohallan {
     logicalop = "&&" | "||"
     exp = "**"
     comment = "~*" (~"\n" any)* "~*\n"
+    escape = "d"
 }
