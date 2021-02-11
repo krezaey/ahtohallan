@@ -1,6 +1,5 @@
-
 Ahtohallan { 
-    Program = ( Expression | Declaration)*
+    Program = ( Expression | Declaration | comment) *
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression 
     Expression = (ParenthesisExpression | PlainExpression) "❅"
@@ -43,3 +42,35 @@ Ahtohallan {
     functionWord = "Ice" ~remainingCharacter
     methodWord = "Crystal" ~remainingCharacter
     if = "Get~This~Right" ~remainingCharacter
+    elseIf = "The~Next~Right~Thing" ~remainingCharacter
+    else = "Into~The~Unknown" ~remainingCharacter
+    for = "Let~It~Go" ~remainingCharacter
+    while = "Lost~In~The~Woods" ~remainingCharacter
+    switch = "All~Is~Found" ~remainingCharacter
+    case = "Show~Yourself" ~remainingCharacter
+    default = "I~Seek~The~Truth" ~remainingCharacter
+    print = "Sing" ~remainingCharacter
+    this = "Frozen" ~remainingCharacter
+    new = "Open~Door" ~remainingCharacter
+    break = "Closed~Door" ~remainingCharacter
+    return = "Arendelle" ~remainingCharacter
+    remainingCharacter = "_" | alnum
+    identifierStart = letter | "_" | "@" 
+    identifierCharacter = alnum
+    int = digit+
+    float = int* "." int+
+    char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
+    string = "\"" (char | "\'")* "\""
+    addop = "+" | "-"
+    relop = "==" | "!=" | "<" | ">" | "<=" | ">=" 
+    mulop = "*" | "/" | "%"
+    incop = "++" | "--" 
+    incAssignop = "+=" | "-="
+    negop = "-"
+    prefixop = ~negop "!"
+    logicalop = "&&" | "||"
+    exp = "**"
+    comment =  "~*" (~"*~" any)* "*~" 
+    escape = "\\\\" | "\\\"" | "\\'" | "\\n" | "\\t" 
+    space := " " | "\t" | comment 
+}
