@@ -1,7 +1,8 @@
+
 Ahtohallan { 
-    Program = (Declaration | Expression)*
+    Program = ( Expression | Declaration)*
     Declaration = Function | Class | Variable
-    Variable = mutability type identifier "=" typeValue 
+    Variable = mutability type identifier "=" Expression 
     Expression = (ParenthesisExpression | PlainExpression) "❅"
     Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
     Body = (Expression)* 
@@ -15,61 +16,30 @@ Ahtohallan {
     typeValue = int |  float | string | boolean | noneType
     Array = "[" ListOf<typeValue, ",">? "]"
     Dictionary = "[[" (((string | identifier) ":" typeValue)*)? "]]"
-    controlFlow = if | elseIf | else | while | switch | case | default | for
-    Expression0 = (Expression0 incAssignop)? Expression1
-    Expression1 = NonemptyListOf<PlainExpression, logicalop>? Expression2
-    Expression2 = (Expression2 relop)? Expression3
-    Expression3 = NonemptyListOf<Expression3, addop>?  Expression4
-    Expression4 = NonemptyListOf<Expression4, mulop>? Expression5
-    Expression5 = (Expression5 exp)? Expression6
-    Expression6 = NewInstance | "Expression7"
-    Expression7 = Expression7 incop
-    StringExpression = string
-    PlainExpression = StringExpression | Expression1
-    ParenthesisExpression =  PlainParenthesisExpression | NegatedParenthesisExpression
-    PlainParenthesisExpression = "(" PlainExpression ")" | "(" Expression1 ")"
-    NegatedParenthesisExpression = "-"? "(" Expression1 ")"
-    identifier = ~reservedWord identifierStart identifierCharacter*
+    controlFlow = if | elseIf | else | while | switch | case | default | for 
+    Expression0= (identifier incop)? Expression1
+    Expression1 = (Expression1 incAssignop)? Expression2
+    Expression2 = NonemptyListOf<Expression2, logicalop>? Expression3
+    Expression3 = (Expression3 relop)? Expression4
+    Expression4 = (Expression4 addop)?  Expression5
+    Expression5 = (Expression5 mulop)? Expression6
+    Expression6 = (Expression6 exp)? Expression7
+    Expression7 = NewInstance | Expression8
+    Expression8 = negop? Expression9
+    Expression9 = prefixop? typeValue
+    PlainExpression = Expression0
+    ParenthesisExpression =  PlainParenthesisExpression 
+    PlainParenthesisExpression = "(" PlainExpression ")" 
+    identifier = ~reservedWord identifierStart (identifierCharacter*)?
     Parameters = ListOf< type, identifier >
     Arguments = ListOf<identifier, ",">
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
-    type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha") ~remainingCharacter
+    type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd" | "Trolls[[]]" | "Samantha")
     boolean = ("Kristoff" | "Hans") ~remainingCharacter
-    mutability = ("Unmeltable" | "Meltable") ~remainingCharacter
+    mutability = ("Unmeltable" | "Meltable") 
     noneType = "Samantha" ~remainingCharacter
     constructorWord = "Water" ~remainingCharacter
     classWord = "Snow" ~remainingCharacter
     functionWord = "Ice" ~remainingCharacter
     methodWord = "Crystal" ~remainingCharacter
     if = "Get~This~Right" ~remainingCharacter
-    elseIf = "The~Next~Right~Thing" ~remainingCharacter
-    else = "Into~The~Unknown" ~remainingCharacter
-    for = "Let~It~Go" ~remainingCharacter
-    while = "Lost~In~The~Woods" ~remainingCharacter
-    switch = "All~Is~Found" ~remainingCharacter
-    case = "Show~Yourself" ~remainingCharacter
-    default = "I~Seek~The~Truth" ~remainingCharacter
-    print = "Sing" ~remainingCharacter
-    this = "Frozen" ~remainingCharacter
-    new = "Open~Door" ~remainingCharacter
-    break = "Closed~Door" ~remainingCharacter
-    return = "Arendelle" ~remainingCharacter
-    remainingCharacter = "_" | alnum
-    identifierStart = "_" | "@"
-    identifierCharacter = alnum
-    int = digit+
-    float = int* "." int+
-    char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
-    string = "\"" (char | "\'")* "\""
-    addop = "+" | "-"
-    relop = "==" | "!=" | "<" | ">" | "<=" | ">=" 
-    mulop = "*" | "/" | "%"
-    incop = "++" | "--" 
-    incAssignop = "+=" | "-="
-    negop = "-"
-    prefixop = ~negop "!"
-    logicalop = "&&" | "||"
-    exp = "**"
-    comment = "~*" (~"\n" any)* "~*\n"
-    escape = "d"
-}
