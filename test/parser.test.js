@@ -1,5 +1,5 @@
 import assert from "assert"
-import parse from "../src/parser.js"
+import parse, { syntaxIsOkay } from "../src/parser.js"
 
 const goodPrograms = [
     'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ }',
@@ -38,7 +38,20 @@ const badPrograms = [
     'Meltable Anna = “I love chocolate” ❅'
 ]
 
-describe("The parser", () => {
+describe("The Syntax Checker", () => {
+    for (const program of goodPrograms) {
+        it(`Successfully recognizes ${program}`, () => {
+            assert.ok(syntaxIsOkay(program))
+        })
+    }
+    for (const program of badPrograms) {
+        it(`Successfully rejects ${program}`, () => {
+            assert.ok(!syntaxIsOkay(program))
+        })
+    }
+})
+
+describe("The Parser", () => {
     for (const program of goodPrograms) {
         it(`Successfully recognizes ${program}`, () => {
             assert.ok(parse(program))
@@ -46,7 +59,7 @@ describe("The parser", () => {
     }
     for (const program of badPrograms) {
         it(`Successfully rejects ${program}`, () => {
-            assert.ok(!parse(program))
+            assert.throws(() => parse(program))
         })
     }
 })
