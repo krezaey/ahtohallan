@@ -1,215 +1,173 @@
 export class Program {
-    constructor(Instructions) {
-        this.Instructions = Instructions
-    }
+  constructor(instructions) {
+    this.instructions = instructions;
+  }
 }
 
 export class Declaration {
-    constructor() {
-
-    }
+  constructor(declaration) {
+    this.declaration = declaration;
+  }
 }
 
 export class Variable {
-    constructor() {
-
-    }
+  constructor(mutability, type, name, expression) {
+    Object.assign(this, { mutability, type, name, expression });
+  }
 }
 
 export class Expression {
-    constructor() {
-
-    }
+  constructor(expression) {
+    this.expression = expression;
+  }
 }
 
 export class RegularExpression {
-    constructor() {
-
-    }
+  constructor(regularExpression) {
+    this.regularExpression = regularExpression;
+  }
 }
-export class Function {
-    constructor() {
 
-    }
+export class Function {
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
 }
 
 export class Body {
-    constructor() {
-
-    }
+  constructor(expressions) {
+    this.expression = expressions;
+  }
 }
 
 export class Class {
-    constructor() {
-
-    }
+  constructor(name, body) {
+    Object.assign(this, { name, body });
+  }
 }
 
 export class Constructor {
-    constructor() {
-
-    }
+  constructor(parameters, body) {
+    Object.assign(this, { parameters, body });
+  }
 }
 
 export class Method {
-    constructor() {
-
-    }
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
 }
 
 export class ClassBody {
-    constructor() {
-
-    }
+  constructor(expressions) {
+    this.expressions = expressions;
+  }
 }
 
 export class ClassExpression {
-    constructor() {
-
-    }
+  constructor(expression) {
+    this.expression = expression;
+  }
 }
 
 export class ControlFlowStatements {
-    constructor() {
-
-    }
+  constructor(instruction) {
+    this.instruction = instruction;
+  }
 }
-
+// She is susssssss!!! sus
 export class IfStatement {
-    constructor() {
-
-    }
+  constructor(expressions, bodies) {
+    Object.assign(this, { expressions, bodies });
+  }
 }
 
 export class WhileLoop {
-    constructor() {
-
-    }
+  constructor(expression, body) {
+    Object.assign(this, { expression, body });
+  }
 }
 
 export class ForLoop {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class SwitchStatement {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Incrementer {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class NewInstance {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class ObjectTypeValue {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Array {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Dictionary {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
-
 export class Expression0 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class IncrementalOperator {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression1 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class IncrementalAssignmentOperator {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression2 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression3 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class RelationalOperator {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression4 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression5 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression6 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression7 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression8 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class Expression9 {
-    constructor() {
-
-    }
+  constructor() {}
 }
 
 export class PlainExpression {
-    constructor() {
-
-    }
+  constructor() {}
 }

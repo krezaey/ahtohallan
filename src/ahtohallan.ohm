@@ -1,7 +1,7 @@
 Ahtohallan { 
     Program = ( Expression | Declaration) *
     Declaration = Function | Class | Variable
-    Variable = mutability type identifier "=" Expression 
+    Variable = mutability type identifier "=" RegularExpression 
     Expression = RegularExpression | ControlFlowStatements
     RegularExpression = (ParenthesisExpression | PlainExpression) "❅"
     Function =  functionWord type identifier "(" Parameters? ")" "{" Body? "}" 
@@ -21,7 +21,7 @@ Ahtohallan {
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ",">? "]"
-    Dictionary = "[[" (((string | identifier | int) ":" Expression)* )? "[["
+    Dictionary = "[[" (((string | identifier | int) ":" RegularExpression)* )? "]]"
     controlFlow = if | elseIf | else | while | switch | case | default | for 
     Expression0= IncrementalOperator  | Expression1 
     IncrementalOperator = identifier incop
