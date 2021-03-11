@@ -4,11 +4,11 @@ export class Program {
   }
 }
 
-export class Declaration {
-  constructor(declaration) {
-    this.declaration = declaration;
-  }
-}
+// export class Declaration {
+//   constructor(declaration) {
+//     this.declaration = declaration;
+//   }
+// }
 
 export class Variable {
   constructor(mutability, type, name, expression) {
@@ -16,11 +16,11 @@ export class Variable {
   }
 }
 
-export class Expression {
-  constructor(expression) {
-    this.expression = expression;
-  }
-}
+// export class Expression {
+//   constructor(expression) {
+//     this.expression = expression;
+//   }
+// }
 
 // export class RegularExpression {
 //   constructor(regularExpression) {

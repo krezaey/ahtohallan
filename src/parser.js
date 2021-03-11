@@ -6,19 +6,39 @@ const grammar = ohm.grammar(fs.readFileSync("src/ahtohallan.ohm"));
 
 const astBuilder = grammar.createSemantics().addOperation("tree", {
   Program(statements) {
-    return new ast.Program(statements.tree);
+    return new ast.Program(statements.ast());
   },
-  Declaration() { },
-  Variable() { },
-  Expression() { },
-  RegularExpression() { },
-  Function() { },
-  Body() { },
-  Class() { },
-  Constructor() { },
-  Method() { },
-  ClassBody() { },
-  ClassExpression() { },
+  // Declaration() { },
+  Variable(mutability, type, name, _eq, expression) {
+    return new ast.Variable(mutability, type, name, expression.ast());
+  },
+  Expression(statement, _terminate) {
+    return statement.ast()
+  },
+  RegularExpression(statement, _terminate) {
+    return statement.ast()
+  },
+  Function(_Ice, type, name, _left, parameters, _right, body) {
+    return new ast.Function(type, name, parameters, body)
+  },
+  Body(_left, statements, _right) {
+    return statements.ast()
+  },
+  Class(_Snow, name, _left, body, _right) {
+    return new ast.Class(name, body)
+  },
+  Constructor(_Water, name, _left, parameters, _right, body) {
+    return new ast.Constructor(name, body)
+  },
+  Method(_Crystal, type, name, _left, parameters, _right, body) {
+    return new ast.Method(type, name, parameters, body)
+  },
+  ClassBody() {
+
+  },
+  ClassExpression(statement, _terminate) {
+    return statement.ast()
+  },
   ControlFlowStatements() { },
   IfStatement() { },
   WhileLoop() { },
