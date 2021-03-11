@@ -22,11 +22,11 @@ export class Expression {
   }
 }
 
-export class RegularExpression {
-  constructor(regularExpression) {
-    this.regularExpression = regularExpression;
-  }
-}
+// export class RegularExpression {
+//   constructor(regularExpression) {
+//     this.regularExpression = regularExpression;
+//   }
+// }
 
 export class Function {
   constructor(returnType, name, parameters, body) {
@@ -73,12 +73,12 @@ export class ClassExpression {
 export class ControlFlowStatements {
   constructor(instruction) {
     this.instruction = instruction;
-  }
+  } o
 }
 // She is susssssss!!! sus
 export class IfStatement {
-  constructor(expressions, bodies) {
-    Object.assign(this, { expressions, bodies });
+  constructor(expressions, bodies, alternate) {
+    Object.assign(this, { expressions, bodies, alternate });
   }
 }
 
@@ -89,85 +89,62 @@ export class WhileLoop {
 }
 
 export class ForLoop {
-  constructor() {}
+  constructor(iterator, range, body) {
+    Object.assign(this, { iterator, range, body })
+  }
 }
 
 export class SwitchStatement {
-  constructor() {}
+  constructor(expression, cases, body, defaultCase) {
+    Object.assign(this, { expression, cases, body, defaultCase })
+  }
 }
 
-export class Incrementer {
-  constructor() {}
-}
+// export class Incrementer {
+//   constructor() {}
+// }
 
 export class NewInstance {
-  constructor() {}
+  constructor(identifier, arguments) {
+    Object.assign(this, { identifier, arguments })
+  }
 }
 
-export class ObjectTypeValue {
-  constructor() {}
-}
+// export class ObjectTypeValue {
+//   constructor() { }
+// }
 
 export class Array {
-  constructor() {}
+  constructor(type) {
+    this.type = type
+  }
 }
 
+// kinda suSSSSSSSS my guy
 export class Dictionary {
-  constructor() {}
-}
-
-export class Expression0 {
-  constructor() {}
+  constructor(keyType, valueType) {
+    Object.assign(this, { keyType, valueType })
+  }
 }
 
 export class IncrementalOperator {
-  constructor() {}
-}
-
-export class Expression1 {
-  constructor() {}
+  constructor(op, operand) {
+    Object.assign(this, { op, operand })
+  }
 }
 
 export class IncrementalAssignmentOperator {
-  constructor() {}
-}
-
-export class Expression2 {
-  constructor() {}
-}
-
-export class Expression3 {
-  constructor() {}
+  constructor(variable, op, operand) {
+    Object.assign(this, { variable, op, operand })
+  }
 }
 
 export class RelationalOperator {
-  constructor() {}
+  constructor(left, operand, right) {
+    Object.assign(this, { left, operand, right })
+  }
 }
 
-export class Expression4 {
-  constructor() {}
-}
-
-export class Expression5 {
-  constructor() {}
-}
-
-export class Expression6 {
-  constructor() {}
-}
-
-export class Expression7 {
-  constructor() {}
-}
-
-export class Expression8 {
-  constructor() {}
-}
-
-export class Expression9 {
-  constructor() {}
-}
-
-export class PlainExpression {
-  constructor() {}
-}
+// export class PlainExpression {
+//   constructor() {}
+// }
