@@ -8,9 +8,10 @@ Ahtohallan {
     Expression = (ParenthesisExpression | PlainExpression) "❅"
     Function =  functionWord type identifier "(" Parameters? ")" Body
     Body = "{" Statement* "}"
-    Class = classWord identifier "{" (Constructor | Method | "Field" )* "}"
+    Class = classWord identifier "{" (Constructor | Method | Field )* "}"
     Constructor = constructorWord "(" Parameters? ")" Body
     Method = methodWord type identifier "(" Parameters? ")" Body
+    Field = Variable
     IfStatement = if "(" Expression ")" Body
                   ( elseIf  "(" Expression "❅"")" Body )*
                   ( else Body )?
@@ -18,7 +19,7 @@ Ahtohallan {
     ForLoop = for "("Variable Relation "❅" Incrementer ")" Body
     SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break "❅" )+ (default ":" Statement* break "❅")? "}"
     Incrementer = IncrementalOperator | IncrementalAssignment
-    NewInstance = "Open~Door" identifier "(" Arguments? ")"
+    NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ",">? "]"

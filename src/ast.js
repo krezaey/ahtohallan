@@ -42,7 +42,13 @@ export class Constructor {
 
 export class Method {
   constructor(returnType, name, parameters, body) {
-    Object.assign(this, { returnType, name, parameters, body });
+    Object.assign(this, { returnTyp_e, name, parameters, body });
+  }
+}
+
+export class Field {
+  constructor(field) {
+    this.field = field;
   }
 }
 
@@ -59,8 +65,8 @@ export class WhileLoop {
 }
 
 export class ForLoop {
-  constructor(iterator, range, body) {
-    Object.assign(this, { iterator, range, body })
+  constructor(start, limit, increment, body) {
+    Object.assign(this, { start, limit, increment, body })
   }
 }
 
@@ -90,14 +96,14 @@ export class Dictionary {
 }
 
 export class IncrementalOperator {
-  constructor(op, operand) {
-    Object.assign(this, { op, operand })
+  constructor(operand, op) {
+    Object.assign(this, { operand, op })
   }
 }
 
 export class IncrementalAssignment {
-  constructor(variable, op, operand) {
-    Object.assign(this, { variable, op, operand })
+  constructor(variable, operand, op) {
+    Object.assign(this, { variable, operand, op })
   }
 }
 
