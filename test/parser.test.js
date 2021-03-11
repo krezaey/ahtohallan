@@ -1,8 +1,8 @@
 import assert from "assert"
-import parse, { syntaxIsOkay } from "../src/parser.js"
+//import parse, { syntaxIsOkay } from "../src/parser.js"
+import { syntaxIsOkay } from "../src/parser.js"
 
 const goodPrograms = [
-    'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ }',
     "Unmeltable Anna x = 2 + 3 ❅",
     "Meltable Love bool = Hans ❅",
     "~* This is a comment *~",

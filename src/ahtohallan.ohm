@@ -6,8 +6,6 @@ Ahtohallan {
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression
     Expression = (ParenthesisExpression | PlainExpression) "❅"
-    PlainExpression = Expression0
-    ParenthesisExpression =  "(" PlainExpression ")"
     Function =  functionWord type identifier "(" Parameters? ")" Body
     Body = "{" Statement* "}"
     Class = classWord identifier "{" (Constructor | Method | "Field" )* "}"
@@ -38,10 +36,12 @@ Ahtohallan {
     Expression6 = (Expression6 exp)? Expression7
     Expression7 = NewInstance | ObjectTypeValue | Expression8
     Expression8 = negop? Expression9
-    Expression9 = prefixop? Expression10
+    Expression9 = prefixop? typeValue
     Expression10 = GetProperty | Expression11
-    GetProperty = (Frozen | Expression | identifier) "." identifier    
+    GetProperty = (Call | identifier | this) "." identifier
     Expression11 = typeValue
+    PlainExpression = Expression0
+    ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
     Parameters = ListOf< type, identifier >
     Arguments = ListOf<Expression0, ",">
