@@ -51,15 +51,15 @@ describe("The Syntax Checker", () => {
     }
 })
 
-describe("The Parser", () => {
-    for (const program of goodPrograms) {
-        it(`Successfully recognizes ${program}`, () => {
-            assert.ok(parse(program))
-        })
-    }
-    for (const program of badPrograms) {
-        it(`Successfully rejects ${program}`, () => {
-            assert.throws(() => parse(program))
-        })
-    }
-})
+// describe("The Parser", () => {
+//     for (const program of goodPrograms) {
+//         it(`Successfully recognizes ${program}`, () => {
+//             assert.ok(parse(program))
+//         })
+//     }
+//     for (const program of badPrograms) {
+//         it(`Successfully rejects ${program}`, () => {
+//             assert.throws(() => parse(program))
+//         })
+//     }
+// })
