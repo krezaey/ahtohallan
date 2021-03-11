@@ -1,150 +1,120 @@
-// export class Program {
-//   constructor(instructions) {
-//     this.instructions = instructions;
-//   }
-// }
+export class Program {
+  constructor(instructions) {
+    this.instructions = instructions;
+  }
+}
 
-// // export class Declaration {
-// //   constructor(declaration) {
-// //     this.declaration = declaration;
-// //   }
-// // }
+export class Variable {
+  constructor(mutability, type, name, expression) {
+    Object.assign(this, { mutability, type, name, expression });
+  }
+}
 
-// export class Variable {
-//   constructor(mutability, type, name, expression) {
-//     Object.assign(this, { mutability, type, name, expression });
-//   }
-// }
+export class Expression {
+  constructor(expression) {
+      this.expression = expression;
+  }
+}
 
-// // export class Expression {
-// //   constructor(expression) {
-// //     this.expression = expression;
-// //   }
-// // }
+export class Function {
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
+}
 
-// // export class RegularExpression {
-// //   constructor(regularExpression) {
-// //     this.regularExpression = regularExpression;
-// //   }
-// // }
+export class Body {
+  constructor(statements) {
+    this.statements = statements;
+  }
+}
 
-// export class Function {
-//   constructor(returnType, name, parameters, body) {
-//     Object.assign(this, { returnType, name, parameters, body });
-//   }
-// }
+export class Class {
+  constructor(name, body) {
+    Object.assign(this, { name, body });
+  }
+}
 
-// export class Body {
-//   constructor(expressions) {
-//     this.expression = expressions;
-//   }
-// }
+export class Constructor {
+  constructor(parameters, body) {
+    Object.assign(this, { parameters, body });
+  }
+}
 
-// export class Class {
-//   constructor(name, body) {
-//     Object.assign(this, { name, body });
-//   }
-// }
+export class Method {
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
+}
 
-// export class Constructor {
-//   constructor(parameters, body) {
-//     Object.assign(this, { parameters, body });
-//   }
-// }
+export class IfStatement {
+  constructor(expression, body, alternate) {
+    Object.assign(this, { expression, body, alternate });
+  }
+}
 
-// export class Method {
-//   constructor(returnType, name, parameters, body) {
-//     Object.assign(this, { returnType, name, parameters, body });
-//   }
-// }
+export class WhileLoop {
+  constructor(expression, body) {
+    Object.assign(this, { expression, body });
+  }
+}
 
-// export class ClassBody {
-//   constructor(expressions) {
-//     this.expressions = expressions;
-//   }
-// }
+export class ForLoop {
+  constructor(iterator, range, body) {
+    Object.assign(this, { iterator, range, body })
+  }
+}
 
-// export class ClassExpression {
-//   constructor(expression) {
-//     this.expression = expression;
-//   }
-// }
+export class SwitchStatement {
+  constructor(expression, cases, body, defaultCase) {
+    Object.assign(this, { expression, cases, body, defaultCase })
+  }
+}
 
-// export class ControlFlowStatements {
-//   constructor(instruction) {
-//     this.instruction = instruction;
-//   } o
-// }
-// // She is susssssss!!! sus
-// export class IfStatement {
-//   constructor(expressions, bodies, alternate) {
-//     Object.assign(this, { expressions, bodies, alternate });
-//   }
-// }
+export class NewInstance {
+  constructor(identifier, args) {
+    Object.assign(this, { identifier, args })
+  }
+}
 
-// export class WhileLoop {
-//   constructor(expression, body) {
-//     Object.assign(this, { expression, body });
-//   }
-// }
+export class Array {
+  constructor(type) {
+    this.type = type
+  }
+}
 
-// export class ForLoop {
-//   constructor(iterator, range, body) {
-//     Object.assign(this, { iterator, range, body })
-//   }
-// }
+// kinda suSSSSSSSS my guy
+export class Dictionary {
+  constructor(name, keyType, valueType) {
+    Object.assign(this, { name, keyType, valueType })
+  }
+}
 
-// export class SwitchStatement {
-//   constructor(expression, cases, body, defaultCase) {
-//     Object.assign(this, { expression, cases, body, defaultCase })
-//   }
-// }
+export class IncrementalOperator {
+  constructor(op, operand) {
+    Object.assign(this, { op, operand })
+  }
+}
 
-// // export class Incrementer {
-// //   constructor() {}
-// // }
+export class IncrementalAssignment {
+  constructor(variable, op, operand) {
+    Object.assign(this, { variable, op, operand })
+  }
+}
 
-// export class NewInstance {
-//   constructor(identifier, args) {
-//     Object.assign(this, { identifier, args })
-//   }
-// }
+export class Relation {
+  constructor(left, operand, right) {
+    Object.assign(this, { left, operand, right })
+  }
+}
 
-// // export class ObjectTypeValue {
-// //   constructor() { }
-// // }
+export class GetProperty {
+  constructor(source, property) {
+    Object.assign(this, {source, property})
+  }
+}
 
-// export class Array {
-//   constructor(type) {
-//     this.type = type
-//   }
-// }
-
-// // kinda suSSSSSSSS my guy
-// export class Dictionary {
-//   constructor(keyType, valueType) {
-//     Object.assign(this, { keyType, valueType })
-//   }
-// }
-
-// export class IncrementalOperator {
-//   constructor(op, operand) {
-//     Object.assign(this, { op, operand })
-//   }
-// }
-
-// export class IncrementalAssignmentOperator {
-//   constructor(variable, op, operand) {
-//     Object.assign(this, { variable, op, operand })
-//   }
-// }
-
-// export class RelationalOperator {
-//   constructor(left, operand, right) {
-//     Object.assign(this, { left, operand, right })
-//   }
-// }
-
-// // export class PlainExpression {
-// //   constructor() {}
-// // }
+export class Call {
+  constructor(name, args) {
+    Object.assign(this, { name, args })
+  }
+}
