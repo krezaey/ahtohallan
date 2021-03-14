@@ -83,19 +83,19 @@ export class NewInstance {
 }
 
 export class Array {
-  constructor(type) {
-    this.type = type
+  constructor(value) {
+    this.value = value
   }
 }
 
 // kinda suSSSSSSSS my guy
 export class Dictionary {
-  constructor(name, keyType, valueType) {
-    Object.assign(this, { name, keyType, valueType })
+  constructor(name, key, value) {
+    Object.assign(this, { name, key, value })
   }
 }
 
-export class IncrementalOperator {
+export class Increment {
   constructor(operand, op) {
     Object.assign(this, { operand, op })
   }

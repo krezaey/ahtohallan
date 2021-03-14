@@ -53,17 +53,17 @@ Ahtohallan introduces these language features:
 
 ## Types and Variable Declaration
 
-| Types      | Types in Ahtohallan | Variable Declaration                                                                            |
-| ---------- | ------------------- | ----------------------------------------------------------------------------------------------- |
-| int        | `Anna`              | `Anna x = 5 ❅`                                                                                  |
-| float      | `Elsa`              | `Elsa y = 3.6 ❅`                                                                                |
-| string     | `Olaf`              | `Olaf z = "I like telling stories!" ❅`                                                          |
-| boolean    | `Love`              | `Love bool = Hans ❅`                                                                            |
-| true       | `Kristoff`          | `Love isGood = Kristoff ❅`                                                                      |
-| false      | `Hans`              | `Love isEvil = Hans ❅`                                                                          |
-| array      | `Herd`              | `Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                                        |
-| dictionary | `Trolls[[]]`        | `Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans, "Kristoff loves Anna." : Kristoff]] ❅` |
-| none       | `Samantha`          | `Elsa n = Samantha ❅`                                                                           |
+| Types      | Types in Ahtohallan | Variable Declaration                                                                                              |
+| ---------- | ------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| int        | `Anna`              | `Meltable Anna x = 5 ❅`                                                                                           |
+| float      | `Elsa`              | `Unmeltable Elsa y = 3.6 ❅`                                                                                       |
+| string     | `Olaf`              | `Meltable Olaf z = "I like telling stories!" ❅`                                                                   |
+| boolean    | `Love`              | `Unmeltable Love bool = Hans ❅`                                                                                   |
+| true       | `Kristoff`          | `Meltable Love isGood = Kristoff ❅`                                                                               |
+| false      | `Hans`              | `Unmeltable Love isEvil = Hans ❅`                                                                                 |
+| array      | `Herd`              | `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                                                 |
+| dictionary | `Trolls[[]]`        | `Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅` |
+| none       | `Samantha`          | `Meltable Elsa n = Samantha ❅`                                                                                    |
 
 Variables at declaration should be indicated whether they are constants or not. The examples of types and variable declaration above do not include the `Meltable` and `Unmeltable` keywords but would be expected otherwise.
 
@@ -74,27 +74,27 @@ Variables at declaration should be indicated whether they are constants or not. 
 
 ## Operators
 
-| Operation             | Operation in Ahtohallan | Performing Operation   |
-| --------------------- | ----------------------- | ---------------------- |
-| add                   | `+`                     | `Anna x = 2 + 3 ❅`     |
-| subtract              | `-`                     | `Elsa y = 10 - 5 ❅`    |
-| multiply              | `*`                     | `Anna z = 2 * 3 ❅`     |
-| divide                | `/`                     | `Elsa a = 100 / 10 ❅`  |
-| modulo                | `%`                     | `Anna b = 10 % 3 ❅ `   |
-| exponentiation        | ```**```                | ```y = x**2 ❅ ```      |
-| equals                | `==`                    | `x == y`               |
-| not equals            | `!=`                    | `x != y `              |
-| less than             | `<`                     | `1 < 2`                |
-| greater than          | `>`                     | `2 > 1`                |
-| less than or equal    | `<=`                    | `2 <= 2`               |
-| greater than or equal | `>=`                    | `4 >= 1`               |
-| logical and           | `&&`                    | `(1 < 2) && (2 < 3)`   |
-| logical or            | `\|\|`                  | `(1 < 2) \|\| (2 < 3)` |
-| logical not           | `!`                     | `Love x = !Hans ❅`     |
-| increment             | `++`                    | `x++ ❅`                |
-| decrement             | `--`                    | `x-- ❅`                |
-| increment assignment  | `+=`                    | `x += 1 ❅`             |
-| decrement assignment  | `-=`                    | `x -= 1 ❅`             |
+| Operation             | Operation in Ahtohallan | Performing Operation              |
+| --------------------- | ----------------------- | --------------------------------- |
+| add                   | `+`                     | `Unmeltable Anna x = 2 + 3 ❅`     |
+| subtract              | `-`                     | `Meltable Elsa y = 10 - 5 ❅`      |
+| multiply              | `*`                     | `Unmeltable Anna z = 2 * 3 ❅`     |
+| divide                | `/`                     | `Meltable Elsa a = 100 / 10 ❅`    |
+| modulo                | `%`                     | `Unmeltable Anna b = 10 % 3 ❅ `   |
+| exponentiation        | ```**```                | ```y = x**2 ❅ ```                 |
+| equals                | `==`                    | `x == y`                          |
+| not equals            | `!=`                    | `x != y `                         |
+| less than             | `<`                     | `1 < 2`                           |
+| greater than          | `>`                     | `2 > 1`                           |
+| less than or equal    | `<=`                    | `2 <= 2`                          |
+| greater than or equal | `>=`                    | `4 >= 1`                          |
+| logical and           | `&&`                    | `(1 < 2) && (2 < 3)`              |
+| logical or            | `\|\|`                  | `(1 < 2) \|\| (2 < 3)`            |
+| logical not           | `!`                     | `Love x = !Hans ❅`                |
+| increment             | `++`                    | `x++ ❅`                           |
+| decrement             | `--`                    | `x-- ❅`                           |
+| increment assignment  | `+=`                    | `x += 1 ❅`                        |
+| decrement assignment  | `-=`                    | `x -= 1 ❅`                        |
 
 ## Comments
 

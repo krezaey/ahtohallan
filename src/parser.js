@@ -29,15 +29,13 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Field(field) {
     return new ast.Field(field)
   },
-  // Susssssss All these if statements are iffy as best
-  IfStatement_long(_if, _left, expression, _right, body, _elseIf, _left, expression1, _right, _else, expression1, _right, alternate) {
-    return new ast.IfStatement()
-  },
-  IfStatement_med(_if, _left, expression, _right, body,  _else, expression1, _right, alternate) {
-    return new ast.IfStatement()
-  },
-  IfStatement_short(_if, _left, expression, _right, body) {
-    return new ast.IfStatement()
+  // Inspiration found in https://github.com/breelynbetts/HYPER for if statement
+  IfStatement(
+    _if, condition, ifBody, _elif, additionalConditions, elifBodies, _else, elseBlock) {
+    const conditions = [condition.ast(), ...additionalConditions.ast()];
+    const  bodies = [ifBody.ast(), ...elifBodies.ast()];
+    const end = arrayToNullable(elseBlock.ast());
+    return new IfStatement(conditions, consequents.flat(), end);
   },
   WhileLoop(_while, _left, expression, _right, body) {
     return new ast.WhileLoop(expression, body)
