@@ -104,35 +104,53 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Expression8_negop(left, op);
   },
   Expression9_prefixop(left, op) {
-    return ast.Expression9_prefixop(left, op);
+    return new ast.Expression9_prefixop(left, op);
   },
   identifier(_identifierStart, _identifierCharacter) {
-    return ast.Identifier(this.sourceString);
+    return new ast.Identifier(this.sourceString);
   },
   Parameters(types, identifiers) {
-    return ast.Parameters(types, identifiers)
+    return new ast.Parameters(types, identifiers);
   },
   Arguments(expressions) {
-    return ast.Arguments(expressions)
+    return new ast.Arguments(expressions);
   },
   GetProperty(source, property) {
-    return ast.GetProperty(source, property)
+    return new ast.GetProperty(source, property);
   },
   ParenthesisExpression(_left, expression, _right) {
-    return expression.ast();
+    return new expression.ast();
   },
-  DictionaryEntry() {
+  DictionaryEntry(key, _colon, value) {
+    return new ast.DictionaryEntry(key, value)
   },
-  DictionaryEntries() {},
-  identifier() {},
-  Parameters() {},
-  Arguments() {},
-  break() {},
-  return() {},
-  defaultFunction() {},
-  Call() {},
-});
+  DictionaryEntries(entries) {
+    return new ast.DictionaryEntries(entries)
+  },
+  identifier(_identifierStart, _identifierCharacter) {
+    return this.sourceString;
+    
+  },
+  Parameters() {
+    
+  },
+  Arguments() {
+    
+  },
+  break() {
 
+  },
+  return() {
+    
+  },
+  defaultFunction() {
+    
+  },
+  Call() {
+    
+  },
+});
+ 
 export function syntaxIsOkay(source) {
   const match = grammar.match(source);
   return match.succeeded();

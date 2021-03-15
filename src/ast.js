@@ -94,6 +94,36 @@ export class Dictionary {
   }
 }
 
+export class DictionaryEntry {
+  constructor(key, value) {
+    Object.assign(this, { key, value })
+  }
+}
+
+export class DictionaryEntries {
+  constructor(entries) {
+    this.entries = entries
+  }
+}
+
+export class Parameters {
+  constructor(types, names) {
+    Object.assign(this, {types, names})
+  }
+}
+
+export class Arguments {
+  constructor(names) {
+    this.names = names;
+  }
+}
+
+export class DefaultFunction {
+  constructor(call) {
+    this.call = call; 
+  }
+}
+
 export class Incrementer {
   constructor(operand, op) {
     Object.assign(this, { operand, op });
