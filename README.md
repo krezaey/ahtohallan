@@ -137,6 +137,8 @@ In Ahtohallan classes are declared using the keyword `Snow` followed by the clas
 Snow Name {
   ~* Class Snowflakes go here *~
   Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me"
+
+  Water (Olaf String, Anna Int, Elsa Float) {
     ~* Instance Snowflakes go here *~
     Frozen.String = String ❅
     Frozen.Int = Int ❅
@@ -146,7 +148,6 @@ Snow Name {
   Crystal Samantha Method~Name() {
     ~* This is a method that does nothing!!! *~
   }
-
 }
 ```
 

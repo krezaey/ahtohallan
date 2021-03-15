@@ -107,15 +107,22 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return ast.Expression9_prefixop(left, op);
   },
   identifier(_identifierStart, _identifierCharacter) {
-    return ast.Identifier();
+    return ast.Identifier(this.sourceString);
   },
-  Parameters() {},
-  Argumets() {},
-  GetProperty() {},
+  Parameters(types, identifiers) {
+    return ast.Parameters(types, identifiers)
+  },
+  Arguments(expressions) {
+    return ast.Arguments(expressions)
+  },
+  GetProperty(source, property) {
+    return ast.GetProperty(source, property)
+  },
   ParenthesisExpression(_left, expression, _right) {
     return expression.ast();
   },
-  DictionaryEntry() {},
+  DictionaryEntry() {
+  },
   DictionaryEntries() {},
   identifier() {},
   Parameters() {},
