@@ -122,32 +122,32 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new expression.ast();
   },
   DictionaryEntry(key, _colon, value) {
-    return new ast.DictionaryEntry(key, value)
+    return new ast.DictionaryEntry(key, value);
   },
   DictionaryEntries(entries) {
-    return new ast.DictionaryEntries(entries)
+    return new ast.DictionaryEntries(entries);
   },
   identifier(_identifierStart, _identifierCharacter) {
     return this.sourceString;
     
   },
-  Parameters() {
-    
+  Parameters(types, names) {
+    return new ast.Parameters(types.length ===0? null: types, names.length === 0? null: names);
   },
-  Arguments() {
-    
+  Arguments(names) {
+    return new ast.Arguments(names.length ===0?null:names);
   },
-  break() {
+  // break() {
 
-  },
-  return() {
+  // },
+  // return() {
     
+  // },
+  _terminal() {
+    return this.sourceString;
   },
-  defaultFunction() {
-    
-  },
-  Call() {
-    
+  Call(callee, _left, args, _right) {
+    return new ast.Call(callee, args.length ===0? null:args);
   },
 });
  
