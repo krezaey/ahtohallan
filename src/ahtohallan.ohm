@@ -16,9 +16,9 @@ Ahtohallan {
                   ( elseIf  "(" Expression "❅"")" Body )*
                   ( else Body )?
     WhileLoop = while "(" Expression ")" Body
-    ForLoop = for "("Variable Relation "❅" Incrementer ")" Body
+    ForLoop = for "("Variable Relation "❅" Increment ")" Body
     SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break "❅" )+ (default ":" Statement* break "❅")? "}"
-    Incrementer = Increment | IncrementalAssignment
+    Increment = Incrementer | IncrementalAssignment
     NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
@@ -27,22 +27,21 @@ Ahtohallan {
     DictionaryEntry = (string | identifier | int) ":" Expression
     DictionaryEntries = (DictionaryEntry ",")* DictionaryEntry
     controlFlow = if | elseIf | else | while | switch | case | default | for
-    Expression0= Increment  | Expression1
-    Increment = identifier incop
+    Expression0= Incrementer  | Expression1
+    Incrementer = identifier incop
     Expression1 = IncrementalAssignment | Expression2
     IncrementalAssignment = Expression1 incAssignop Expression2
-    Expression2 = NonemptyListOf<Expression2, logicalop>? Expression3
+    Expression2 = NonemptyListOf<Expression2, logicalop>? Expression3        -- logicalop
     Expression3 = Relation | Expression4
     Relation = Expression3 relop Expression4
-    Expression4 = (Expression4 addop)?  Expression5
-    Expression5 = (Expression5 mulop)? Expression6
-    Expression6 = (Expression6 exp)? Expression7
+    Expression4 = (Expression4 addop)?  Expression5                          -- addop
+    Expression5 = (Expression5 mulop)? Expression6                           -- mulop
+    Expression6 = (Expression6 exp)? Expression7                             -- exp
     Expression7 = NewInstance | ObjectTypeValue | Expression8
-    Expression8 = negop? Expression9
-    Expression9 = prefixop? typeValue
-    Expression10 = GetProperty | Expression11
-    GetProperty = ((Call | identifier | this) ".")+ (identifier | Call) 
-    Expression11 = typeValue
+    Expression8 = negop? Expression9                                         -- negop
+    Expression9 = prefixop? typeValue                                        -- prefixop
+    Expression10 = GetProperty | typeValue | ObjectTypeValue
+    GetProperty = ((Call | identifier | this) ".")+ (identifier | Call)                          
     PlainExpression = Expression0
     ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*

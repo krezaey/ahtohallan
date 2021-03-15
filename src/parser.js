@@ -12,72 +12,118 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Variable(mutability, type, name, init.ast());
   },
   Function(_functionWord, returnType, name, _left, parameters, _right, body) {
-    return new ast.Function(returnType, name, parameters, body)
+    return new ast.Function(returnType, name, parameters, body);
   },
   Body(_left, statements, _right) {
-    return statements.ast()
+    return statements.ast();
   },
   Class(_classWord, name, _left, body, _right) {
-    return new ast.Class(name, body)
+    return new ast.Class(name, body);
   },
   Constructor(_constructorWord, name, _left, parameters, _right, body) {
-    return new ast.Constructor(name, body)
+    return new ast.Constructor(name, body);
   },
   Method(_methodWord, returnType, name, _left, parameters, _right, body) {
-    return new ast.Method(returnType, name, parameters, body)
+    return new ast.Method(returnType, name, parameters, body);
   },
   Field(field) {
-    return new ast.Field(field)
+    return new ast.Field(field);
   },
   // Inspiration found in https://github.com/breelynbetts/HYPER for if statement
   IfStatement(
-    _if, condition, ifBody, _elif, additionalConditions, elifBodies, _else, elseBlock) {
+    _if,
+    condition,
+    ifBody,
+    _elif,
+    additionalConditions,
+    elifBodies,
+    _else,
+    elseBlock
+  ) {
     const conditions = [condition.ast(), ...additionalConditions.ast()];
-    const  bodies = [ifBody.ast(), ...elifBodies.ast()];
-    const end = arrayToNullable(elseBlock.ast());
+    const bodies = [ifBody.ast(), ...elifBodies.ast()];
+    const end = elseBlock.length === 0 ? null : elseBlock.ast();
     return new IfStatement(conditions, consequents.flat(), end);
   },
   WhileLoop(_while, _left, expression, _right, body) {
-    return new ast.WhileLoop(expression, body)
+    return new ast.WhileLoop(expression, body);
   },
   ForLoop(_for, _left, start, limit, increment, _right, body) {
-    return new ast.ForLoop(start, limit, increment, body)
+    return new ast.ForLoop(start, limit, increment, body);
   },
-  // Ask Toal for help!!!!
-  SwitchStatement(_switch, _left, expression, _right, _left, ) {
+  SwitchStatement(
+    _switch,
+    _left,
+    expression,
+    _right,
+    _left,
+    _case,
+    cases,
+    _colon,
+    caseBodies,
+    _default,
+    _colon,
+    defaultBody,
+    _right
+  ) {
+    const Default = defaultBody.length === 0 ? null : defaultBody;
+    return new ast.SwitchStatement(expression, cases, caseBodies, Default);
+  },
 
-  },
   NewInstance(_new, name, _left, args, _right) {
-    return new ast.NewInstance(name, args)
+    return new ast.NewInstance(name, args);
   },
   Array(_left, type, _right) {
-    return new ast.Array(type)
+    return new ast.Array(type);
   },
   Dictionary(_left, _left, keyType, valueType, _right, _right) {
     return new ast.Dictionary(keyType, valueType);
   },
-  IncrementalOperator(operand, op) {
-    return new ast.IncrementalOperator(operand, op)
+  Incrementer(operand, op) {
+    return new ast.Increment(operand, op);
   },
   IncrementalAssignment(variable, operand, op) {
-    return new ast.IncrementalAssignment(variable, operand, op)
+    return new ast.IncrementalAssignment(variable, operand, op);
   },
-  Relation(left, op, right) { 
-    return new ast.Relation(left, op, right)
+  Relation(left, op, right) {
+    return new ast.Relation(left, op, right);
   },
-  GetProperty(source, _dot, property) {
-    return new ast.GetProperty(source, property)
+  Expression2_logicalop(left, op, right) {
+    return new ast.Expression2_logicalop(left, op, right);
   },
-  ParenthesisExpression(_left, expression, _right) { 
+  Expression4_addop(left, op, right) {
+    return new ast.Expression4_addop(left, op, right);
+  },
+  Expression5_mulop(left, op, right) {
+    return new ast.Expression5_mulop(left, op, right);
+  },
+  Expression6_exp(left, op, right) {
+    return new ast.Expression6_exp(left, op, right);
+  },
+  Expression8_negop(left, op) {
+    return new ast.Expression8_negop(left, op);
+  },
+  Expression9_prefixop(left, op) {
+    return ast.Expression9_prefixop(left, op);
+  },
+  identifier(_identifierStart, _identifierCharacter) {
+    return ast.Identifier();
+  },
+  Parameters() {},
+  Argumets() {},
+  GetProperty() {},
+  ParenthesisExpression(_left, expression, _right) {
     return expression.ast();
   },
-  identifier() { },
-  Parameters() { },
-  Arguments() { },
-  break() { },
-  return() { },
-  defaultFunction() { },
-  Call() { }
+  DictionaryEntry() {},
+  DictionaryEntries() {},
+  identifier() {},
+  Parameters() {},
+  Arguments() {},
+  break() {},
+  return() {},
+  defaultFunction() {},
+  Call() {},
 });
 
 export function syntaxIsOkay(source) {
