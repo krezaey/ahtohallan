@@ -43,7 +43,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     const conditions = [condition.ast(), ...additionalConditions.ast()];
     const bodies = [ifBody.ast(), ...elifBodies.ast()];
     const end = elseBlock.length === 0 ? null : elseBlock.ast();
-    return new IfStatement(conditions, consequents.flat(), end);
+    return new IfStatement(conditions, bodies.flat(), end);
   },
   WhileLoop(_while, _left, expression, _right, body) {
     return new ast.WhileLoop(expression, body);
@@ -69,86 +69,75 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     const Default = defaultBody.length === 0 ? null : defaultBody;
     return new ast.SwitchStatement(expression, cases, caseBodies, Default);
   },
-
   NewInstance(_new, name, _left, args, _right) {
     return new ast.NewInstance(name, args);
   },
-  Array(_left, type, _right) {
-    return new ast.Array(type);
-  },
-  Dictionary(_left, _left, keyType, valueType, _right, _right) {
-    return new ast.Dictionary(keyType, valueType);
-  },
-  Incrementer(operand, op) {
-    return new ast.Increment(operand, op);
-  },
-  IncrementalAssignment(variable, operand, op) {
-    return new ast.IncrementalAssignment(variable, operand, op);
-  },
-  Relation(left, op, right) {
-    return new ast.Relation(left, op, right);
-  },
-  Expression2_logicalop(left, op, right) {
-    return new ast.Expression2_logicalop(left, op, right);
-  },
-  Expression4_addop(left, op, right) {
-    return new ast.Expression4_addop(left, op, right);
-  },
-  Expression5_mulop(left, op, right) {
-    return new ast.Expression5_mulop(left, op, right);
-  },
-  Expression6_exp(left, op, right) {
-    return new ast.Expression6_exp(left, op, right);
-  },
-  Expression8_negop(left, op) {
-    return new ast.Expression8_negop(left, op);
-  },
-  Expression9_prefixop(left, op) {
-    return new ast.Expression9_prefixop(left, op);
-  },
-  identifier(_identifierStart, _identifierCharacter) {
-    return new ast.Identifier(this.sourceString);
-  },
-  Parameters(types, identifiers) {
-    return new ast.Parameters(types, identifiers);
-  },
-  Arguments(expressions) {
-    return new ast.Arguments(expressions);
-  },
-  GetProperty(source, property) {
-    return new ast.GetProperty(source, property);
-  },
-  ParenthesisExpression(_left, expression, _right) {
-    return new expression.ast();
-  },
-  DictionaryEntry(key, _colon, value) {
-    return new ast.DictionaryEntry(key, value);
-  },
-  DictionaryEntries(entries) {
-    return new ast.DictionaryEntries(entries);
-  },
-  identifier(_identifierStart, _identifierCharacter) {
-    return this.sourceString;
-    
-  },
-  Parameters(types, names) {
-    return new ast.Parameters(types.length ===0? null: types, names.length === 0? null: names);
-  },
-  Arguments(names) {
-    return new ast.Arguments(names.length ===0?null:names);
-  },
-  // break() {
+  // Array(_left, type, _right) {
+  //   return new ast.Array(type);
+  // },
+  // Dictionary(_left, _left, keyType, valueType, _right, _right) {
+  //   return new ast.Dictionary(keyType, valueType);
+  // },
+  // Incrementer(operand, op) {
+  //   return new ast.Increment(operand, op);
+  // },
+  // IncrementalAssignment(variable, operand, op) {
+  //   return new ast.IncrementalAssignment(variable, operand, op);
+  // },
+  // Relation(left, op, right) {
+  //   return new ast.Relation(left, op, right);
+  // },
+  // Expression2_logicalop(left, op, right) {
+  //   return new ast.Expression2_logicalop(left, op, right);
+  // },
+  // Expression4_addop(left, op, right) {
+  //   return new ast.Expression4_addop(left, op, right);
+  // },
+  // Expression5_mulop(left, op, right) {
+  //   return new ast.Expression5_mulop(left, op, right);
+  // },
+  // Expression6_exp(left, op, right) {
+  //   return new ast.Expression6_exp(left, op, right);
+  // },
+  // Expression8_negop(left, op) {
+  //   return new ast.Expression8_negop(left, op);
+  // },
+  // Expression9_prefixop(left, op) {
+  //   return new ast.Expression9_prefixop(left, op);
+  // },
+  // identifier(_identifierStart, _identifierCharacter) {
+  //   return new ast.Identifier(this.sourceString);
+  // },
+  // GetProperty(source, property) {
+  //   return new ast.GetProperty(source, property);
+  // },
+  // ParenthesisExpression(_left, expression, _right) {
+  //   return new expression.ast();
+  // },
+  // DictionaryEntry(key, _colon, value) {
+  //   return new ast.DictionaryEntry(key, value);
+  // },
+  // DictionaryEntries(entries) {
+  //   return new ast.DictionaryEntries(entries);
+  // },
+  // Parameters(types, names) {
+  //   return new ast.Parameters(types.length ===0? null: types, names.length === 0? null: names);
+  // },
+  // Arguments(names) {
+  //   return new ast.Arguments(names.length ===0?null:names);
+  // },
+  // // break() {
 
-  // },
-  // return() {
+  // // },
+  // // return() {
     
+  // // },
+  // _terminal() {
+  //   return this.sourceString;
   // },
-  _terminal() {
-    return this.sourceString;
-  },
-  Call(callee, _left, args, _right) {
-    return new ast.Call(callee, args.length ===0? null:args);
-  },
+  // Call(callee, _left, args, _right) {
+  //   return new ast.Call(callee, args.length ===0? null:args);
+  // },
 });
  
 export function syntaxIsOkay(source) {
