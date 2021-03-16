@@ -51,24 +51,24 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   ForLoop(_for, _left, start, limit, increment, _right, body) {
     return new ast.ForLoop(start, limit, increment, body);
   },
-  // SwitchStatement(
-  //   _switch,
-  //   _left,
-  //   expression,
-  //   _right,
-  //   _left,
-  //   _case,
-  //   cases,
-  //   _colon,
-  //   caseBodies,
-  //   _default,
-  //   _colon,
-  //   defaultBody,
-  //   _right
-  // ) {
-  //   const Default = defaultBody.length === 0 ? null : defaultBody;
-  //   return new ast.SwitchStatement(expression, cases, caseBodies, Default);
-  // },
+  SwitchStatement(
+    _switch,
+    _left1,
+    expression,
+    _right1,
+    _left,
+    _case,
+    cases,
+    _colon1,
+    caseBodies,
+    _default,
+    _colon2,
+    defaultBody,
+    _right2
+  ) {
+    const Default = defaultBody.length === 0 ? null : defaultBody;
+    return new ast.SwitchStatement(expression, cases, caseBodies, Default);
+  },
   NewInstance(_new, name, _left, args, _right) {
     return new ast.NewInstance(name, args);
   },
