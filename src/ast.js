@@ -35,8 +35,8 @@ export class Class {
 }
 
 export class Constructor {
-	constructor(parameters, body) {
-		Object.assign(this, { parameters, body });
+	constructor(name, parameters, body) {
+		Object.assign(this, { name, parameters, body });
 	}
 }
 
