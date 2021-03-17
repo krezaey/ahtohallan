@@ -109,11 +109,11 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Expression6_exp(left, op, right) {
     return new ast.Expression6_exp(left, op, right);
   },
-  Expression8_negop(left, op) {
-    return new ast.Expression8_negop(left, op);
+  Expression8_negop(op, right) {
+    return new ast.Expression8_negop(op, right);
   },
-  Expression9_prefixop(left, op) {
-    return new ast.Expression9_prefixop(left, op);
+  Expression9_prefixop(op, right) {
+    return new ast.Expression9_prefixop(op, right);
   },
   identifier(_identifierStart, _identifierCharacter) {
     return new ast.Identifier(this.sourceString);

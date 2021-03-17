@@ -2,7 +2,7 @@ import assert from "assert";
 import parse, { syntaxIsOkay } from "../src/parser.js"
 
 const goodPrograms = [
-  "Unmeltable Anna x = 2 + 3 ❅",
+  "Unmeltable Anna x = -2 + 3 ❅",
   "Meltable Love bool = Hans ❅",
   "~* This is a comment *~",
   "Let~It~Go (Meltable Anna i = 0 ❅ i < 10 ❅ i++) {}",
@@ -12,9 +12,13 @@ const goodPrograms = [
   "Meltable Elsa n = Samantha ❅",
   "Unmeltable Love x = !Hans ❅",
   'Meltable Herd[] Mixed~Casing = [2, "Sven", 1.7, Kristoff] ❅',
-  "All~Is~Found(expression ❅) { Show~Yourself(cHans): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(Kristoff): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅ }",
+  "All~Is~Found(expression ❅) { Show~Yourself(Hans): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(Kristoff): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅ }",
   "~* This is   a comment  *~",
   "~* This * is also * a comment *~",
+  "Meltable Anna abc = -10 ❅",
+  "Meltable Love bool = !Hans ❅",
+  'Ice Olaf Even~Odd(Anna num) { Arendell("This num is being tested") ❅ }',
+  "Even~Odd(5) ❅",
 ];
 
 const badPrograms = [
@@ -35,6 +39,7 @@ const badPrograms = [
   "Unmeltable Anna x += 2 ❅",
   "Meltable Love bool -= Kristoff ❅",
   "Meltable Anna = “I love chocolate” ❅",
+  "Even~Odd(Anna 5) ❅"
 ];
 
 describe("The Syntax Checker", () => {

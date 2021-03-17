@@ -173,14 +173,14 @@ export class Expression6_exp {
 }
 
 export class Expression8_negop {
-	constructor(left, op) {
-		Object.assign(this, { left, op });
+	constructor(op, right) {
+		Object.assign(this, { op, right });
 	}
 }
 
 export class Expression9_prefixop {
-	constructor(left, op) {
-		Object.assign(this, { left, op });
+	constructor(op, right) {
+		Object.assign(this, { op, right });
 	}
 }
 
