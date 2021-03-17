@@ -2,7 +2,7 @@
 Ahtohallan
 <h1>
 <p align="center">
-   <img align="center" src="ahtohallan_logo.png" alt="logo" width="500" />
+   <img align="center" src="docs/ahtohallan_logo.png" alt="logo" width="500" />
 <p>
 
 ## Introduction
