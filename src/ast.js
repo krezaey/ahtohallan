@@ -35,8 +35,8 @@ export class Class {
 }
 
 export class Constructor {
-	constructor(name, parameters, body) {
-		Object.assign(this, { name, parameters, body });
+	constructor(parameters, body) {
+		Object.assign(this, { parameters, body });
 	}
 }
 
@@ -82,116 +82,122 @@ export class NewInstance {
 	}
 }
 
-// export class Array {
-// 	constructor(value) {
-// 		this.value = value;
-// 	}
-// }
+export class Array {
+	constructor(value) {
+		this.value = value;
+	}
+}
 
-// export class Dictionary {
-// 	constructor(name, key, value) {
-// 		Object.assign(this, { name, key, value });
-// 	}
-// }
+export class Dictionary {
+	constructor(entries) {
+		this.entries = entries;
+	}
+}
 
-// export class DictionaryEntry {
-// 	constructor(key, value) {
-// 		Object.assign(this, { key, value });
-// 	}
-// }
+export class DictionaryEntry {
+	constructor(key, value) {
+		Object.assign(this, { key, value });
+	}
+}
 
-// export class DictionaryEntries {
-// 	constructor(entries) {
-// 		this.entries = entries;
-// 	}
-// }
+export class DictionaryEntries {
+	constructor(entries) {
+		this.entries = entries;
+	}
+}
 
-// export class Parameters {
-// 	constructor(types, names) {
-// 		Object.assign(this, { types, names });
-// 	}
-// }
+export class Parameter {
+	constructor(type, name) {
+		Object.assign(this, { type, name });
+	}
+}
 
-// export class Arguments {
-// 	constructor(names) {
-// 		this.names = names;
-// 	}
-// }
+export class Parameters {
+	constructor(parameter) {
+		this.parameter = parameter;
+	}
+}
 
-// export class DefaultFunction {
-// 	constructor(call) {
-// 		this.call = call;
-// 	}
-// }
+export class Arguments {
+	constructor(names) {
+		this.names = names;
+	}
+}
 
-// export class Incrementer {
-// 	constructor(operand, op) {
-// 		Object.assign(this, { operand, op });
-// 	}
-// }
+export class DefaultFunction {
+	constructor(call) {
+		this.call = call;
+	}
+}
 
-// export class IncrementalAssignment {
-// 	constructor(variable, operand, op) {
-// 		Object.assign(this, { variable, operand, op });
-// 	}
-// }
+export class Incrementer {
+	constructor(operand, op) {
+		Object.assign(this, { operand, op });
+	}
+}
 
-// export class Relation {
-// 	constructor(left, op, right) {
-// 		Object.assign(this, { left, op, right });
-// 	}
-// }
+export class IncrementalAssignment {
+	constructor(variable, operand, op) {
+		Object.assign(this, { variable, operand, op });
+	}
+}
 
-// export class Expression2_logicalop {
-// 	constructor(left, op, right) {
-// 		Object.assign(this, { left, op, right });
-// 	}
-// }
+export class Relation {
+	constructor(left, op, right) {
+		Object.assign(this, { left, op, right });
+	}
+}
 
-// export class Expression4_addop {
-// 	constructor(left, op, right) {
-// 		Object.assign(this, { left, op, right });
-// 	}
-// }
+export class Expression2_logicalop {
+	constructor(left, op, right) {
+		Object.assign(this, { left, op, right });
+	}
+}
 
-// export class Expression5_mulop {
-// 	constructor(left, op, right) {
-// 		Object.assign(this, { left, op, right });
-// 	}
-// }
+export class Expression4_addop {
+	constructor(left, op, right) {
+		Object.assign(this, { left, op, right });
+	}
+}
 
-// export class Expression6_exp {
-// 	constructor(left, op, right) {
-// 		Object.assign(this, { left, op, right });
-// 	}
-// }
+export class Expression5_mulop {
+	constructor(left, op, right) {
+		Object.assign(this, { left, op, right });
+	}
+}
 
-// export class Expression8_negop {
-// 	constructor(left, op) {
-// 		Object.assign(this, { left, op });
-// 	}
-// }
+export class Expression6_exp {
+	constructor(left, op, right) {
+		Object.assign(this, { left, op, right });
+	}
+}
 
-// export class Expression9_prefixop {
-// 	constructor(left, op) {
-// 		Object.assign(this, { left, op });
-// 	}
-// }
+export class Expression8_negop {
+	constructor(left, op) {
+		Object.assign(this, { left, op });
+	}
+}
 
-// export class Identifier {
-// 	constructor(name) {
-// 		this.name = name;
-// 	}
-// }
+export class Expression9_prefixop {
+	constructor(left, op) {
+		Object.assign(this, { left, op });
+	}
+}
 
-// export class GetProperty {
-// 	constructor(source, property) {
-// 		Object.assign(this, { source, property });
-// 	}
-// }
+export class Identifier {
+	constructor(name) {
+		this.name = name;
+	}
+}
 
-// export class Call {
-// 	constructor(name, args) {
-// 		Object.assign(this, { name, args });
-// 	}
-// }
+export class GetProperty {
+	constructor(source, property) {
+		Object.assign(this, { source, property });
+	}
+}
+
+export class Call {
+	constructor(name, args) {
+		Object.assign(this, { name, args });
+	}
+}

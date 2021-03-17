@@ -6,7 +6,7 @@ const grammar = ohm.grammar(fs.readFileSync("src/ahtohallan.ohm"));
 
 const astBuilder = grammar.createSemantics().addOperation("tree", {
   Program(statements) {
-    return new ast.Program(statements.ast());
+    return new ast.Program(statements);
   },
   Variable(mutability, type, name, _eq, init) {
     return new ast.Variable(mutability, type, name, init.ast());
@@ -20,8 +20,8 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Class(_classWord, name, _left, body, _right) {
     return new ast.Class(name, body);
   },
-  Constructor(_constructorWord, name, _left, parameters, _right, body) {
-    return new ast.Constructor(name, parameters, body);
+  Constructor(_constructorWord, _left, parameters, _right, body) {
+    return new ast.Constructor(parameters, body);
   },
   Method(_methodWord, returnType, name, _left, parameters, _right, body) {
     return new ast.Method(returnType, name, parameters, body);
@@ -32,23 +32,27 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   // Inspiration found in https://github.com/breelynbetts/HYPER for if statement
   IfStatement(
     _if,
+    _left1, 
     condition,
+    _right1,
     ifBody,
     _elif,
+    _left2,
     additionalConditions,
+    _right2,
     elifBodies,
     _else,
-    elseBlock
+    elseBody
   ) {
     const conditions = [condition.ast(), ...additionalConditions.ast()];
     const bodies = [ifBody.ast(), ...elifBodies.ast()];
-    const end = elseBlock.length === 0 ? null : elseBlock.ast();
+    const end = elseBody.length === 0 ? null : elseBody.ast();
     return new IfStatement(conditions, bodies.flat(), end);
   },
   WhileLoop(_while, _left, expression, _right, body) {
     return new ast.WhileLoop(expression, body);
   },
-  ForLoop(_for, _left, start, limit, increment, _right, body) {
+  ForLoop(_for, _left, start, limit, _terminal, increment, _right, body) {
     return new ast.ForLoop(start, limit, increment, body);
   },
   SwitchStatement(
@@ -56,14 +60,20 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     _left1,
     expression,
     _right1,
-    _left,
+    _left2,
     _case,
+    _left3,
     cases,
+    _right3,
     _colon1,
     caseBodies,
+    _break1,
+    _terminal1,
     _default,
     _colon2,
     defaultBody,
+    _break2,
+    _terminal2,
     _right2
   ) {
     const Default = defaultBody.length === 0 ? null : defaultBody;
@@ -75,8 +85,8 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Array(_left, type, _right) {
     return new ast.Array(type);
   },
-  Dictionary(_left, keyType, valueType, _right) {
-    return new ast.Dictionary(keyType, valueType);
+  Dictionary(_openDict, entries, _closeDict) {
+    return new ast.Dictionary(entries);
   },
   Incrementer(operand, op) {
     return new ast.Increment(operand, op);
@@ -108,7 +118,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   identifier(_identifierStart, _identifierCharacter) {
     return new ast.Identifier(this.sourceString);
   },
-  GetProperty(source, property) {
+  GetProperty(source, _dot, property) {
     return new ast.GetProperty(source, property);
   },
   ParenthesisExpression(_left, expression, _right) {
@@ -120,23 +130,20 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   DictionaryEntries(entries) {
     return new ast.DictionaryEntries(entries);
   },
-  Parameters(types, names) {
-    return new ast.Parameters(types.length ===0? null: types, names.length === 0? null: names);
+  Parameter(types, names) {
+    return new ast.Parameter(types.length === 0? null: types, names.length === 0? null: names);
+  },
+  Parameters(parameters) {
+    return new ast.Parameters(parameters.length === 0? null: parameters);
   },
   Arguments(names) {
-    return new ast.Arguments(names.length ===0?null:names);
+    return new ast.Arguments(names.length === 0 ? null:names);
   },
-  // break() {
-
-  // },
-  // return() {
-    
-  // },
   _terminal() {
     return this.sourceString;
   },
-  Call(callee, _left, args, _right) {
-    return new ast.Call(callee, args.length ===0? null:args);
+  Call(callee, _left, args, _right, _terminal) {
+    return new ast.Call(callee, args.length === 0 ? null:args);
   },
 });
  

@@ -1,6 +1,5 @@
 import assert from "assert";
-//import parse, { syntaxIsOkay } from "../src/parser.js"
-import { syntaxIsOkay } from "../src/parser.js";
+import parse, { syntaxIsOkay } from "../src/parser.js"
 
 const goodPrograms = [
   "Unmeltable Anna x = 2 + 3 ❅",

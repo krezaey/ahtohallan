@@ -5,7 +5,7 @@ Ahtohallan {
               | Call
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression
-    Expression = (ParenthesisExpression | PlainExpression) "❅"
+    Expression = (ParenthesisExpression | PlainExpression) terminal
     Function =  functionWord type identifier "(" Parameters? ")" Body
     Body = "{" Statement* "}"
     Class = classWord identifier "{" (Constructor | Method | Field )* "}"
@@ -13,25 +13,25 @@ Ahtohallan {
     Method = methodWord type identifier "(" Parameters? ")" Body
     Field = Variable
     IfStatement = if "(" Expression ")" Body
-                  ( elseIf  "(" Expression "❅"")" Body )*
+                  ( elseIf  "(" Expression ")" Body )*
                   ( else Body )?
     WhileLoop = while "(" Expression ")" Body
-    ForLoop = for "("Variable Relation "❅" Increment ")" Body
-    SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break "❅" )+ (default ":" Statement* break "❅")? "}"
+    ForLoop = for "("Variable Relation terminal Increment ")" Body
+    SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break terminal )+ (default ":" Statement* break terminal)? "}"
     Increment = Incrementer | IncrementalAssignment
     NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ",">? "]"
-    Dictionary = "[[" DictionaryEntries? "]]"
+    Dictionary = openDict DictionaryEntries? closeDict
     DictionaryEntry = (string | identifier | int) ":" Expression
-    DictionaryEntries = (DictionaryEntry ",")* DictionaryEntry
+    DictionaryEntries = ListOf<DictionaryEntry, ",">?
     controlFlow = if | elseIf | else | while | switch | case | default | for
     Expression0= Incrementer  | Expression1
     Incrementer = identifier incop
     Expression1 = IncrementalAssignment | Expression2
     IncrementalAssignment = Expression1 incAssignop Expression2
-    Expression2 = NonemptyListOf<Expression2, logicalop>? Expression3        -- logicalop
+    Expression2 = ((Expression2 logicalop)+)? Expression3                    -- logicalop
     Expression3 = Relation | Expression4
     Relation = Expression3 relop Expression4
     Expression4 = (Expression4 addop)?  Expression5                          -- addop
@@ -45,7 +45,8 @@ Ahtohallan {
     PlainExpression = Expression0
     ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
-    Parameters = ListOf< type, identifier >
+    Parameters = ListOf<Parameter, ",">?
+    Parameter = type identifier
     Arguments = ListOf<Expression0, ",">
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
     type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd[]" | "Trolls[[]]" | "Samantha")
@@ -73,6 +74,7 @@ Ahtohallan {
     identifierStart = letter | "_" | "@" |"~"
     identifierCharacter = alnum | "~"
     int = digit+
+    terminal = "❅"
     float = int* "." int+
     char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
     string = "\"" (char | "\'")* "\""
@@ -89,5 +91,7 @@ Ahtohallan {
     escape = "\\\\" | "\\\"" | "\\'" | "\\n" | "\\t"
     space := " " | "\t" | comment
     defaultFunction = print
-    Call = (defaultFunction | identifier) "(" Arguments ")" "❅"
+    openDict = "[["
+    closeDict = "]]"
+    Call = (defaultFunction | identifier) "(" Arguments ")" terminal
 }
