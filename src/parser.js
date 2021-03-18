@@ -11,11 +11,14 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Variable(mutability, type, name, _eq, init) {
     return new ast.Variable(mutability.sourceString, type.tree(), name.sourceString, init.tree());
   },
-  Expression(e, _snowflake) {
+  Expression(e, _terminal) {
     return e.tree()
   },
   ReturnStatement(_return, output) {
     return new ast.ReturnStatement(output.tree());
+  },
+  PlainAssignment(name, _equals, expression) {
+    return new ast.PlainAssignment(name.tree(), expression.tree())
   },
   Function(_functionWord, returnType, name, _left, parameters, _right, body) {
     return new ast.Function(returnType.tree(), name.sourceString, parameters.tree(), body.tree());
@@ -52,7 +55,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   ) {
     const conditions = [condition.tree(), ...additionalConditions.tree()];
     const bodies = [ifBody.tree(), ...elifBodies.tree()];
-    const end = elseBody.length === 0 ? null : elseBody.tree();
+    const end = elseBody.tree();
     return new ast.IfStatement(conditions, bodies.flat(), end);
   },
   WhileLoop(_while, _left, expression, _right, body) {
@@ -82,8 +85,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     _terminal2,
     _right2
   ) {
-    const Default = defaultBody.length === 0 ? null : defaultBody;
-    return new ast.SwitchStatement(expression, cases, caseBodies, Default);
+    return new ast.SwitchStatement(expression.tree(), cases.tree(), caseBodies.tree(), defaultBody.tree());
   },
   NewInstance(_new, name, _left, args, _right) {
     return new ast.NewInstance(name.sourceString, args.tree());
@@ -94,11 +96,11 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Dictionary(_openDict, entries, _closeDict) {
     return new ast.Dictionary(entries.tree());
   },
-  Incrementer(operand, op) {
+  Incrementer(operand, op , _terminal) {
     return new ast.Incrementer(operand.tree(), op.sourceString);
   },
-  IncrementalAssignment(variable, operand, op) {
-    return new ast.IncrementalAssignment(variable, operand.tree(), op.sourceString);
+  IncrementalAssignment(variable, op, operand) {
+    return new ast.IncrementalAssignment(variable.tree(), op.sourceString, operand.tree());
   },
   Relation(left, op, right) {
     return new ast.Relation(left.tree(), op, right.tree());
@@ -125,10 +127,10 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Identifier(this.sourceString);
   },
   GetProperty(source, _dot, property) {
-    return new ast.GetProperty(source, property);
+    return new ast.GetProperty(source.tree(), property.tree());
   },
   ParenthesisExpression(_left, expression, _right) {
-    return new expression.tree();
+    return new ast.Expression(expression.tree());
   },
   DictionaryEntry(key, _colon, value) {
     return new ast.DictionaryEntry(key.tree(), value.tree());
@@ -136,26 +138,26 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   DictionaryEntries(entries) {
     return new ast.DictionaryEntries(entries.asIteration().tree());
   },
-  Parameter(types, names) {
-    return new ast.Parameter(types.length === 0 ? null : types, names.length === 0 ? null : names);
+  Parameter(type, name) {
+    return new ast.Parameter(type.tree(), name.sourceString);
   },
   Parameters(parameters) {
-    return new ast.Parameters(parameters.length === 0 ? null : parameters);
+    return new ast.Parameters(parameters.asIteration().tree());
   },
   Arguments(names) {
-    return new ast.Arguments(names.length === 0 ? null : names);
+    return new ast.Arguments(names.asIteration().tree());
   },
   string(_left, contents, _right) {
-    return contents.sourceString
+    return contents.sourceString;
   },
   float(_whole, _dot, _fractional) {
-    return this.sourceString
+    return this.sourceString;
   },
   _terminal() {
     return this.sourceString;
   },
   Call(callee, _left, args, _right, _terminal) {
-    return new ast.Call(callee.tree(), args.length === 0 ? null : args.tree());
+    return new ast.Call(callee.tree(), args.asIteration().tree());
   },
 });
 

@@ -136,7 +136,7 @@ In Ahtohallan classes are declared using the keyword `Snow` followed by the clas
 ```
 Snow Name {
   ~* Class Snowflakes go here *~
-  Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me"
+  Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅
 
   Water (Olaf String, Anna Int, Elsa Float) {
     ~* Instance Snowflakes go here *~

@@ -28,12 +28,6 @@ export class Function {
 	}
 }
 
-export class Body {
-	constructor(statements) {
-		this.statements = statements;
-	}
-}
-
 export class Class {
 	constructor(name, body) {
 		Object.assign(this, { name, body });
@@ -130,21 +124,21 @@ export class Arguments {
 	}
 }
 
-export class DefaultFunction {
-	constructor(call) {
-		this.call = call;
-	}
-}
-
 export class Incrementer {
 	constructor(operand, op) {
 		Object.assign(this, { operand, op });
 	}
 }
 
+export class PlainAssignment {
+	constructor(variable, expression) {
+		Object.assign(this, { variable, expression });
+	}
+}
+
 export class IncrementalAssignment {
-	constructor(variable, operand, op) {
-		Object.assign(this, { variable, operand, op });
+	constructor(variable, op, operand) {
+		Object.assign(this, { variable, op, operand });
 	}
 }
 

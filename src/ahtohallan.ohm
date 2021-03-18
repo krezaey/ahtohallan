@@ -2,16 +2,21 @@ Ahtohallan {
     Program = Statement*
     Statement = Declaration
               | IfStatement | WhileLoop | ForLoop | SwitchStatement
-              | Call | ReturnStatement
+              | Call | ReturnStatement | Assignment
     ReturnStatement = return Expression?
+    Assignment = Increment| PlainAssignment
+    PlainAssignment = (identifier| GetProperty) "=" Expression
+    Increment = Incrementer | IncrementalAssignment
+    IncrementalAssignment = (identifier | GetProperty) incAssignop Expression
+    Incrementer = (identifier | GetProperty) incop terminal
     Declaration = Function | Class | Variable
-    Variable = mutability type identifier "=" Expression
+    Variable = mutability type identifier ("=" Expression | "" terminal )
     Expression = (ParenthesisExpression | PlainExpression) terminal
-    Function =  functionWord type identifier "(" Parameters? ")" Body
+    Function =  functionWord type identifier "(" (Parameter | Parameters) ")" Body
     Body = "{" Statement* "}"
     Class = classWord identifier "{" (Constructor | Method | Field )* "}"
-    Constructor = constructorWord "(" Parameters? ")" Body
-    Method = methodWord type identifier "(" Parameters? ")" Body
+    Constructor = constructorWord "(" (Parameter | Parameters) ")" Body
+    Method = methodWord type identifier "(" (Parameter | Parameters) ")" Body
     Field = Variable
     IfStatement = if "(" Expression ")" Body
                   ( elseIf  "(" Expression ")" Body )*
@@ -19,7 +24,6 @@ Ahtohallan {
     WhileLoop = while "(" Expression ")" Body
     ForLoop = for "("Variable Relation terminal Increment ")" Body
     SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break terminal )+ (default ":" Statement* break terminal)? "}"
-    Increment = Incrementer | IncrementalAssignment
     NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
@@ -28,10 +32,6 @@ Ahtohallan {
     DictionaryEntry = (string | identifier | int) ":" Expression
     DictionaryEntries = ListOf<DictionaryEntry, ",">
     controlFlow = if | elseIf | else | while | switch | case | default | for
-    Expression0= Incrementer  | Expression1
-    Incrementer = identifier incop
-    Expression1 = IncrementalAssignment | Expression2
-    IncrementalAssignment = Expression1 incAssignop Expression2
     Expression2 = ((Expression2 logicalop)+)? Expression3                    -- logicalop
     Expression3 = Relation | Expression4
     Relation = Expression3 relop Expression4
@@ -43,12 +43,12 @@ Ahtohallan {
     Expression9 = prefixop? typeValue                                        -- prefixop
     Expression10 = GetProperty | typeValue | ObjectTypeValue
     GetProperty = ((Call | identifier | this) ".")+ (identifier | Call)
-    PlainExpression = Expression0
+    PlainExpression = Expression2
     ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
     Parameters = ListOf<Parameter, ",">
     Parameter = type identifier
-    Arguments = ListOf<Expression0, ",">
+    Arguments = ListOf<Expression2, ",">
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
     type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd[]" | "Trolls[[]]" | "Samantha")
     boolean = ("Kristoff" | "Hans") ~remainingCharacter

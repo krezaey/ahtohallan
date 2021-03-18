@@ -5,21 +5,29 @@ const goodPrograms = [
   "Unmeltable Anna x = -2 + 3 ❅",
   "Meltable Love bool = Hans ❅",
   "~* This is a comment *~",
-  "Let~It~Go (Meltable Anna i = 0 ❅ i < 10 ❅ i++) {}",
-  'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ }',
+  "Let~It~Go (Meltable Anna i = 1 ❅ i < 10 ❅ i+=1 ❅) {}",
+  'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ } ',
   "Lost~In~The~Woods (x == Kristoff ❅) {}",
   'Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅',
   "Meltable Elsa n = Samantha ❅",
   "Unmeltable Love x = !Hans ❅",
   'Meltable Herd[] Mixed~Casing = [2, "Sven", 1.7, Kristoff] ❅',
-  "All~Is~Found(expression ❅) { Show~Yourself(Hans): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(Kristoff): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅ }",
+  "All~Is~Found(expression ❅) { Show~Yourself(Hans): ~* Code block for case 1 here *~ Closed~Door ❅ Show~Yourself(Kristoff): ~* Code block for case 2 here *~ Closed~Door ❅ I~Seek~The~Truth:  ~* Code block for the default here *~  Closed~Door ❅}",
   "~* This is   a comment  *~",
   "~* This * is also * a comment *~",
   "Meltable Anna abc = -10 ❅",
   "Meltable Love bool = !Hans ❅",
   'Ice Olaf Even~Odd(Anna num) { Arendelle "This num is being tested" ❅ }',
   "Even~Odd(5) ❅",
-  `Snow Kristyl { Water () {Arendelle 3 ❅} Crystal Samantha Ski() {} }`,
+  "Odd~Even() ❅",
+  "hi++ ❅",
+  "Arendelle Open~Door Point() ❅",
+  `Snow Kristyl { Meltable Olaf fjord = "Hello" ❅ Unmeltable Olaf test ❅ Water () {Frozen.test = "tester" ❅} Crystal Anna Ski() { Arendelle 3 ❅ } }`,
+  'Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅',
+  "x += 1 ❅",
+  "Meltable Anna NotBool = (3) ❅",
+  'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ } The~Next~Right~Thing (y > 3 ❅) {Sing("Y is greater than 3!") ❅ } Into~The~Unknown { Sing("X is not 1 or 3 or a number!") ❅ }',
+  'Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ } Into~The~Unknown { Sing("X is not 1 or 3 or a number!") ❅ }'
 ];
 
 const badPrograms = [
@@ -27,7 +35,7 @@ const badPrograms = [
   "Olaf x = 8",
   "let y = 'Olaf'",
   "Let~It~Go (Anna i = 0; i < 10; i++) {}",
-  "Let~It~Go (Anna i = 0 ❅ i < 10 ❅ i++) {}",
+  "Let~It~Go (Anna i += 1 ❅ i < 10 ❅ i++) {}",
   "// This is a comment ( ͡° ͜ʖ ͡°)",
   "Meltable bool love = Kristoff ❅",
   'Olaf z = "I like telling stories!"❅',
@@ -40,7 +48,7 @@ const badPrograms = [
   "Unmeltable Anna x += 2 ❅",
   "Meltable Love bool -= Kristoff ❅",
   "Meltable Anna = “I love chocolate” ❅",
-  "Even~Odd(Anna 5) ❅"
+  "Even~Odd(Anna 5) ❅",
 ];
 
 describe("The Syntax Checker", () => {
