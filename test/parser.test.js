@@ -17,7 +17,7 @@ const goodPrograms = [
   "~* This * is also * a comment *~",
   "Meltable Anna abc = -10 ❅",
   "Meltable Love bool = !Hans ❅",
-  'Ice Olaf Even~Odd(Anna num) { Arendell("This num is being tested") ❅ }',
+  'Ice Olaf Even~Odd(Anna num) { Arendelle "This num is being tested" ❅ }',
   "Even~Odd(5) ❅",
 ];
 

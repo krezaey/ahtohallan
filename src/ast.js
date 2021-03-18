@@ -10,6 +10,12 @@ export class Variable {
 	}
 }
 
+export class ReturnStatement {
+	constructor(expression) {
+		this.expression = expression;
+	}
+}
+
 export class Expression {
 	constructor(expression) {
 		this.expression = expression;

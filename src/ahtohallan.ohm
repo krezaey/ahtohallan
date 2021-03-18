@@ -2,7 +2,8 @@ Ahtohallan {
     Program = Statement*
     Statement = Declaration
               | IfStatement | WhileLoop | ForLoop | SwitchStatement
-              | Call
+              | Call | ReturnStatement
+    ReturnStatement = return Expression?
     Declaration = Function | Class | Variable
     Variable = mutability type identifier "=" Expression
     Expression = (ParenthesisExpression | PlainExpression) terminal

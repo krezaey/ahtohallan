@@ -11,6 +11,9 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Variable(mutability, type, name, _eq, init) {
     return new ast.Variable(mutability, type, name, init.ast());
   },
+  ReturnStatement(_return, output) {
+    return new ast.ReturnStatement(output);
+  },
   Function(_functionWord, returnType, name, _left, parameters, _right, body) {
     return new ast.Function(returnType, name, parameters, body);
   },
@@ -32,7 +35,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   // Inspiration found in https://github.com/breelynbetts/HYPER for if statement
   IfStatement(
     _if,
-    _left1, 
+    _left1,
     condition,
     _right1,
     ifBody,
@@ -131,22 +134,22 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.DictionaryEntries(entries);
   },
   Parameter(types, names) {
-    return new ast.Parameter(types.length === 0? null: types, names.length === 0? null: names);
+    return new ast.Parameter(types.length === 0 ? null : types, names.length === 0 ? null : names);
   },
   Parameters(parameters) {
-    return new ast.Parameters(parameters.length === 0? null: parameters);
+    return new ast.Parameters(parameters.length === 0 ? null : parameters);
   },
   Arguments(names) {
-    return new ast.Arguments(names.length === 0 ? null:names);
+    return new ast.Arguments(names.length === 0 ? null : names);
   },
   _terminal() {
     return this.sourceString;
   },
   Call(callee, _left, args, _right, _terminal) {
-    return new ast.Call(callee, args.length === 0 ? null:args);
+    return new ast.Call(callee, args.length === 0 ? null : args);
   },
 });
- 
+
 export function syntaxIsOkay(source) {
   const match = grammar.match(source);
   return match.succeeded();
