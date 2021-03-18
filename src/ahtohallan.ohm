@@ -23,10 +23,10 @@ Ahtohallan {
     NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
     typeValue =   float | int| string | boolean | noneType | identifier
-    Array = "[" ListOf<(typeValue | ObjectTypeValue), ",">? "]"
+    Array = "[" ListOf<(typeValue | ObjectTypeValue), ","> "]"
     Dictionary = openDict DictionaryEntries? closeDict
     DictionaryEntry = (string | identifier | int) ":" Expression
-    DictionaryEntries = ListOf<DictionaryEntry, ",">?
+    DictionaryEntries = ListOf<DictionaryEntry, ",">
     controlFlow = if | elseIf | else | while | switch | case | default | for
     Expression0= Incrementer  | Expression1
     Incrementer = identifier incop
@@ -42,11 +42,11 @@ Ahtohallan {
     Expression8 = negop? Expression9                                         -- negop
     Expression9 = prefixop? typeValue                                        -- prefixop
     Expression10 = GetProperty | typeValue | ObjectTypeValue
-    GetProperty = ((Call | identifier | this) ".")+ (identifier | Call)                          
+    GetProperty = ((Call | identifier | this) ".")+ (identifier | Call)
     PlainExpression = Expression0
     ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
-    Parameters = ListOf<Parameter, ",">?
+    Parameters = ListOf<Parameter, ",">
     Parameter = type identifier
     Arguments = ListOf<Expression0, ",">
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return

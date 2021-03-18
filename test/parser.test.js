@@ -19,6 +19,7 @@ const goodPrograms = [
   "Meltable Love bool = !Hans ❅",
   'Ice Olaf Even~Odd(Anna num) { Arendelle "This num is being tested" ❅ }',
   "Even~Odd(5) ❅",
+  `Snow Kristyl { Water () {Arendelle 3 ❅} Crystal Samantha Ski() {} }`,
 ];
 
 const badPrograms = [
