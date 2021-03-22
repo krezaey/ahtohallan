@@ -61,6 +61,15 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   WhileLoop(_while, _left, expression, _right, body) {
     return new ast.WhileLoop(expression.tree(), body.tree());
   },
+  AccessDot(_dot, accessValue) {
+    return new ast.Access(accessValue.tree())
+  },
+  AccessInt(_bracketOpen, accessValue, _bracketClosed) {
+    return new ast.Access(accessValue.tree())
+  },
+  AccessKeyValue(_bracketOpen, accessValue, _bracketClosed) {
+    return new ast.Access(accessValue.tree())
+  },
   ForLoop(_for, _left, start, limit, _terminal, increment, _right, body) {
     return new ast.ForLoop(start.tree(), limit.tree(), increment.tree(), body.tree());
   },
@@ -76,16 +85,15 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     _right3,
     _colon1,
     caseBodies,
-    _break1,
-    _terminal1,
     _default,
     _colon2,
     defaultBody,
-    _break2,
-    _terminal2,
     _right2
   ) {
     return new ast.SwitchStatement(expression.tree(), cases.tree(), caseBodies.tree(), defaultBody.tree());
+  },
+  BreakStatement(_break, _terminal) {
+    return this.sourceString;
   },
   NewInstance(_new, name, _left, args, _right) {
     return new ast.NewInstance(name.sourceString, args.tree());
@@ -126,7 +134,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   identifier(_identifierStart, _identifierCharacter) {
     return new ast.Identifier(this.sourceString);
   },
-  GetProperty(source, _dot, property) {
+  GetProperty(source, property) {
     return new ast.GetProperty(source.tree(), property.tree());
   },
   ParenthesisExpression(_left, expression, _right) {

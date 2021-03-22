@@ -64,6 +64,12 @@ export class WhileLoop {
 	}
 }
 
+export class Access {
+	constructor(accessValue) {
+		this.accessValue = accessValue
+	}
+}
+
 export class ForLoop {
 	constructor(start, limit, increment, body) {
 		Object.assign(this, { start, limit, increment, body });
@@ -72,7 +78,7 @@ export class ForLoop {
 
 export class SwitchStatement {
 	constructor(expression, cases, body, defaultCase) {
-		Object.assign(this, { expression, cases, body, defaultCase });
+		Object.assign(this, { expression, cases, body, defaultCase});
 	}
 }
 

@@ -2,7 +2,8 @@ Ahtohallan {
     Program = Statement*
     Statement = Declaration
               | IfStatement | WhileLoop | ForLoop | SwitchStatement
-              | Call | ReturnStatement | Assignment
+              | Call | ReturnStatement | Assignment | BreakStatement
+    BreakStatement = break terminal
     ReturnStatement = return Expression?
     Assignment = Increment| PlainAssignment
     PlainAssignment = (identifier| GetProperty) "=" Expression
@@ -23,10 +24,10 @@ Ahtohallan {
                   ( else Body )?
     WhileLoop = while "(" Expression ")" Body
     ForLoop = for "("Variable Relation terminal Increment ")" Body
-    SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* break terminal )+ (default ":" Statement* break terminal)? "}"
+    SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* )+ (default ":" Statement*)? "}"
     NewInstance = new identifier "(" Arguments? ")"
     ObjectTypeValue = Dictionary | Array | Call
-    typeValue =   float | int| string | boolean | noneType | identifier
+    typeValue =   float | int | string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ","> "]"
     Dictionary = openDict DictionaryEntries? closeDict
     DictionaryEntry = (string | identifier | int) ":" Expression
@@ -40,9 +41,13 @@ Ahtohallan {
     Expression6 = (Expression6 exp)? Expression7                             -- exp
     Expression7 = NewInstance | ObjectTypeValue | Expression8
     Expression8 = negop? Expression9                                         -- negop
-    Expression9 = prefixop? typeValue                                        -- prefixop
+    Expression9 = prefixop? Expression10                                      -- prefixop
     Expression10 = GetProperty | typeValue | ObjectTypeValue
-    GetProperty = ((Call | identifier | this) ".")+ (identifier | Call)
+    GetProperty = (Call | identifier | this) (AccessDot | AccessBrackets)+
+    AccessDot = "." (identifier | Call )
+    AccessBrackets = AccessInt | AccessKeyValue
+    AccessInt = "[" int "]"
+    AccessKeyValue = openDict (identifier | string | int) closeDict
     PlainExpression = Expression2
     ParenthesisExpression =  "(" PlainExpression ")"
     identifier = ~reservedWord identifierStart identifierCharacter*
