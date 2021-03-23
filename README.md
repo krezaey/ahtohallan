@@ -161,16 +161,17 @@ Snow Name {
   }
 }
 ```
-
+Snow Name {~* Class Snowflakes go here *~ Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅ Water (Olaf String, Anna Int, Elsa Float) { ~* Instance Snowflakes go here *~ Frozen.String = String ❅ Frozen.Int = Int ❅ Frozen.Float = Float ❅ } Crystal Samantha Method~Name() { ~* This is a method that does nothing!!! *~ } }
 ## Control Flow
 
 ### For Loops
 
 ```
-Let~It~Go (Anna i = 0 ❅ i < 10 ❅ i++) {
+Let~It~Go (Unmeltable Anna i = 0 ❅ i < 10 ❅ i++ ❅) { 
   ~* Code block here *~
 }
 ```
+Get~This~Right (x < 1 ❅) { Sing("X is less than 1!") ❅ } The~Next~Right~Thing (x == 1 ❅) { Sing("X is equal to 1!") ❅ }Into~The~Unknown { Sing("X is neither less than 1 or equal to 1, meaning it is greater!") ❅ }
 
 ### If, Else If, Else Statements
 
@@ -207,11 +208,10 @@ All~Is~Found(expression ❅) {
 ### While Loops
 
 ```
-Lost~In~The~Woods (x == Kristoff) {
+Lost~In~The~Woods (x == Kristoff ❅) {
   ~* Code block here *~
 }
 ```
-
 ## Examples
 
 ### 1. Here is the iconic Hello, World! print statement.
@@ -252,8 +252,8 @@ Athohallan:
 
 ```
 Ice Olaf Even~Odd(Anna num) {
-  Get~This~Right (num % 2 == 0) {
-    Arendell "This number is even." ❅
+  Get~This~Right (num % 2 == 0 ❅) {
+    Arendelle "This number is even." ❅
   }
   Into~The~Unknown {
     Arendelle "This number is odd." ❅
@@ -280,14 +280,14 @@ Ahtohallan:
 
 ```
 Ice Samantha Fizz~Buzz() {
-  Let~It~Go (Anna i = 0 ❅ i <= 100 ❅ i++) {
-    Get~This~Right (i % 3 == 0 && i % 5 == 0) {
+  Let~It~Go (Meltable Anna i = 0 ❅ i <= 100 ❅ i++ ❅) {
+    Get~This~Right (i % 3 == 0 && i % 5 == 0 ❅) {
       Sing("FizzBuzz") ❅
     }
-    The~Next~Right~Thing (i % 3 == 0) {
+    The~Next~Right~Thing (i % 3 == 0 ❅) {
       Sing("Fizz") ❅
     }
-    The~Next~Right~Thing (i % 5 == 0) {
+    The~Next~Right~Thing (i % 5 == 0 ❅) {
       Sing("Buzz") ❅
     }
     Into~The~Unknown {
@@ -324,14 +324,14 @@ Meltable Herd[] Vegetables = ["Cabbage", "Turnip", "Radish", "Carrot"] ❅
 Sing(Vegetables) ❅
 ~* ["Cabbage", "Turnip", "Radish", "Carrot"] *~
 
-Unmeltable Trolls[[]] reindeer = {
-  First~Name: "Sven",
-  Last~Name: "Bjorgman",
-  Age: 16,
-  Species: "Reindeer"
-} ❅
+Unmeltable Trolls[[]] reindeer = [[
+  First~Name: "Sven" ❅,
+  Last~Name: "Bjorgman" ❅,
+  Age: 16 ❅,
+  Species: "Reindeer" ❅
+]] ❅
 
-Sing(reindeer[[age]]) ❅
+Sing(reindeer[[Age]]) ❅
 
 ```
 
