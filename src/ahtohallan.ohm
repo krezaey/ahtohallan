@@ -4,20 +4,20 @@ Ahtohallan {
               | IfStatement | WhileLoop | ForLoop | SwitchStatement
               | Call | ReturnStatement | Assignment | BreakStatement
     BreakStatement = break terminal
-    ReturnStatement = return Expression?
+    ReturnStatement = return (Expression | terminal)
     Assignment = Increment| PlainAssignment
     PlainAssignment = (identifier| GetProperty) "=" Expression
     Increment = Incrementer | IncrementalAssignment
     IncrementalAssignment = (identifier | GetProperty) incAssignop Expression
     Incrementer = (identifier | GetProperty) incop terminal
     Declaration = Function | Class | Variable
-    Variable = mutability type identifier ("=" Expression | "" terminal )
+    Variable = mutability (type | identifier) identifier ("=" Expression | "" terminal )
     Expression = (ParenthesisExpression | PlainExpression) terminal
-    Function =  functionWord type identifier "(" (Parameter | Parameters) ")" Body
+    Function =  functionWord type identifier "(" (Parameters) ")" Body
     Body = "{" Statement* "}"
     Class = classWord identifier "{" (Constructor | Method | Field )* "}"
-    Constructor = constructorWord "(" (Parameter | Parameters) ")" Body
-    Method = methodWord type identifier "(" (Parameter | Parameters) ")" Body
+    Constructor = constructorWord "(" (Parameters) ")" Body
+    Method = methodWord type identifier "(" (Parameters) ")" Body
     Field = Variable
     IfStatement = if "(" Expression ")" Body
                   ( elseIf  "(" Expression ")" Body )*
@@ -26,7 +26,7 @@ Ahtohallan {
     ForLoop = for "("Variable Relation terminal Increment ")" Body
     SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* )+ (default ":" Statement*)? "}"
     NewInstance = new identifier "(" Arguments? ")"
-    ObjectTypeValue = Dictionary | Array | Call
+    ObjectTypeValue = Dictionary | Array | Call | NewInstance
     typeValue =   float | int | string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ","> "]"
     Dictionary = openDict DictionaryEntries? closeDict
@@ -85,7 +85,8 @@ Ahtohallan {
     char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
     string = "\"" (char | "\'")* "\""
     addop = "+" | "-"
-    relop = "==" | "!=" | "<" | ">" | "<=" | ">="
+    relop = relop2 | "<" | ">" 
+    relop2 = ("=" "=") | (">" "=") | ("<" "=") | ("!" "=") 
     mulop = "*" | "/" | "%"
     incop = "++" | "--"
     incAssignop = "+=" | "-="

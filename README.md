@@ -65,6 +65,17 @@ Ahtohallan introduces these language features:
 | dictionary | `Trolls[[]]`        | `Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅` |
 | none       | `Samantha`          | `Meltable Elsa n = Samantha ❅`                                                                                    |
 
+To access these elements of arrays or dictionary types, simply use the respective bracket notation:
+```
+Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅
+~* We used single brackets at array declaration, so access as such! *~
+Sing(me[0]) ❅
+
+Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅
+~* We used double brackets at array declaration, so access as such! *~
+Sing(annaLoveHistory[["Hans loved Anna."]]) ❅
+
+```
 Variables at declaration should be indicated whether they are constants or not. The examples of types and variable declaration above do not include the `Meltable` and `Unmeltable` keywords but would be expected otherwise.
 
 | Variable Declaration Keywords | Javascript | Meaning                  | Example                                                        |
