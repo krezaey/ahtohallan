@@ -163,27 +163,27 @@ const semanticErrors = [
 
 
 
-const graphChecks = [
-  ["Variable created & resolved", "let x=1; x=2;", [letX1, assignX2]],
-  ["functions created & resolved", "function f(x: int) {}", [funDeclF]],
-  ["field type resolved", "struct S {x: int}", [structS]],
+// const graphChecks = [
+//   ["Variable created & resolved", "let x=1; x=2;", [letX1, assignX2]],
+//   ["functions created & resolved", "function f(x: int) {}", [funDeclF]],
+//   ["field type resolved", "struct S {x: int}", [structS]],
   
-]
+// ]
 
-describe("The analyzer", () => {
-  for (const [scenario, source] of semanticChecks) {
-    it(`recognizes ${scenario}`, () => {
-      assert.ok(analyze(parse(source)))
-    })
-  }
-  for (const [scenario, source, errorMessagePattern] of semanticErrors) {
-    it(`throws on ${scenario}`, () => {
-      assert.throws(() => analyze(parse(source)), errorMessagePattern)
-    })
-  }
-  for (const [scenario, source, graph] of graphChecks) {
-    it(`properly rewrites the AST for ${scenario}`, () => {
-      assert.deepStrictEqual(analyze(parse(source)), new ast.Program(graph))
-    })
-  }
-})
+// describe("The analyzer", () => {
+//   for (const [scenario, source] of semanticChecks) {
+//     it(`recognizes ${scenario}`, () => {
+//       assert.ok(analyze(parse(source)))
+//     })
+//   }
+//   for (const [scenario, source, errorMessagePattern] of semanticErrors) {
+//     it(`throws on ${scenario}`, () => {
+//       assert.throws(() => analyze(parse(source)), errorMessagePattern)
+//     })
+//   }
+//   for (const [scenario, source, graph] of graphChecks) {
+//     it(`properly rewrites the AST for ${scenario}`, () => {
+//       assert.deepStrictEqual(analyze(parse(source)), new ast.Program(graph))
+//     })
+//   }
+// })
