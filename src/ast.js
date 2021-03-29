@@ -78,7 +78,7 @@ export class ForLoop {
 
 export class SwitchStatement {
 	constructor(expression, cases, body, defaultCase) {
-		Object.assign(this, { expression, cases, body, defaultCase});
+		Object.assign(this, { expression, cases, body, defaultCase });
 	}
 }
 
@@ -205,5 +205,53 @@ export class GetProperty {
 export class Call {
 	constructor(name, args) {
 		Object.assign(this, { name, args });
+	}
+}
+
+export class Type {
+	constructor(name) {
+		this.name = name;
+	}
+
+	static BOOLEAN = new Type("boolean");
+	static INT = new Type("int");
+	static FLOAT = new Type("float");
+	static STRING = new Type("string");
+	static VOID = new Type("void");
+	static TYPE = new Type("type");
+	static ANY = new Type("any");
+
+	isEquivalentTo(target) {
+		return this === target
+	}
+
+	isAssignableTo(target) {
+		return this.isEquivalentTo(target)
+	}
+}
+
+export class ArrayType extends Type {
+	constructor(baseType) {
+		super(`[${baseType.name}]`)
+	}
+}
+
+export class DictionaryType extends Type {
+	constructor(baseType) {
+		super(`[${baseType.name}]`)
+	}
+}
+
+export class FunctionType extends Type {
+	constructor(parameterTypes, returnType) {
+		super(`(${parameterTypes.map(t => t.name).join(",")})->${returnType.name}`)
+		Object.assign(this, { parameterTypes, returnType })
+	}
+}
+
+export class ClassType extends Type {
+	constructor(name, fields) {
+		super(name)
+		this.fields = fields
 	}
 }
