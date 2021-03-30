@@ -1,257 +1,268 @@
 export class Program {
-	constructor(instructions) {
-		this.instructions = instructions;
-	}
+  constructor(instructions) {
+    this.instructions = instructions;
+  }
 }
 
 export class Variable {
-	constructor(mutability, type, name, expression) {
-		Object.assign(this, { mutability, type, name, expression });
-	}
+  constructor(mutability, type, name, expression) {
+    Object.assign(this, { mutability, type, name, expression });
+  }
 }
 
 export class ReturnStatement {
-	constructor(expression) {
-		this.expression = expression;
-	}
+  constructor(expression) {
+    this.expression = expression;
+  }
 }
 
-export class Expression {
-	constructor(expression) {
-		this.expression = expression;
-	}
-}
+// export class Expression {
+//   constructor(expression) {
+//     this.expression = expression;
+//   }
+// }
 
 export class Function {
-	constructor(returnType, name, parameters, body) {
-		Object.assign(this, { returnType, name, parameters, body });
-	}
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
 }
 
 export class Class {
-	constructor(name, body) {
-		Object.assign(this, { name, body });
-	}
+  constructor(name, body) {
+    Object.assign(this, { name, body });
+  }
 }
 
 export class Constructor {
-	constructor(parameters, body) {
-		Object.assign(this, { parameters, body });
-	}
+  constructor(parameters, body) {
+    Object.assign(this, { parameters, body });
+  }
 }
 
 export class Method {
-	constructor(returnType, name, parameters, body) {
-		Object.assign(this, { returnType, name, parameters, body });
-	}
+  constructor(returnType, name, parameters, body) {
+    Object.assign(this, { returnType, name, parameters, body });
+  }
 }
 
 export class Field {
-	constructor(field) {
-		this.field = field;
-	}
+  constructor(field) {
+    this.field = field;
+  }
 }
 
 export class IfStatement {
-	constructor(condition, body, alternate) {
-		Object.assign(this, { condition, body, alternate });
-	}
+  constructor(condition, body, alternate) {
+    Object.assign(this, { condition, body, alternate });
+  }
 }
 
 export class WhileLoop {
-	constructor(expression, body) {
-		Object.assign(this, { expression, body });
-	}
+  constructor(expression, body) {
+    Object.assign(this, { expression, body });
+  }
 }
 
 export class Access {
-	constructor(accessValue) {
-		this.accessValue = accessValue
-	}
+  constructor(accessValue) {
+    this.accessValue = accessValue;
+  }
 }
 
 export class ForLoop {
-	constructor(start, limit, increment, body) {
-		Object.assign(this, { start, limit, increment, body });
-	}
+  constructor(start, limit, increment, body) {
+    Object.assign(this, { start, limit, increment, body });
+  }
 }
 
 export class SwitchStatement {
-	constructor(expression, cases, body, defaultCase) {
-		Object.assign(this, { expression, cases, body, defaultCase });
-	}
+  constructor(expression, cases, body, defaultCase) {
+    Object.assign(this, { expression, cases, body, defaultCase });
+  }
 }
 
 export class NewInstance {
-	constructor(identifier, args) {
-		Object.assign(this, { identifier, args });
-	}
+  constructor(identifier, args) {
+    Object.assign(this, { identifier, args });
+  }
 }
 
 export class Array {
-	constructor(value) {
-		this.value = value;
-	}
+  constructor(value) {
+    this.value = value;
+  }
 }
 
 export class Dictionary {
-	constructor(entries) {
-		this.entries = entries;
-	}
+  constructor(entries) {
+    this.entries = entries;
+  }
 }
 
 export class DictionaryEntry {
-	constructor(key, value) {
-		Object.assign(this, { key, value });
-	}
+  constructor(key, value) {
+    Object.assign(this, { key, value });
+  }
 }
 
 export class DictionaryEntries {
-	constructor(entries) {
-		this.entries = entries;
-	}
+  constructor(entries) {
+    this.entries = entries;
+  }
 }
 
 export class Parameter {
-	constructor(type, name) {
-		Object.assign(this, { type, name });
-	}
+  constructor(type, name) {
+    Object.assign(this, { type, name });
+  }
 }
 
 export class Parameters {
-	constructor(parameter) {
-		this.parameter = parameter;
-	}
+  constructor(parameter) {
+    this.parameter = parameter;
+  }
 }
 
 export class Arguments {
-	constructor(names) {
-		this.names = names;
-	}
+  constructor(names) {
+    this.names = names;
+  }
 }
 
 export class Incrementer {
-	constructor(operand, op) {
-		Object.assign(this, { operand, op });
-	}
+  constructor(operand, op) {
+    Object.assign(this, { operand, op });
+  }
 }
 
 export class PlainAssignment {
-	constructor(variable, expression) {
-		Object.assign(this, { variable, expression });
-	}
+  constructor(variable, expression) {
+    Object.assign(this, { variable, expression });
+  }
 }
 
 export class IncrementalAssignment {
-	constructor(variable, op, operand) {
-		Object.assign(this, { variable, op, operand });
-	}
+  constructor(variable, op, operand) {
+    Object.assign(this, { variable, op, operand });
+  }
 }
 
-export class Relation {
-	constructor(left, op, right) {
-		Object.assign(this, { left, op, right });
-	}
+// export class Relation {
+//   constructor(left, op, right) {
+//     Object.assign(this, { left, op, right });
+//   }
+// }
+
+export class BinaryExpression {
+  constructor(left, op, right) {
+    Object.assign(this, { left, op, right });
+  }
 }
 
-export class Expression2_logicalop {
-	constructor(left, op, right) {
-		Object.assign(this, { left, op, right });
-	}
-}
+// export class Expression2_logicalop {
+//   constructor(left, op, right) {
+//     Object.assign(this, { left, op, right });
+//   }
+// }
 
-export class Expression4_addop {
-	constructor(left, op, right) {
-		Object.assign(this, { left, op, right });
-	}
-}
+// export class Expression4_addop {
+//   constructor(left, op, right) {
+//     Object.assign(this, { left, op, right });
+//   }
+// }
 
-export class Expression5_mulop {
-	constructor(left, op, right) {
-		Object.assign(this, { left, op, right });
-	}
-}
+// export class Expression5_mulop {
+//   constructor(left, op, right) {
+//     Object.assign(this, { left, op, right });
+//   }
+// }
 
-export class Expression6_exp {
-	constructor(left, op, right) {
-		Object.assign(this, { left, op, right });
-	}
-}
+// export class Expression6_exp {
+//   constructor(left, op, right) {
+//     Object.assign(this, { left, op, right });
+//   }
+// }
 
-export class Expression8_negop {
-	constructor(op, right) {
-		Object.assign(this, { op, right });
-	}
+export class UnaryExpression {
+  constructor(op, right) {
+    Object.assign(this, { op, right });
+  }
 }
+// export class Expression8_negop {
+//   constructor(op, right) {
+//     Object.assign(this, { op, right });
+//   }
+// }
 
-export class Expression9_prefixop {
-	constructor(op, right) {
-		Object.assign(this, { op, right });
-	}
-}
+// export class Expression9_prefixop {
+//   constructor(op, right) {
+//     Object.assign(this, { op, right });
+//   }
+// }
 
 export class Identifier {
-	constructor(name) {
-		this.name = name;
-	}
+  constructor(name) {
+    this.name = name;
+  }
 }
 
 export class GetProperty {
-	constructor(source, property) {
-		Object.assign(this, { source, property });
-	}
+  constructor(source, property) {
+    Object.assign(this, { source, property });
+  }
 }
 
 export class Call {
-	constructor(name, args) {
-		Object.assign(this, { name, args });
-	}
+  constructor(name, args) {
+    Object.assign(this, { name, args });
+  }
 }
 
 export class Type {
-	constructor(name) {
-		this.name = name;
-	}
+  constructor(name) {
+    this.name = name;
+  }
 
-	static BOOLEAN = new Type("boolean");
-	static INT = new Type("int");
-	static FLOAT = new Type("float");
-	static STRING = new Type("string");
-	static VOID = new Type("void");
-	static TYPE = new Type("type");
-	static ANY = new Type("any");
+  static BOOLEAN = new Type('boolean');
+  static INT = new Type('int');
+  static FLOAT = new Type('float');
+  static STRING = new Type('string');
+  static VOID = new Type('void');
+  static TYPE = new Type('type');
+  static ANY = new Type('any');
 
-	isEquivalentTo(target) {
-		return this === target
-	}
+  isEquivalentTo(target) {
+    return this === target;
+  }
 
-	isAssignableTo(target) {
-		return this.isEquivalentTo(target)
-	}
+  isAssignableTo(target) {
+    return this.isEquivalentTo(target);
+  }
 }
 
 export class ArrayType extends Type {
-	constructor(baseType) {
-		super(`[${baseType.name}]`)
-	}
+  constructor(baseType) {
+    super(`[${baseType.name}]`);
+  }
 }
 
 export class DictionaryType extends Type {
-	constructor(keyType, valueType) {
-		super(`(${keyType.map(t => t.name).join(",")}):${valueType.name}`)
-	}
+  constructor(keyType, valueType) {
+    super(`(${keyType.map(t => t.name).join(',')}):${valueType.name}`);
+  }
 }
 
 export class FunctionType extends Type {
-	constructor(parameterTypes, returnType) {
-		super(`(${parameterTypes.map(t => t.name).join(",")})->${returnType.name}`)
-		Object.assign(this, { parameterTypes, returnType })
-	}
+  constructor(parameterTypes, returnType) {
+    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType.name}`);
+    Object.assign(this, { parameterTypes, returnType });
+  }
 }
 
 export class ClassType extends Type {
-	constructor(name, body) {
-		super(name)
-		this.body = body
-	}
+  constructor(name, body) {
+    super(name);
+    this.body = body;
+  }
 }

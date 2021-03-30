@@ -85,8 +85,8 @@ Ahtohallan {
     char = escape | ~"\\" ~"\"" ~"'" ~"\n" any
     string = "\"" (char | "\'")* "\""
     addop = "+" | "-"
-    relop = relop2 | "<" | ">" 
-    relop2 = ("=" "=") | (">" "=") | ("<" "=") | ("!" "=") 
+    relop = relop2 | "<" | ">"
+    relop2 = ("=" "=") | (">" "=") | ("<" "=") | ("!" "=")
     mulop = "*" | "/" | "%"
     incop = "++" | "--"
     incAssignop = "+=" | "-="
@@ -96,7 +96,7 @@ Ahtohallan {
     exp = "**"
     comment =  "~*" (~"*~" any)* "*~"
     escape = "\\\\" | "\\\"" | "\\'" | "\\n" | "\\t"
-    space := " " | "\t" | comment
+    space += comment
     defaultFunction = print
     openDict = "[["
     closeDict = "]]"

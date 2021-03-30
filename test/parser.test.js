@@ -1,8 +1,11 @@
-import assert from "assert";
-import parse, { syntaxIsOkay } from "../src/parser.js"
+import assert from 'assert';
+import parse, { syntaxIsOkay } from '../src/parser.js';
 
 const goodPrograms = [
   `Unmeltable Anna x = -2 + 3 ❅`,
+  `Unmeltable Anna x = 1 ❅
+
+  `,
   `Meltable Love bool = Hans ❅`,
   `~* This is a comment *~`,
   `Let~It~Go (Meltable Anna i = 1 ❅ i < 10 ❅ i+=1 ❅) {}`,
@@ -36,7 +39,7 @@ const goodPrograms = [
   `Sing(1) ❅`,
   `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ print(y.x) ❅`,
   `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable Herd[] x = [Open~Door S(1), Open~Door S(3)]❅`,
-  `Ice Olaf f(Olaf s) { Arendelle s ❅ }`,  
+  `Ice Olaf f(Olaf s) { Arendelle s ❅ }`,
   `Closed~Door ❅`,
   `Sing(1) ❅ Closed~Door ❅ x += 3 ❅ Arendelle ❅`,
   `Meltable Anna x = 2 + 3 ❅ Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅`,
@@ -77,18 +80,17 @@ const badPrograms = [
   `Even~Odd(Anna 5) ❅`,
   `Trolls annaLoveHistory = ["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅] ❅`,
   `Into~The~Unknown() {} Get~This~Right() {} The~Next~Right~Things() {}`,
-  `a-- c++ abc = 9 * 3 a = 1`, 
-  `Herd[] Even~Odd(Herd[] Boop) {Arendelle Boop ❅}`, 
-  `Closed~Door`, 
-  `x ++= 1 ❅`, 
-  `Ice Samantha (Trolls[[]] TrollyBoi) {}`, 
-  `Lost~In~The~Woods(Hans) {}`, 
+  `a-- c++ abc = 9 * 3 a = 1`,
+  `Herd[] Even~Odd(Herd[] Boop) {Arendelle Boop ❅}`,
+  `Closed~Door`,
+  `x ++= 1 ❅`,
+  `Ice Samantha (Trolls[[]] TrollyBoi) {}`,
+  `Lost~In~The~Woods(Hans) {}`,
   `Get~This~Right(Kristoff) { Sing(1)❅ } Into~The~Unknown { Sing(2)❅ }`,
   `Get~This~Right(Kristoff) { Sing(1)❅ } The~Next~Right~Thing(Hans ❅) { Sing(2)❅ }`,
-
 ];
 
-describe("The Syntax Checker", () => {
+describe('The Syntax Checker', () => {
   for (const program of goodPrograms) {
     it(`Successfully recognizes ${program}`, () => {
       assert.ok(syntaxIsOkay(program));
@@ -101,7 +103,7 @@ describe("The Syntax Checker", () => {
   }
 });
 
-describe("The Parser", () => {
+describe('The Parser', () => {
   for (const program of goodPrograms) {
     it(`Successfully recognizes ${program}`, () => {
       assert.ok(parse(program));

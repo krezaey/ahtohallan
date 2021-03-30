@@ -1,10 +1,10 @@
-import fs from "fs";
-import ohm from "ohm-js";
-import * as ast from "./ast.js";
+import fs from 'fs';
+import ohm from 'ohm-js';
+import * as ast from './ast.js';
 
-const grammar = ohm.grammar(fs.readFileSync("src/ahtohallan.ohm"));
+const grammar = ohm.grammar(fs.readFileSync('src/ahtohallan.ohm'));
 
-const astBuilder = grammar.createSemantics().addOperation("tree", {
+const astBuilder = grammar.createSemantics().addOperation('tree', {
   Program(statements) {
     return new ast.Program(statements.tree());
   },
@@ -12,13 +12,13 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.Variable(mutability.sourceString, type.tree(), name.sourceString, init.tree());
   },
   Expression(e, _terminal) {
-    return e.tree()
+    return e.tree();
   },
   ReturnStatement(_return, output) {
     return new ast.ReturnStatement(output.tree());
   },
   PlainAssignment(name, _equals, expression) {
-    return new ast.PlainAssignment(name.tree(), expression.tree())
+    return new ast.PlainAssignment(name.tree(), expression.tree());
   },
   Function(_functionWord, returnType, name, _left, parameters, _right, body) {
     return new ast.Function(returnType.tree(), name.sourceString, parameters.tree(), body.tree());
@@ -62,13 +62,13 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.WhileLoop(expression.tree(), body.tree());
   },
   AccessDot(_dot, accessValue) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree());
   },
   AccessInt(_bracketOpen, accessValue, _bracketClosed) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree());
   },
   AccessKeyValue(_bracketOpen, accessValue, _bracketClosed) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree());
   },
   ForLoop(_for, _left, start, limit, _terminal, increment, _right, body) {
     return new ast.ForLoop(start.tree(), limit.tree(), increment.tree(), body.tree());
@@ -90,7 +90,12 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     defaultBody,
     _right2
   ) {
-    return new ast.SwitchStatement(expression.tree(), cases.tree(), caseBodies.tree(), defaultBody.tree());
+    return new ast.SwitchStatement(
+      expression.tree(),
+      cases.tree(),
+      caseBodies.tree(),
+      defaultBody.tree()
+    );
   },
   BreakStatement(_break, _terminal) {
     return this.sourceString;
@@ -104,32 +109,32 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
   Dictionary(_openDict, entries, _closeDict) {
     return new ast.Dictionary(entries.tree());
   },
-  Incrementer(operand, op , _terminal) {
+  Incrementer(operand, op, _terminal) {
     return new ast.Incrementer(operand.tree(), op.sourceString);
   },
   IncrementalAssignment(variable, op, operand) {
     return new ast.IncrementalAssignment(variable.tree(), op.sourceString, operand.tree());
   },
   Relation(left, op, right) {
-    return new ast.Relation(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op, right.tree());
   },
   Expression2_logicalop(left, op, right) {
-    return new ast.Expression2_logicalop(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op, right.tree());
   },
   Expression4_addop(left, op, right) {
-    return new ast.Expression4_addop(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op, right.tree());
   },
   Expression5_mulop(left, op, right) {
-    return new ast.Expression5_mulop(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op, right.tree());
   },
   Expression6_exp(left, op, right) {
-    return new ast.Expression6_exp(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op, right.tree());
   },
   Expression8_negop(op, right) {
-    return new ast.Expression8_negop(op.tree(), right.tree());
+    return new ast.UnaryExpression(op.tree(), right.tree());
   },
   Expression9_prefixop(op, right) {
-    return new ast.Expression9_prefixop(op.tree(), right.tree());
+    return new ast.UnaryExpression(op.tree(), right.tree());
   },
   identifier(_identifierStart, _identifierCharacter) {
     return new ast.Identifier(this.sourceString);
@@ -138,7 +143,7 @@ const astBuilder = grammar.createSemantics().addOperation("tree", {
     return new ast.GetProperty(source.tree(), property.tree());
   },
   ParenthesisExpression(_left, expression, _right) {
-    return new ast.Expression(expression.tree());
+    return expression.tree();
   },
   DictionaryEntry(key, _colon, value) {
     return new ast.DictionaryEntry(key.tree(), value.tree());
