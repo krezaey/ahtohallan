@@ -17,19 +17,19 @@ Ahtohallan introduces these language features:
 ## Example Programs
 
 ### Hello World
-```
+```markdown
 Sing("I wanna get this right, baby!") ❅
 ```
 
 ### Even Odd
-```
+```markdown
 Ice Anna Square (Anna Number) {
   Arendelle Number * Number ❅
 }
 ```
 
 ### FizzBuzz
-```
+```markdown
 Ice Samantha Fizz~Buzz() {
   Let~It~Go (Meltable Anna i = 0 ❅ i <= 100 ❅ i++ ❅) {
     Get~This~Right (i % 3 == 0 && i % 5 == 0 ❅) {
@@ -49,7 +49,7 @@ Ice Samantha Fizz~Buzz() {
 ```
 
 ### Singing (Compared) Numbers
-```
+```markdown
 Ice Samantha Singing~Nums(Anna x, Anna y) {
     Get~This~Right (x < y ❅) {
         Sing("The first inputted number is less than the second inputted number!") ❅
@@ -64,7 +64,7 @@ Ice Samantha Singing~Nums(Anna x, Anna y) {
 ```
 
 ### Fibonacci
-```
+```markdown
 Ice Anna fibonacci(Anna num){
     Meltable Anna num1 = 0 ❅
     Meltable Anna num2 = 1 ❅
