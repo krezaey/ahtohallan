@@ -1,4 +1,4 @@
-![Image](https://github.com/krezaey/ahtohallan/blob/main/docs/ahtohallan_logo.png)
+![Image](ahtohallan_logo.png)
 
 ## About Ahtohallan
 Hello, hello, and welcome to the show! This is Ahtohallan, a a magical language from the depths of the FCU (Frozen Cinematic Universe). Although it is inspired by our love of the FCU, one doesn't need to be a Frozen connoisseur to understand or use Ahtohallan! If you are, however, we hope you have fun seeing all the magical things water, code, and a little bit of love can offer!
