@@ -142,7 +142,7 @@ Ice Samantha Function~Name(Olaf String, Anna Int, Elsa Float) {
 
 ### Classes
 
-In Ahtohallan classes are declared using the keyword `Snow` followed by the class name. You can create a constructor using the keyword `Water`. Constructors use the same syntax as functions except there is no return type or name. Methods are instantiated using the keyword `Crystal`. (Isn't that so cute? To create an instance of snow you need water! Not only that, but a method of Snow is Crystal. You can have many Snow Crystals in an instance of Snow!) Fields are referred to as "Snowflakes"
+In Ahtohallan classes are declared using the keyword `Snow` followed by the class name. You can create a constructor using the keyword `Water`. Constructors use the same syntax as functions except there is no return type or name. Methods are instantiated using the keyword `Crystal`. (Isn't that so cute? To create an instance of snow you need water! Not only that, but a method of Snow is Crystal. You can have many Snow Crystals in an instance of Snow!) Fields are referred to as "Snowflakes".
 
 ```
 Snow Name {

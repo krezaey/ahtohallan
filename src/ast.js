@@ -237,8 +237,8 @@ export class ArrayType extends Type {
 }
 
 export class DictionaryType extends Type {
-	constructor(baseType) {
-		super(`[${baseType.name}]`)
+	constructor(keyType, valueType) {
+		super(`(${keyType.map(t => t.name).join(",")}):${valueType.name}`)
 	}
 }
 
@@ -250,8 +250,8 @@ export class FunctionType extends Type {
 }
 
 export class ClassType extends Type {
-	constructor(name, fields) {
+	constructor(name, body) {
 		super(name)
-		this.fields = fields
+		this.body = body
 	}
 }

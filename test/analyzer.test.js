@@ -13,7 +13,7 @@ const semanticChecks = [
   ["built-in print", "Sing(1) ❅"],
   ["member exp", `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ print(y.x) ❅`],
   ["array of Classes", "Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable Herd[] x = [Open~Door S(1), Open~Door S(3)]❅"],
-  ["function return types", `Ice Olaf f(Olaf s) { Arendelle s ❅ }`,],  
+  ["function return types", `Ice Olaf f(Olaf s) { Arendelle s ❅ }`,],
   ["simplest syntactically correct program", "Closed~Door ❅"],
   ["multiple statements", "Sing(1) ❅ Closed~Door ❅ x += 3 ❅ Arendelle ❅"],
   ["variable declarations", `Meltable Anna x = 2 + 3 ❅\n Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅`],
@@ -69,10 +69,10 @@ const semanticErrors = [
   ["no such field", 'Snow Point{ } Meltable Point x = Open~Door Point() ❅ Sing(x.y) ❅', /No such field/],
   ["shadowing", "Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(true) {Unmeltable Anna x = 1 ❅}", /Identifier x already declared/],
   ["call of uncallable", "Unmeltable Anna x = 1 ❅ \n Sing(x()) ❅", /Call of non-function/],
-  ["Too many args","Ice Samantha f(Anna x){}\nf(1,2) ❅",/1 argument\(s\) required but 2 passed/],
-  ["Too many args","Ice Samantha f(){}\nf(1) ❅",/No argument\(s\) required but 1 passed/],
-  ["Too few args","Ice Samantha f(Anna x, Anna y){} \nf() ❅",/1 argument\(s\) required but 0 passed/],
-  ["Parameter type mismatch","Ice Samantha f(Anna num) {}\nf(Hans);", /Cannot assign a boolean to a int/], 
+  ["Too many args", "Ice Samantha f(Anna x){}\nf(1,2) ❅", /1 argument\(s\) required but 2 passed/],
+  ["Too many args", "Ice Samantha f(){}\nf(1) ❅", /No argument\(s\) required but 1 passed/],
+  ["Too few args", "Ice Samantha f(Anna x, Anna y){} \nf() ❅", /1 argument\(s\) required but 0 passed/],
+  ["Parameter type mismatch", "Ice Samantha f(Anna num) {}\nf(Hans);", /Cannot assign a boolean to a int/],
 ]
 
 // Test cases for expected semantic graphs after processing the AST. In general
@@ -164,19 +164,22 @@ const semanticErrors = [
 
 let TO_DO = []
 
+const breakStmt = ast.Brea
+
+const varInit = new ast
+
 
 
 const graphChecks = [
-  ["Program created", "Closed~Door ❅", [...TO_DO]],
   ["Variable instantiated", "Meltable Anna x = 10 ❅", [...TO_DO]],
-  ["Return value", "Arendelle ❅", [...TO_DO]], 
+  ["Return value", "Arendelle ❅", [...TO_DO]],
   ["Plain Assignment", "Meltable Anna i = 0 ❅", [...TO_DO]],
   ["Function declaration", "Ice Samantha Even~Odd() {}", [...TO_DO]],
   ["Body created in a function", "Ice Samantha Even~Odd() {Meltable Anna x = 10 ❅}", [...TO_DO]],
   ["Class created", "Snow Name {}", [...TO_DO]],
-  ["Constructor created in class",  `Snow Kristyl { Water () {Frozen.test = "tester" ❅}`, [...TO_DO]],
-  ["Method created in class",  `Snow Kristyl { Crystal Anna Ski() { Arendelle 3 ❅ } }`, [...TO_DO]],
-  ["Field created in class",  `Snow Kristyl { Meltable Olaf fjord = "Hello" ❅  }`, [...TO_DO]],
+  ["Constructor created in class", `Snow Kristyl { Water () {Frozen.test = "tester" ❅}`, [...TO_DO]],
+  ["Method created in class", `Snow Kristyl { Crystal Anna Ski() { Arendelle 3 ❅ } }`, [...TO_DO]],
+  ["Field created in class", `Snow Kristyl { Meltable Olaf fjord = "Hello" ❅  }`, [...TO_DO]],
   ["If Statement created", "Get~This~Right (x < 1 ❅) {Meltable Anna x = 10 ❅}", [...TO_DO]],
   ["While Loop created", "Lost~In~The~Woods (x == Kristoff ❅) {Meltable Olaf z = 5 ❅}", [...TO_DO]],
   ["Get property of an object using dot notation", "Sing(x.y) ❅", [...TO_DO]],
@@ -187,24 +190,24 @@ const graphChecks = [
   ["Break statement created", "Closed~Door ❅", [...TO_DO]],
   ["NewInstance of an object", "Unmeltable S y = Open~Door S(1) ❅", [...TO_DO]]
   ["Array created", `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`, [...TO_DO]],
-  ["Dictionary created",`Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅` ,[...TO_DO]],
-  ["Incrementer", "Meltable Anna i = 0 ❅, i++", [...TO_DO] ], 
+  ["Dictionary created", `Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅`, [...TO_DO]],
+  ["Incrementer", "Meltable Anna i = 0 ❅, i++", [...TO_DO]],
   ["Incremental Assignment", "Meltable Anna i = 0 ❅, i += 10 ❅", [...TO_DO]],
   ["Relation created", "Sing(1 <= 2 && 3.5 < 1.2) ❅", [...TO_DO]],
   ["Expression2, logicalop created, ||", "Sing(Kristoff || 1 < 2 || Hans || !Kristoff) ❅", [...TO_DO]],
-  ["Expresson4, addop created","Sing(3 + 5) ❅", [...TO_DO]],
+  ["Expresson4, addop created", "Sing(3 + 5) ❅", [...TO_DO]],
   ["Expression5, mulop created", "Sing(2 * 3) ❅", [...TO_DO]],
-  ["Expression6, exp created", "Sing(2**) ❅", [...TO_DO]], 
-  ["Expression8, negop created", "Sing(5 - 3) ❅", [...TO_DO]], 
-  ["Expression9, prefixop created", "Sing(!Kristoff)", [...TO_DO]], 
-  ["Identifier created", "Meltable Anna i = 0 ❅", [...TO_DO]],  
+  ["Expression6, exp created", "Sing(2**) ❅", [...TO_DO]],
+  ["Expression8, negop created", "Sing(5 - 3) ❅", [...TO_DO]],
+  ["Expression9, prefixop created", "Sing(!Kristoff)", [...TO_DO]],
+  ["Identifier created", "Meltable Anna i = 0 ❅", [...TO_DO]],
   ["ParenthesisExpression created", "Unmeltable ", [...TO_DO]]
   ["DictionaryEntry created", `Unmeltable Trolls[[]] reindeer = [[First~Name: "Sven" ❅]] ❅`, [...TO_DO]],
   ["DictionaryEntries created", `Unmeltable Trolls[[]] reindeer = [[First~Name: "Sven" ❅, Last~Name: "Bjorgman" ❅]] ❅`, [...TO_DO]],
   ["Function with 1 parameter created", `Ice Olaf Even~Odd(Anna num) { Arendelle "This num is being tested" ❅ }`, [...TO_DO]],
   ["Function with multiple parameters created", `Ice Olaf Even~Odd(Anna num, Olaf str) { Arendelle "This num is being tested" ❅ }`, [...TO_DO]]
-  ["Arguments Created", "Ice Anna Square (Anna Number) {Arendelle Number * Number ❅}", [...TO_DO]], 
-  ["String Created", `Meltable Olaf x = "This is a string" ❅`, [...TO_DO]], 
+  ["Arguments Created", "Ice Anna Square (Anna Number) {Arendelle Number * Number ❅}", [...TO_DO]],
+  ["String Created", `Meltable Olaf x = "This is a string" ❅`, [...TO_DO]],
   ["Float created", "Unmeltable Elsa y = 3.6 ❅", [...TO_DO]],
   ["Terminal character created", "Arendelle ❅", [...TO_DO]],
   ["Call created", "Sing(1) ❅", [...TO_DO]]
@@ -219,7 +222,6 @@ const graphChecks = [
 
 
 
-  
 
 
 
@@ -231,11 +233,12 @@ const graphChecks = [
 
 
 
-  
-//   ["Variable created & resolved", "let x=1; x=2;", [letX1, assignX2]],
-//   ["functions created & resolved", "function f(x: int) {}", [funDeclF]],
-//   ["field type resolved", "struct S {x: int}", [structS]],
-  
+
+
+  //   ["Variable created & resolved", "let x=1; x=2;", [letX1, assignX2]],
+  //   ["functions created & resolved", "function f(x: int) {}", [funDeclF]],
+  //   ["field type resolved", "struct S {x: int}", [structS]],
+
 ]
 
 // describe("The analyzer", () => {
