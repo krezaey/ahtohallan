@@ -15,7 +15,9 @@ If you are, however, we hope you have fun seeing all the magical things
 water, code, and a little bit of love can offer!
 
 In no particular order, Ahtohallan was made by Keziah Rezaey, Salem Tesfu, Michael Elias, Ameya Mellacheruvu,
-Onariaginosa Igbinedion, & Elise Sawan
+Onariaginosa Igbinedion, & Elise Sawan.
+
+You can learn more about our language and us on our [website](https://krezaey.github.io/ahtohallan/)
 
 ## Features
 
