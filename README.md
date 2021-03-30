@@ -24,7 +24,7 @@ You can view the grammar of our language [here](https://github.com/krezaey/ahtoh
 
 Ahtohallan introduces these language features:
 
-- An object oriented programming leanguage reminiscent of JavaScript
+- An object oriented programming language reminiscent of JavaScript
 - Frozen casing: A style of casing where everything is capitalized, and
   separated by `~` Like~This ! Additionally, all keywords should be capitalized.
 - Like ice, the language is strong and dynamic
@@ -353,6 +353,4 @@ const reindeer = {
 };
 
 console.log(reindeer[age]);
-
-``
 ```

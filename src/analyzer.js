@@ -200,7 +200,7 @@ class Context {
     return new Context(this, configuration);
   }
   analyze(node) {
-    // -------> console.log(`About to analyze a ${node.constructor.name}`);
+    console.log(`About to analyze a ${node.constructor.name}`);
     return this[node.constructor.name](node);
   }
   Program(p) {
