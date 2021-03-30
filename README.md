@@ -167,7 +167,7 @@ Snow Name {
 ### For Loops
 
 ```
-Let~It~Go (Unmeltable Anna i = 0 ❅ i < 10 ❅ i++ ❅) { 
+Let~It~Go (Meltable Anna i = 0 ❅ i < 10 ❅ i++ ❅) { 
   ~* Code block here *~
 }
 ```
