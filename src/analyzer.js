@@ -135,6 +135,13 @@ const check = self => ({
   returnsSomething() {
     must(self.type.returnType !== Type.VOID, 'Cannot return a value here. It is Samantha!');
   },
+  hasNoFunctionOrFunctionReturnsSamantha() {
+    // TODO: Later make the type a "real" type
+    must(
+      self.function === null || self.function.returnType === 'Samantha',
+      'You cannot have a return (Arendelle) statement in this function'
+    );
+  },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
   },
@@ -193,18 +200,18 @@ class Context {
     return new Context(this, configuration);
   }
   analyze(node) {
+    // -------> console.log(`About to analyze a ${node.constructor.name}`);
     return this[node.constructor.name](node);
   }
   Program(p) {
-    p.statements = this.analyze(p.statements);
+    p.instructions = this.analyze(p.instructions);
     return p;
   }
   Variable(d) {
     d.expression = this.analyze(d.expression);
-    d.variable = new Variable(d.mutibility, d.type, d.name, d, expression);
-    check(d.type.hasSameTypeAs(d.expression.type));
-    d.variable.type = d.expression.type;
-    this.add(d.variable.name, d.variable);
+    // TODO check(d.type.hasSameTypeAs(d.expression.type));
+    this.add(d.name, d);
+    console.log('Got var');
     return d;
   }
   ReturnStatement(s) {
@@ -213,20 +220,26 @@ class Context {
     check(s.expression).isReturnableFrom(this.function);
     return s;
   }
+  ShortReturnStatement(s) {
+    // TODO: Check that (1) the current function has return type Samantha or
+    // (2) that there is no current function (we're at the top level)
+    check(this).hasNoFunctionOrFunctionReturnsSamantha();
+    return s;
+  }
   // Expression(e) {}
   Function(d) {
     d.returnType = d.returnType ? this.analyze(d.returnType) : Type.VOID;
-    check(d.returnType).isAType();
+    //check(d.returnType).isAType(); <---- DO LATER
     // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body));
     // When entering a function body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
     const childContext = this.newChild({ inLoop: false, forFunction: f });
     d.parameters = childContext.analyze(d.parameters);
-    f.type = new FunctionType(
-      d.parameters.map(p => p.type),
-      d.returnType
-    );
+    // f.type = new FunctionType(
+    //   d.parameters.map(p => p.type),
+    //   d.returnType
+    // );
     // Add before analyzing the body to allow recursion
     this.add(f.name, f);
     d.body = childContext.analyze(d.body);
@@ -242,14 +255,28 @@ class Context {
   ForLoop(f) {}
   SwitchStatement(s) {}
   NewInstance(n) {}
-  Array(a) {}
+  Array(a) {
+    a.map(e => this.analyze(e));
+    return a;
+  }
+  ArrayExpression(a) {
+    this.analyze(a.values);
+  }
   Dictionary(d) {}
   DictionaryEntry(d) {}
   DictionaryEntries(d) {}
-  Parameter(p) {}
-  Parameters(p) {}
+  Parameter(p) {
+    return p;
+  }
+  Parameters(p) {
+    p.parameter = this.analyze(p.parameter);
+    return p;
+  }
   Arguments(a) {}
   Incrementer(i) {}
+  BreakStatement(s) {
+    return s;
+  }
   PlainAssignment(p) {}
   IncrementalAssignment(i) {}
   Relation(r) {}
@@ -262,6 +289,12 @@ class Context {
   Identifier(i) {}
   GetProperty(p) {}
   Call(c) {}
+  Number(n) {
+    return n;
+  }
+  String(s) {
+    return s;
+  }
 }
 
 export default function analyze(node) {

@@ -4,7 +4,8 @@ Ahtohallan {
               | IfStatement | WhileLoop | ForLoop | SwitchStatement
               | Call | ReturnStatement | Assignment | BreakStatement
     BreakStatement = break terminal
-    ReturnStatement = return (Expression | terminal)
+    ReturnStatement = return Expression  --long
+                    | return terminal   --short
     Assignment = Increment| PlainAssignment
     PlainAssignment = (identifier| GetProperty) "=" Expression
     Increment = Incrementer | IncrementalAssignment
@@ -33,15 +34,21 @@ Ahtohallan {
     DictionaryEntry = (string | identifier | int) ":" Expression
     DictionaryEntries = ListOf<DictionaryEntry, ",">
     controlFlow = if | elseIf | else | while | switch | case | default | for
-    Expression2 = ((Expression2 logicalop)+)? Expression3                    -- logicalop
+    Expression2 = Expression2 logicalop Expression3                    -- logicalop
+                | Expression3
     Expression3 = Relation | Expression4
     Relation = Expression3 relop Expression4
-    Expression4 = (Expression4 addop)?  Expression5                          -- addop
-    Expression5 = (Expression5 mulop)? Expression6                           -- mulop
-    Expression6 = (Expression6 exp)? Expression7                             -- exp
+    Expression4 = Expression4 addop Expression5                         -- addop
+                | Expression5
+    Expression5 = Expression5 mulop Expression6    -- mulop
+                | Expression6
+    Expression6 = Expression6 exp Expression7                             -- exp
+                | Expression7
     Expression7 = NewInstance | ObjectTypeValue | Expression8
-    Expression8 = negop? Expression9                                         -- negop
-    Expression9 = prefixop? Expression10                                      -- prefixop
+    Expression8 = negop Expression9                                         -- negop
+                | Expression9
+    Expression9 = prefixop Expression10                                      -- prefixop
+                | Expression10
     Expression10 = GetProperty | typeValue | ObjectTypeValue
     GetProperty = (Call | identifier | this) (AccessDot | AccessBrackets)+
     AccessDot = "." (identifier | Call )

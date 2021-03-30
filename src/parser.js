@@ -14,8 +14,11 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   Expression(e, _terminal) {
     return e.tree();
   },
-  ReturnStatement(_return, output) {
+  ReturnStatement_long(_return, output) {
     return new ast.ReturnStatement(output.tree());
+  },
+  ReturnStatement_short(_return, _snow) {
+    return new ast.ShortReturnStatement();
   },
   PlainAssignment(name, _equals, expression) {
     return new ast.PlainAssignment(name.tree(), expression.tree());
@@ -98,13 +101,13 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     );
   },
   BreakStatement(_break, _terminal) {
-    return this.sourceString;
+    return new ast.BreakStatement();
   },
   NewInstance(_new, name, _left, args, _right) {
     return new ast.NewInstance(name.sourceString, args.tree());
   },
   Array(_left, type, _right) {
-    return new ast.Array(type.asIteration().tree());
+    return new ast.ArrayExpression(type.asIteration().tree());
   },
   Dictionary(_openDict, entries, _closeDict) {
     return new ast.Dictionary(entries.tree());
@@ -116,25 +119,25 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.IncrementalAssignment(variable.tree(), op.sourceString, operand.tree());
   },
   Relation(left, op, right) {
-    return new ast.BinaryExpression(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op.sourceString, right.tree());
   },
   Expression2_logicalop(left, op, right) {
-    return new ast.BinaryExpression(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op.sourceString, right.tree());
   },
   Expression4_addop(left, op, right) {
-    return new ast.BinaryExpression(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op.sourceString, right.tree());
   },
   Expression5_mulop(left, op, right) {
-    return new ast.BinaryExpression(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op.sourceString, right.tree());
   },
   Expression6_exp(left, op, right) {
-    return new ast.BinaryExpression(left.tree(), op, right.tree());
+    return new ast.BinaryExpression(left.tree(), op.sourceString, right.tree());
   },
   Expression8_negop(op, right) {
-    return new ast.UnaryExpression(op.tree(), right.tree());
+    return new ast.UnaryExpression(op.sourceString, right.tree());
   },
   Expression9_prefixop(op, right) {
-    return new ast.UnaryExpression(op.tree(), right.tree());
+    return new ast.UnaryExpression(op.sourceString, right.tree());
   },
   identifier(_identifierStart, _identifierCharacter) {
     return new ast.Identifier(this.sourceString);
@@ -164,7 +167,10 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return contents.sourceString;
   },
   float(_whole, _dot, _fractional) {
-    return this.sourceString;
+    return Number(this.sourceString);
+  },
+  int(_digits) {
+    return Number(this.sourceString);
   },
   _terminal() {
     return this.sourceString;

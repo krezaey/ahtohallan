@@ -16,6 +16,10 @@ export class ReturnStatement {
   }
 }
 
+export class ShortReturnStatement {
+  // Empty
+}
+
 // export class Expression {
 //   constructor(expression) {
 //     this.expression = expression;
@@ -82,15 +86,19 @@ export class SwitchStatement {
   }
 }
 
+export class BreakStatement {
+  // Nothing here, intentionally
+}
+
 export class NewInstance {
   constructor(identifier, args) {
     Object.assign(this, { identifier, args });
   }
 }
 
-export class Array {
-  constructor(value) {
-    this.value = value;
+export class ArrayExpression {
+  constructor(values) {
+    this.values = values;
   }
 }
 
