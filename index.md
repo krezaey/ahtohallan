@@ -1,37 +1,88 @@
-## Ahtohallan
+## About Ahtohallan
+<p align="center">
+   <img align="center" src="ahtohallan_logo.png" alt="logo" width="500" />
+<p>
+Hello, hello, and welcome to the show! This is Ahtohallan, a a magical language from the depths of the FCU (Frozen Cinematic Universe). Although it is inspired by our love of the FCU, one doesn't need to be a Frozen connoisseur to understand or use Ahtohallan! If you are, however, we hope you have fun seeing all the magical things water, code, and a little bit of love can offer!
 
-You can use the [editor on GitHub](https://github.com/krezaey/ahtohallan/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Ahtohallan introduces these language features:
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+An object oriented programming leanguage reminiscent of JavaScript
+- Frozen casing: A style of casing where everything is capitalized, and separated by ~ Like~This ! Additionally, all keywords should be capitalized.
+- Like ice, the language is strong and dynamic
+- Typed parameters
+- Function return types
+- Built-in Functions
 
-### Markdown
+[View Github Repo](https://github.com/krezaey/ahtohallan)
+[View Grammar](https://github.com/krezaey/ahtohallan/blob/main/src/ahtohallan.ohm)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Example Programs
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+### Hello World
+```
+Sing("I wanna get this right, baby!") ❅
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Even Odd
+```
+Ice Anna Square (Anna Number) {
+  Arendelle Number * Number ❅
+}
+```
 
-### Jekyll Themes
+### FizzBuzz
+```
+Ice Samantha Fizz~Buzz() {
+  Let~It~Go (Meltable Anna i = 0 ❅ i <= 100 ❅ i++ ❅) {
+    Get~This~Right (i % 3 == 0 && i % 5 == 0 ❅) {
+      Sing("FizzBuzz") ❅
+    }
+    The~Next~Right~Thing (i % 3 == 0 ❅) {
+      Sing("Fizz") ❅
+    }
+    The~Next~Right~Thing (i % 5 == 0 ❅) {
+      Sing("Buzz") ❅
+    }
+    Into~The~Unknown {
+      Sing(i) ❅
+    }
+  }
+}
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/krezaey/ahtohallan/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Singing (Compared) Numbers
+```
+Ice Samantha Singing~Nums(Anna x, Anna y) {
+    Get~This~Right (x < y ❅) {
+        Sing("The first inputted number is less than the second inputted number!") ❅
+    }
+    The~Next~Right~Thing (x == y ❅) {
+        Sing("The first inputted number is equal to the second inputted number!") ❅
+    }
+    Into~The~Unknown {
+        Sing("The first inputted number is neither less than or equal to the second inputted number, meaning it is greater!") ❅
+    }   
+}
 
-### Support or Contact
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Fibonacci
+```
+Ice Anna fibonacci(Anna num){
+    Meltable Anna num1 = 0 ❅
+    Meltable Anna num2 = 1 ❅
+    Meltable Anna sum = 0 ❅
+    Let~It~Go (Meltable Anna i = 0 ❅ i < num ❅ i++ ❅) { 
+        sum = num1 + num2 ❅
+        num1 = num2 ❅
+        num2 = sum ❅
+    }
+    Arendelle num2 ❅
+}  
+```
+
+## Meet the Developers
+The Ahtohallan team is made up of Keziah Rezaey, Salem Tesfu, Michael Elias, Ameya Mellacheruvu,
+Onariaginosa Igbinedion, & Elise Sawan. We are computer science majors at Loyola Marymount University.
+
+#### Copyright © Ahtohallan 2021
