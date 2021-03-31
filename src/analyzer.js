@@ -78,7 +78,8 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    must([Type.ANNA, Type.ELSA].includes(self.type), `Expected a number, found ${self.type.name}`);
+    console.log(self.type)
+    must([Type.ANNA, Type.ELSA].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`);
   },
   isNumericOrString() {
     must(
@@ -153,12 +154,20 @@ const check = self => ({
       );
     }
   },
+  nonDuplicateVariableDeclaration(name) {
+    must(!self.sees(name), `Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!`)
+  },
   hasNoFunctionOrFunctionReturnsSamantha() {
     // TODO: Later make the type a "real" type
+    // console.log(self.function.returnType);
     must(
       self.function === null || self.function.returnType === 'Samantha',
-      'You cannot have a return (Arendelle) statement in this function'
+      `You must return the correct type! You simply must bad spirit!`
     );
+  },
+  isMeltable(mutability) {
+    must(
+      mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`)
   },
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
@@ -218,7 +227,7 @@ class Context {
     return new Context(this, configuration);
   }
   analyze(node) {
-    // console.log(`About to analyze a ${node.constructor.name}`);
+    console.log(`About to analyze a ${node.constructor.name}`);
     return this[node.constructor.name](node);
   }
   Program(p) {
@@ -228,6 +237,10 @@ class Context {
   Variable(d) {
     d.expression = this.analyze(d.expression);
     // TODO check(d.type.hasSameTypeAs(d.expression.type));
+    console.log(d)
+    d.type = d.expression.type
+    check(this).nonDuplicateVariableDeclaration(d.name);
+    console.log(d.name)
     this.add(d.name, d);
     console.log('Got var');
     return d;
@@ -264,16 +277,32 @@ class Context {
     d.body = childContext.analyze(d.body);
     return d;
   }
-  Class(c) {}
-  Constructor(c) {}
-  Method(m) {}
-  Field(f) {}
-  IfStatement(s) {}
-  WhileLoop(w) {}
-  Access(a) {}
-  ForLoop(f) {}
-  SwitchStatement(s) {}
-  NewInstance(n) {}
+  Class(c) {
+    this.add(c.name, c);
+    const childContext = this.newChild({ inLoop: false, })
+    c.body = childContext.analyze(c.body);
+    return c;
+  }
+  Constructor(c) {
+
+  }
+  Method(m) { }
+  Field(f) {
+
+    f.field = this.analyze(f.field);
+    // console.log(f.field)
+    return f;
+  }
+  IfStatement(s) { }
+  WhileLoop(w) {
+    const childContext = this.newChild({ inLoop: false, })
+    w.body = childContext.analyze(w.body);
+    return w
+  }
+  Access(a) { }
+  ForLoop(f) { }
+  SwitchStatement(s) { }
+  NewInstance(n) { }
   Array(a) {
     a.map(e => this.analyze(e));
     return a;
@@ -281,9 +310,9 @@ class Context {
   ArrayExpression(a) {
     this.analyze(a.values);
   }
-  Dictionary(d) {}
-  DictionaryEntry(d) {}
-  DictionaryEntries(d) {}
+  Dictionary(d) { }
+  DictionaryEntry(d) { }
+  DictionaryEntries(d) { }
   Parameter(p) {
     this.add(p.name, p)
     return p;
@@ -292,23 +321,32 @@ class Context {
     p.parameter = this.analyze(p.parameter);
     return p;
   }
-  Arguments(a) {}
-  Incrementer(i) {}
+  Arguments(a) { }
+  Incrementer(i) {
+    let x = this.lookup(i.operand.name)
+    check(x).isNumeric()
+    return i
+  }
   BreakStatement(s) {
     return s;
   }
-  PlainAssignment(p) {}
-  IncrementalAssignment(i) {}
-  Relation(r) {}
-  Expression2_logicalop(e) {}
-  Expression4_addop(e) {}
-  Expression5_mulop(e) {}
-  Expression6_exp(e) {}
-  Expression6_negop(e) {}
-  Expression9_prefixop(e) {}
-  Identifier(i) {}
-  GetProperty(p) {}
-  Call(c) {}
+  PlainAssignment(a) {
+    a.expression = this.analyze(a.expression);
+    let x = this.lookup(a.variable.name)
+    check(this).isMeltable(x.mutability)
+    // check if a.variable already exist because it should
+    // TODO check(d.type.hasSameTypeAs(a.expression.type));
+    console.log('Got var');
+    return a
+  }
+  IncrementalAssignment(i) { }
+  Relation(r) { }
+  BinaryExpression(e) {
+    return e
+  }
+  Identifier(i) { }
+  GetProperty(p) { }
+  Call(c) { }
   Number(n) {
     return n;
   }
@@ -328,7 +366,7 @@ class Context {
     return s;
   }
   Booley(b) {
-    b.type = Type.LOVE; 
+    b.type = Type.LOVE;
     return b;
   }
 }

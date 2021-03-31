@@ -41,7 +41,7 @@ const semanticChecks = [
   ['function with no params ', `Ice Samantha Even~Odd() {}`],
   ['array type for param', `Ice Samantha Even~Odd(Herd[] Sven) {}`],
   ['dictionary type for param', `Ice Samantha Even~Odd(Trolls[[]] TrollyBoi) {}`],
-  ['assignments', 'a--❅ c++❅ abc=9*3❅ a=1❅'],
+  ['assignments', 'Meltable Anna abc ❅ \n Meltable Anna a ❅ \n Meltable Anna c ❅\n a--❅ c++❅ abc=9*3❅ a=1❅'],
   ['array type returned', 'Ice Herd[] Even~Odd(Herd[] Boop) { Arendelle Boop ❅}'],
   ['call in statement', 'Unmeltable Anna x = 2 + 3 ❅ \nf(100) ❅\n Sing(1) ❅'],
   ['call in exp', 'Sing(5 * f(x, y, 2 * y) ❅ ) ❅'],
@@ -58,33 +58,34 @@ const semanticErrors = [
   [
     'non-distinct fields',
     'Snow Kristyl { Meltable Olaf fjord = "Hello" ❅ Meltable Olaf fjord = "There" ❅}',
-    /Fields must be distinct/,
+    /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
   [
     'unmutable variable being changed',
     'Unmeltable Elsa x = 3.6 ❅ x = 2.3 ❅',
-    /Cannot assign to constant x/,
+    /You cannot melt the permafrost bad spirit! It simply cannot melt!/,
   ],
-  ['non-int increment', 'Meltable Love isGood = Kristoff ❅ x++ ❅', /an integer, found boolean/],
+  ['non-int increment', 'Meltable Love isGood = Kristoff ❅ isGood++ ❅',
+    /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   [
-    'non-int decrement',
+    'non-number decrement',
     'Meltable Olaf x = "I like telling stories!" ❅ x++ ❅',
-    /an integer, found [string]?/,
+    /Expected Anna or Elsa, but found Olaf. Please summon Anna or Elsa, good spirit!/,
   ],
   ['undeclared id', 'Sing(x) ❅', /Identifier x not declared/],
   [
     'redeclared id',
     'Unmeltable Anna x = 1 ❅ Unmeltable Anna x = 1 ❅',
-    /Identifier x already declared/,
+    /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
-  ['assign bad type', 'Unmeltable Anna x = 1 ❅ x = Kristoff ❅', /Cannot assign a boolean to a int/],
+  ['assign bad type', 'Meltable Anna x = 1 ❅ x = Kristoff ❅', /Cannot assign a boolean to a int/],
   [
     'return value from void function',
     'Ice Samantha f() {Arendelle "Return!" ❅}',
-    /Cannot return a value here/,
+    /Type error: Your proposed return type and actual return type must match, good spirit!/,
   ],
-  ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /should be returned here/],
-  ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /boolean to a int/],
+  ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return the correct type! You simply must bad spirit!/],
+  ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /Type error: Your proposed return type and actual return type must match, good spirit!/],
   ['non-boolean short if test', 'Get~This~Right(1 ❅) {}', /a boolean, found int/],
   ['non-boolean if test', 'Get~This~Right(1 ❅) {} Into~The~Unknown {}', /a boolean, found int/],
   ['non-boolean while test', 'Lost~In~The~Woods(1 ❅) {}', /a boolean, found int/],
@@ -114,7 +115,7 @@ const semanticErrors = [
   [
     'shadowing',
     'Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(true ❅) {Unmeltable Anna x = 1 ❅}',
-    /Identifier x already declared/,
+    /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
   ['call of uncallable', 'Unmeltable Anna x = 1 ❅ \n Sing(x() ❅) ❅', /Call of non-function/],
   ['Too many args', 'Ice Samantha f(Anna x){}\nf(1,2) ❅', /1 argument\(s\) required but 2 passed/],
@@ -231,7 +232,7 @@ const graphChecks = [
   ],
   ['Break statement created', 'Closed~Door ❅', [...TO_DO]],
   ['NewInstance of an object', 'Unmeltable S y = Open~Door S(1) ❅', [...TO_DO]][
-    ('Array created', `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`, [...TO_DO])
+  ('Array created', `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`, [...TO_DO])
   ],
   [
     'Dictionary created',
@@ -253,7 +254,7 @@ const graphChecks = [
   ['Expression9, prefixop created', 'Sing(!Kristoff)', [...TO_DO]],
   ['Identifier created', 'Meltable Anna i = 0 ❅', [...TO_DO]],
   ['ParenthesisExpression created', 'Unmeltable ', [...TO_DO]][
-    ('DictionaryEntry created',
+  ('DictionaryEntry created',
     `Unmeltable Trolls[[]] reindeer = [[First~Name: "Sven" ❅]] ❅`,
     [...TO_DO])
   ],
@@ -272,7 +273,7 @@ const graphChecks = [
     `Ice Olaf Even~Odd(Anna num, Olaf str) { Arendelle "This num is being tested" ❅ }`,
     [...TO_DO],
   ][
-    ('Arguments Created', 'Ice Anna Square (Anna Number) {Arendelle Number * Number ❅}', [...TO_DO])
+  ('Arguments Created', 'Ice Anna Square (Anna Number) {Arendelle Number * Number ❅}', [...TO_DO])
   ],
   ['String Created', `Meltable Olaf x = "This is a string" ❅`, [...TO_DO]],
   ['Float created', 'Unmeltable Elsa y = 3.6 ❅', [...TO_DO]],
