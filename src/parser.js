@@ -17,7 +17,7 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   ReturnStatement_long(_return, output) {
     return new ast.ReturnStatement(output.tree());
   },
-  ReturnStatement_short(_return, _snow) {
+  ReturnStatement_short(_return, _terminal) {
     return new ast.ShortReturnStatement();
   },
   PlainAssignment(name, _equals, expression) {
@@ -164,13 +164,16 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.Arguments(names.asIteration().tree());
   },
   string(_left, contents, _right) {
-    return contents.sourceString;
+    return new ast.Phrase(contents.sourceString);
   },
   float(_whole, _dot, _fractional) {
-    return Number(this.sourceString);
+    return new ast.Float(Number(this.sourceString));
   },
   int(_digits) {
-    return Number(this.sourceString);
+    return new ast.Integer(Number(this.sourceString));
+  },
+  boolean(_bool) {
+    return new ast.Booley(this.sourceString)
   },
   _terminal() {
     return this.sourceString;

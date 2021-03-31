@@ -78,7 +78,6 @@ const semanticErrors = [
     /Identifier x already declared/,
   ],
   ['assign bad type', 'Unmeltable Anna x = 1 ❅ x = Kristoff ❅', /Cannot assign a boolean to a int/],
-  ['return outside function', 'Arendelle ❅', /Return can only appear in a function/],
   [
     'return value from void function',
     'Ice Samantha f() {Arendelle "Return!" ❅}',

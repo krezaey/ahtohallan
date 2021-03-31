@@ -232,13 +232,13 @@ export class Type {
     this.name = name;
   }
 
-  static BOOLEAN = new Type('boolean');
-  static INT = new Type('int');
-  static FLOAT = new Type('float');
-  static STRING = new Type('string');
-  static VOID = new Type('void');
-  static TYPE = new Type('type');
-  static ANY = new Type('any');
+  static LOVE = new Type('Love');
+  static ANNA = new Type('Anna');
+  static ELSA = new Type('Elsa');
+  static OLAF = new Type('Olaf');
+  static SAMANTHA = new Type('Samantha');
+  static TYPE = new Type('Type');
+  static ANY = new Type('Any');
 
   isEquivalentTo(target) {
     return this === target;
@@ -263,7 +263,7 @@ export class DictionaryType extends Type {
 
 export class FunctionType extends Type {
   constructor(parameterTypes, returnType) {
-    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType.name}`);
+    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType ? returnType.name: "Samantha"}`);
     Object.assign(this, { parameterTypes, returnType });
   }
 }
@@ -274,3 +274,35 @@ export class ClassType extends Type {
     this.body = body;
   }
 }
+
+export class Booley {
+  constructor(value) {
+    Object.assign(this, {value, type : Type.LOVE});
+  }
+}
+
+export class Integer {
+  constructor(value) {
+    Object.assign(this, {value, type : Type.ANNA});
+  }
+}
+
+export class Float {
+  constructor(value) {
+    Object.assign(this, {value, type : Type.ELSA});
+  }
+}
+
+export class Phrase {
+  constructor(value) {
+    Object.assign(this, {value, type : Type.OLAF});
+  }
+}
+
+
+// export class VoidType extends Type {
+//   constructor(value) {
+//     super(null)
+//     this.value = value;
+//   }
+// }

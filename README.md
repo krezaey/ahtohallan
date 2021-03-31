@@ -24,13 +24,14 @@ You can view the grammar of our language [here](https://github.com/krezaey/ahtoh
 
 Ahtohallan introduces these language features:
 
-- An object oriented programming language reminiscent of JavaScript
+- An object oriented programming leanguage reminiscent of JavaScript
 - Frozen casing: A style of casing where everything is capitalized, and
   separated by `~` Like~This ! Additionally, all keywords should be capitalized.
 - Like ice, the language is strong and dynamic
+- No primitive types
 - Typed parameters 
 - Function return types
-- Built-in Functions
+- Built-in functions
 - In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
 
 ## Key Words
@@ -63,8 +64,8 @@ Ahtohallan introduces these language features:
 | float      | `Elsa`              | `Unmeltable Elsa y = 3.6 ❅`                                                                                       |
 | string     | `Olaf`              | `Meltable Olaf z = "I like telling stories!" ❅`                                                                   |
 | boolean    | `Love`              | `Unmeltable Love bool = Hans ❅`                                                                                   |
-| true       | `Kristoff`          | `Meltable Love isGood = Kristoff ❅`                                                                               |
-| false      | `Hans`              | `Unmeltable Love isEvil = Hans ❅`                                                                                 |
+| true (boolean)      | `Kristoff`          | `Meltable Love isGood = Kristoff ❅`                                                                               |
+| false (boolean)     | `Hans`              | `Unmeltable Love isEvil = Hans ❅`                                                                                 |
 | array      | `Herd`              | `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                                                 |
 | dictionary | `Trolls[[]]`        | `Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅` |
 | none       | `Samantha`          | `Meltable Elsa n = Samantha ❅`                                                                                    |
@@ -138,10 +139,6 @@ In Ahtohallan functions are declared using the keyword `Ice`.
 This is followed by a return type and a function name. The parameters are in `()` and each parameter has a type and a name. The function block is denoted by `{}`.
 
 ```
-Ice Samantha Function~Name(Olaf String, Anna Int, Elsa Float) {
-  ~* This is a comment *~
-  Sing("Hello, Hello, and Welcome to my Show") ❅
-}
 ```
 
 ### Classes
@@ -215,6 +212,27 @@ Lost~In~The~Woods (x == Kristoff ❅) {
   ~* Code block here *~
 }
 ```
+
+## Semantic Errors
+
+Ahtohallan defines these as semantic errors: 
+
+- Non-distinct fields in classes
+- Accessing fields that do not exist in classes
+- Unmutable variables being changed
+- Non-integer increment or decrement operations
+- Undeclared identifiers
+- Redeclared identifiers
+- Assigning the wrong type to variable at declaration / assignment
+- Number of arguments do not match the number of parameters
+- Argument types do not match the parameter types
+- Returning the wrong type from a function 
+- Returning a type from a void function
+- Returning nothing from a non-void function 
+- Calling an uncallable
+- Non-boolean consequent in control flow statements
+- Mismatched types for operations
+
 ## Examples
 
 ### 1. Here is the iconic Hello, World! print statement.

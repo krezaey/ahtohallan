@@ -10,6 +10,8 @@ import {
 
 import * as stdlib from './stdlib.js';
 
+import util from 'util';
+
 function must(condition, errorMessage) {
   if (!condition) {
     throw new Error(errorMessage);
@@ -76,19 +78,19 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    must([Type.INT, Type.FLOAT].includes(self.type), `Expected a number, found ${self.type.name}`);
+    must([Type.ANNA, Type.ELSA].includes(self.type), `Expected a number, found ${self.type.name}`);
   },
   isNumericOrString() {
     must(
-      [Type.INT, Type.FLOAT, Type.STRING].includes(self.type),
+      [Type.ANNA, Type.ELSA, Type.OLAF].includes(self.type),
       `Expected a number or string, found ${self.type.name}`
     );
   },
   isBoolean() {
-    must(self.type === Type.BOOLEAN, `Expected a Love, found ${self.type.name}`);
+    must(self.type === Type.LOVE, `Expected a Love, found ${self.type.name}`);
   },
   isInteger() {
-    must(self.type === Type.INT, `Expected an Anna, found ${self.type.name}`);
+    must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`);
   },
   isAType() {
     must(self instanceof Type, 'Type expected');
@@ -130,10 +132,26 @@ const check = self => ({
     );
   },
   returnsNothing() {
-    must(self.type.returnType === Type.VOID, `${self.type.returnType} should be returned here`);
+    must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`);
   },
   returnsSomething() {
-    must(self.type.returnType !== Type.VOID, 'Cannot return a value here. It is Samantha!');
+    must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!');
+  },
+  hasNoFunctionOrFunctionReturnTypeMatches(expression) {
+    if (expression.name !== undefined) {
+      // if returning a identifier, find it and check its type
+      if (self.sees(expression.name)) {
+        let exp = self.lookup(expression.name)
+        must(self.function == null || self.function.returnType === exp.type,
+          `Type error: Your proposed return type and actual return type must match, good spirit!`)
+      }
+    } else {
+      // returning an immediate expression value
+      must(
+        self.function == null || self.function.returnType === expression.type.name,
+        `Type error: Your proposed return type and actual return type must match, good spirit!`
+      );
+    }
   },
   hasNoFunctionOrFunctionReturnsSamantha() {
     // TODO: Later make the type a "real" type
@@ -200,7 +218,7 @@ class Context {
     return new Context(this, configuration);
   }
   analyze(node) {
-    console.log(`About to analyze a ${node.constructor.name}`);
+    // console.log(`About to analyze a ${node.constructor.name}`);
     return this[node.constructor.name](node);
   }
   Program(p) {
@@ -215,9 +233,10 @@ class Context {
     return d;
   }
   ReturnStatement(s) {
-    check(this.function.returnsSomething());
-    s.expression = this.analyze(expression);
-    check(s.expression).isReturnableFrom(this.function);
+    // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression);
+    // console.log(util.inspect(this, { depth: 8 }));
+    check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression);
+    // check(s.expression).isReturnableFrom(this.function);
     return s;
   }
   ShortReturnStatement(s) {
@@ -228,7 +247,7 @@ class Context {
   }
   // Expression(e) {}
   Function(d) {
-    d.returnType = d.returnType ? this.analyze(d.returnType) : Type.VOID;
+    d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA;
     //check(d.returnType).isAType(); <---- DO LATER
     // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body));
@@ -266,6 +285,7 @@ class Context {
   DictionaryEntry(d) {}
   DictionaryEntries(d) {}
   Parameter(p) {
+    this.add(p.name, p)
     return p;
   }
   Parameters(p) {
@@ -294,6 +314,22 @@ class Context {
   }
   String(s) {
     return s;
+  }
+  Integer(i) {
+    i.type = Type.ANNA;
+    return i;
+  }
+  Float(f) {
+    f.type = Type.ELSA;
+    return f;
+  }
+  Phrase(s) {
+    s.type = Type.OLAF;
+    return s;
+  }
+  Booley(b) {
+    b.type = Type.LOVE; 
+    return b;
   }
 }
 
