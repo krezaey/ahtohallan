@@ -12,6 +12,9 @@ import * as stdlib from './stdlib.js';
 
 import util from 'util';
 
+// Unmeltable Herd[] x = [[[[1]]]] ❅ 
+// Sing(x[0][0][0][0] + 2) ❅
+
 function must(condition, errorMessage) {
   if (!condition) {
     throw new Error(errorMessage);
@@ -283,7 +286,6 @@ class Context {
     c.body = childContext.analyze(c.body);
     return c;
   }
-  
   Constructor(c) {
     this.add(c.name, c);
   }
