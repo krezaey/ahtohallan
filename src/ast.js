@@ -237,6 +237,8 @@ export class Type {
   static ELSA = new Type('Elsa');
   static OLAF = new Type('Olaf');
   static SAMANTHA = new Type('Samantha');
+  static HERD = new Type('Herd[]');
+  static TROLLS = new Type('Trolls[[]]');
   static TYPE = new Type('Type');
   static ANY = new Type('Any');
 
@@ -249,11 +251,11 @@ export class Type {
   }
 }
 
-export class ArrayType extends Type {
-  constructor(baseType) {
-    super(`[${baseType.name}]`);
-  }
-}
+// export class ArrayType extends Type {
+//   constructor(baseType) {
+//     super(`[${baseType.name}]`);
+//   }
+// }
 
 export class DictionaryType extends Type {
   constructor(keyType, valueType) {

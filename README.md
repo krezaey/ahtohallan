@@ -33,6 +33,7 @@ Ahtohallan introduces these language features:
 - Function return types
 - Built-in functions
 - In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
+- Introducing universe appropriate error messages! 
 
 ## Key Words
 

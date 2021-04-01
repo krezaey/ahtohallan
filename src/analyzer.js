@@ -2,7 +2,7 @@ import {
   Variable,
   Type,
   Function,
-  ArrayType,
+  // ArrayType,
   DictionaryType,
   FunctionType,
   ClassType,
@@ -11,13 +11,36 @@ import {
 import * as stdlib from './stdlib.js';
 
 import util from 'util';
+import { Console } from 'console';
 
 // Unmeltable Herd[] x = [[[[1]]]] ❅ 
 // Sing(x[0][0][0][0] + 2) ❅
 
+
 function must(condition, errorMessage) {
   if (!condition) {
     throw new Error(errorMessage);
+  }
+}
+
+function getType(type) {
+  switch(type) {
+    case "Anna":
+      return Type.ANNA
+    case "Elsa":
+      return Type.ELSA
+    case "Olaf":
+      return Type.OLAF
+    case "Samantha":
+      return Type.SAMANTHA
+    case "Love":
+      return Type.LOVE
+    case "Herd[]":
+      return Type.HERD
+    case "Trolls[[]]":
+      return Type.TROLLS
+    default:
+      return Type.ANY
   }
 }
 
@@ -30,9 +53,9 @@ Object.assign(Type.prototype, {
   },
 });
 
-Object.assign(ArrayType.prototype, {
+Object.assign(Type.HERD, {
   isEquivalentTo(target) {
-    return target.constructor === ArrayType;
+    return target.constructor === Type.HERD;
   },
   isAssignableTo(target) {
     return this.isEquivalentTo(target);
@@ -81,7 +104,7 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    console.log(self.type)
+    console.log(self)
     must([Type.ANNA, Type.ELSA].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`);
   },
   isNumericOrString() {
@@ -100,13 +123,16 @@ const check = self => ({
     must(self instanceof Type, 'Type expected');
   },
   isAnArray() {
-    must(self.type.constructor === ArrayType, 'Herd[] expected');
+    must(self.type.constructor === Type.HERD, 'Herd[] expected');
   },
   isADictionary() {
     must(self.type.constructor === DictionaryType, 'Trolls[[]] expected');
   },
   hasSameTypeAs(other) {
-    must(self.type.isEquivalentTo(other.type), 'Operands do not have the same type');
+    must(self.type === undefined ||
+      other.type === undefined ||
+      self.type.name === other.type.name,
+      'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!');
   },
   // allHaveSameType() {
   //   must(
@@ -238,14 +264,23 @@ class Context {
     return p;
   }
   Variable(d) {
-    d.expression = this.analyze(d.expression);
-    // TODO check(d.type.hasSameTypeAs(d.expression.type));
-    console.log(d)
-    d.type = d.expression.type
-    check(this).nonDuplicateVariableDeclaration(d.name);
-    console.log(d.name)
-    this.add(d.name, d);
-    console.log('Got var');
+    let x = this.analyze(d.expression)
+    d.expression = x === undefined ? d.expression : x
+    // console.log("hakdhkadbhfka", d.expression)
+    console.log(d.expression)
+
+    check(d).hasSameTypeAs(d.expression);
+
+    console.log(Type)
+
+    // d.type = Type[d.type]
+    // console.log(d)
+    // console.log("hakdhkadbhfka", d.expression)
+    check(this).nonDuplicateVariableDeclaration(d.name)
+    // console.log(d.name)
+    console.log("Dat big D", d)
+    this.add(d.name, d)
+    // console.log('Got var');
     return d;
   }
   ReturnStatement(s) {
@@ -308,10 +343,13 @@ class Context {
   NewInstance(n) { }
   Array(a) {
     a.map(e => this.analyze(e));
+    // console.log(util.inspect(a, {depth: 7}))
     return a;
   }
   ArrayExpression(a) {
     this.analyze(a.values);
+    a.type = Type.HERD
+    return a
   }
   Dictionary(d) { }
   DictionaryEntry(d) { }
@@ -327,6 +365,7 @@ class Context {
   Arguments(a) { }
   Incrementer(i) {
     let x = this.lookup(i.operand.name);
+    console.log("x", x)
     check(x).isNumeric();
     return i;
   }

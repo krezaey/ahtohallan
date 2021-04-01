@@ -1,4 +1,4 @@
-import { Type, FunctionType, Variable, Function, ArrayType } from "./ast.js"
+import { Type, FunctionType, Variable, Function} from "./ast.js"
 
 function makeConstant(name, type, value) {
     return Object.assign(new Variable(name, true), { type, value })
