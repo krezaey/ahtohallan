@@ -13,10 +13,6 @@ import * as stdlib from './stdlib.js';
 import util from 'util';
 import { Console } from 'console';
 
-// Unmeltable Herd[] x = [[[[1]]]] ❅ 
-// Sing(x[0][0][0][0] + 2) ❅
-
-
 function must(condition, errorMessage) {
   if (!condition) {
     throw new Error(errorMessage);
@@ -111,7 +107,7 @@ const check = self => ({
   isNumericOrString() {
     must(
       [Type.ANNA, Type.ELSA, Type.OLAF].includes(self.type),
-      `Expected a number or string, found ${self.type.name}`
+      `Expected Anna, Elsa or Olaf, but found ${self.type.name}. Please summon Anna, Elsa or Olaf, good spirit!`
     );
   },
   isBoolean() {
@@ -130,9 +126,9 @@ const check = self => ({
     must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected');
   },
   hasSameTypeAs(other) {
-    console.log("moi", self)
-    console.log("moi", self.type)
-    console.log("mes ami", other.type)
+    // console.log("moi", self)
+    // console.log("moi", self.type)
+    // console.log("mes ami", other.type)
     must(self.type === undefined ||
       other.type === undefined ||
       self.type.name === other.type.name,
@@ -268,22 +264,16 @@ class Context {
     return p;
   }
   Variable(d) {
-
-    console.log("Dat big D", d)
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
-    // console.log("hakdhkadbhfka", d.expression)
-    console.log(d.expression)
     d.type = { ...getType(d.type) }
     check(d).hasSameTypeAs(d.expression);
-    console.log("Dat big D", d)
 
     // d.type = Type[d.type]
     // console.log(d)
     // console.log("hakdhkadbhfka", d.expression)
     check(this).nonDuplicateVariableDeclaration(d.name)
     // console.log(d.name)
-    console.log("Dat big D", d)
     this.add(d.name, d)
     // console.log('Got var');
     return d;
@@ -348,7 +338,6 @@ class Context {
   NewInstance(n) { }
   Array(a) {
     a.map(e => this.analyze(e));
-    // console.log(util.inspect(a, {depth: 7}))
     return a;
   }
   ArrayExpression(a) {
@@ -367,7 +356,15 @@ class Context {
     p.parameter = this.analyze(p.parameter);
     return p;
   }
-  Arguments(a) { }
+  Argument(a) {
+    let x = this.analyze(a.arg);
+    x = (x === undefined)? a.arg: x
+    console.log(a)
+    if (a.arg.name !== undefined) {
+      this.lookup(a.arg.name)
+    }
+    return a;
+  }
   Incrementer(i) {
     let x = this.lookup(i.operand.name);
     console.log("x", x)
@@ -381,84 +378,59 @@ class Context {
     a.expression = this.analyze(a.expression);
     let x = this.lookup(a.variable.name);
     check(this).isMeltable(x.mutability);
-    // check if a.variable already exist because it should
-    // TODO check(d.type.hasSameTypeAs(a.expression.type));
-    console.log('Got var');
+    check(x).hasSameTypeAs(a.expression);
     return a;
   }
   IncrementalAssignment(i) { }
   Relation(r) { }
-//   BinaryExpression(e) {
-//     return e
-//   }
-
-
   BinaryExpression(e) {
-    e.left = this.analyze(e.left);
-    e.right = this.analyze(e.right);
-    if (["&", "|", "^", "<<", ">>"].includes(e.op)) {
-      check(e.left).isInteger();
-      check(e.right).isInteger();
-      e.type = Type.ANNA
-    //} 
-      // else if (["+"].includes(e.op)) {
-      // check(e.left).isNumericOrString();
-      // check(e.left).hasSameTypeAs(e.right);
-      // e.type = e.left.type;
-    } if (["-", "*", "/", "%", "**"].includes(e.op)) {
+    let left = this.analyze(e.left);
+    let right = this.analyze(e.right);
+    e.left = (left === undefined) ? e.left: left;
+    e.right = (right === undefined) ? e.right : right;
+    if (["+"].includes(e.op)) {
+      check(e.left).isNumericOrString();
+      check(e.right).isNumericOrString();
+      if (e.left.type.name === e.right.type.name) {
+        e.type = e.left.type
+      } else if ((e.left.type.name === "Elsa" || e.left.type.name === "Anna") &&
+        (e.right.type.name === "Elsa" || e.right.type.name === "Anna")) {
+        e.type = Type.ELSA
+      } else {
+        e.type = Type.OLAF
+      }
+    } if (["-", "*", "/", "%", "**", "<", "<=", ">", ">="].includes(e.op)) {
       check(e.left).isNumeric();
-      check(e.left).hasSameTypeAs(e.right);
-      e.type = e.left.type;
-    } 
-    //else if (["<", "<=", ">", ">="].includes(e.op)) {
-    //   check(e.left).isNumericOrString();
-    //   check(e.left).hasSameTypeAs(e.right);
-    //   e.type = Type.LOVE
-    // } else if (["==", "!="].includes(e.op)) {
-    //   check(e.left).hasSameTypeAs(e.right);
-    //   e.type = Type.LOVE;
-    // }
-    return e;
-  }
-
-  UnaryExpression(e) {
-    e.operand = this.analyze(e.operand);
-    if (e.op === "-") {
-      check(e.operand).isNumeric()
-      e.type = e.operand.type;
-    } else if (e.op === "!=") {
-      check(e.operand).isBoolean()
-      e.type = Type.LOVE;
-    } else if (e.op === "!=") {
-      check(e.operand).isBoolean()
-      e.type = Type.LOVE;
-    } else {
-      // Operator is "some"
-      e.type = new OptionalType(e.operand.type);
+      check(e.right).isNumeric();
+      if (e.left.type.name === e.right.type.name) {
+        e.type = e.left.type
+      } else {
+        e.type = Type.ELSA
+      }
     }
     return e;
   }
 
-  // UnaryExpression(e) {
-  //   e.operand = this.analyze(e.operand)
-  //   if (e.op === "#") {
-  //     check(e.operand).isAnArray()
-  //     e.type = Type.INT
-  //   } else if (e.op === "-") {
-  //     check(e.operand).isNumeric()
-  //     e.type = e.operand.type
-  //   } else if (e.op === "!") {
-  //     check(e.operand).isBoolean()
-  //     e.type = Type.BOOLEAN
-  //   } else {
-  //     // Operator is "some"
-  //     e.type = new OptionalType(e.operand.type)
-  //   }
-  //   return e
-  // }
+  UnaryExpression(e) {
+    console.log(e)
+    e.right = this.analyze(e.right);
+    if (e.op === "-") {
+      check(e.right).isNumeric()
+      e.type = e.right.type;
+    } else if (e.op === "!") {
+      check(e.right).isBoolean()
+      e.type = Type.LOVE;
+    } 
+    console.log(e)
+    return e;
+  }
   Identifier(i) { }
   GetProperty(p) { }
-  Call(c) { }
+  Call(c) {
+    c.name = this.analyze(c.name);
+    c.args = this.analyze(c.args)
+    return c
+  }
   Number(n) {
     return n;
   }

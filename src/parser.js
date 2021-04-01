@@ -163,6 +163,9 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
   Arguments(names) {
     return new ast.Arguments(names.asIteration().tree());
   },
+  Argument(arg) {
+    return new ast.Argument(arg.tree());
+  },
   string(_left, contents, _right) {
     return new ast.Phrase(contents.sourceString);
   },

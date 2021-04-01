@@ -138,6 +138,12 @@ export class Arguments {
   }
 }
 
+export class Argument {
+  constructor(arg) {
+    this.arg = arg;
+  }
+}
+
 export class Incrementer {
   constructor(operand, op) {
     Object.assign(this, { operand, op });

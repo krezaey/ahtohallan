@@ -60,7 +60,8 @@ Ahtohallan {
     identifier = ~reservedWord identifierStart identifierCharacter*
     Parameters = ListOf<Parameter, ",">
     Parameter = type identifier
-    Arguments = ListOf<Expression2, ",">
+    Arguments = ListOf<Argument, ",">
+    Argument = Expression2
     reservedWord = type | mutability | constructorWord | classWord | functionWord | methodWord | controlFlow | print | this | new | break | return
     type = ("Anna" | "Elsa" | "Olaf" | "Love" | "Herd[]" | "Trolls[[]]" | "Samantha")
     boolean = ("Kristoff" | "Hans") ~remainingCharacter
