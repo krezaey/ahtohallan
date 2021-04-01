@@ -7,9 +7,12 @@ Ahtohallan introduces these language features:
 - An object oriented programming leanguage reminiscent of JavaScript
 - Frozen casing: A style of casing where everything is capitalized, and separated by ~ Like~This ! Additionally, all keywords should be capitalized.
 - Like ice, the language is strong and dynamic
+- No primitive types
 - Typed parameters
 - Function return types
-- Built-in Functions
+- Built-in functions
+- In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
+- Introducing universe appropriate error messages!
 
 #### [View Github Repo](https://github.com/krezaey/ahtohallan)        
 #### [View Grammar](https://github.com/krezaey/ahtohallan/blob/main/src/ahtohallan.ohm)
