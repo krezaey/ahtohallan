@@ -12,6 +12,7 @@ import * as stdlib from './stdlib.js';
 
 import util from 'util';
 import { Console } from 'console';
+import { type } from 'os';
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -201,6 +202,10 @@ const check = self => ({
   isReturnableFrom(f) {
     check(self).isAssignableTo(f.type.returnType);
   },
+  isAccessible(source) {
+    // TODO : Make Frozen(this) have the type TROLLS[[]]
+    must(source !== undefined || source.type !== undefined || source.type.name === Type.HERD.name || source.type.name === Type.TROLLS.name, `Bad spirit!!! You can't access that value type. Seek the Trolls[[]] or find a Herd[]!`)
+  },
   match(targetTypes) {
     must(
       targetTypes.length === self.length,
@@ -268,7 +273,6 @@ class Context {
     d.expression = x === undefined ? d.expression : x
     d.type = { ...getType(d.type) }
     check(d).hasSameTypeAs(d.expression);
-
     // d.type = Type[d.type]
     // console.log(d)
     // console.log("hakdhkadbhfka", d.expression)
@@ -319,7 +323,9 @@ class Context {
   Constructor(c) {
     this.add(c.name, c);
   }
-  Method(m) { }
+  Method(m) {
+    
+  }
   Field(f) {
 
     f.field = this.analyze(f.field);
@@ -410,7 +416,6 @@ class Context {
     }
     return e;
   }
-
   UnaryExpression(e) {
     console.log(e)
     e.right = this.analyze(e.right);
@@ -425,7 +430,20 @@ class Context {
     return e;
   }
   Identifier(i) { }
-  GetProperty(p) { }
+  GetProperty(p) {
+    let x = this.lookup(p.source.name)
+    // console.log(x)
+    x = x.expression
+    for (let property of p.property) {
+      console.log(util.inspect(x, {depth: 100}))
+      check(property).isAccessible(x)
+      x = (x.expression === undefined) ? x.values: x.expression
+    }
+    console.log(p.property.length)
+    // console.log(util.inspect(x, {depth: 100}))
+    // console.log(util.inspect(p, {depth: 8}));
+    return p
+  }
   Call(c) {
     c.name = this.analyze(c.name);
     c.args = this.analyze(c.args)

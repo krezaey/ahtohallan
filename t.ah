@@ -1,1 +1,3 @@
-Unmeltable Herd[] x = [[[[1]]]] ❅ Sing(x[0][0][0][0] + 2) ❅
+Unmeltable Herd[] x = [[[[1]]]] ❅
+Meltable Anna c  ❅
+c = x[0][0][0][0] + 2 ❅
