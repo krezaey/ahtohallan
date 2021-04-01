@@ -283,8 +283,9 @@ class Context {
     c.body = childContext.analyze(c.body);
     return c;
   }
+  
   Constructor(c) {
-
+    this.add(c.name, c);
   }
   Method(m) { }
   Field(f) {
@@ -293,7 +294,7 @@ class Context {
     // console.log(f.field)
     return f;
   }
-  IfStatement(s) { }
+  IfStatement(s) {  }
   WhileLoop(w) {
     const childContext = this.newChild({ inLoop: false, })
     w.body = childContext.analyze(w.body);
@@ -323,27 +324,92 @@ class Context {
   }
   Arguments(a) { }
   Incrementer(i) {
-    let x = this.lookup(i.operand.name)
-    check(x).isNumeric()
-    return i
+    let x = this.lookup(i.operand.name);
+    check(x).isNumeric();
+    return i;
   }
   BreakStatement(s) {
     return s;
   }
   PlainAssignment(a) {
     a.expression = this.analyze(a.expression);
-    let x = this.lookup(a.variable.name)
-    check(this).isMeltable(x.mutability)
+    let x = this.lookup(a.variable.name);
+    check(this).isMeltable(x.mutability);
     // check if a.variable already exist because it should
     // TODO check(d.type.hasSameTypeAs(a.expression.type));
     console.log('Got var');
-    return a
+    return a;
   }
   IncrementalAssignment(i) { }
   Relation(r) { }
+//   BinaryExpression(e) {
+//     return e
+//   }
+
+
   BinaryExpression(e) {
-    return e
+    e.left = this.analyze(e.left);
+    e.right = this.analyze(e.right);
+    if (["&", "|", "^", "<<", ">>"].includes(e.op)) {
+      check(e.left).isInteger();
+      check(e.right).isInteger();
+      e.type = Type.ANNA
+    //} 
+      // else if (["+"].includes(e.op)) {
+      // check(e.left).isNumericOrString();
+      // check(e.left).hasSameTypeAs(e.right);
+      // e.type = e.left.type;
+    } if (["-", "*", "/", "%", "**"].includes(e.op)) {
+      check(e.left).isNumeric();
+      check(e.left).hasSameTypeAs(e.right);
+      e.type = e.left.type;
+    } 
+    //else if (["<", "<=", ">", ">="].includes(e.op)) {
+    //   check(e.left).isNumericOrString();
+    //   check(e.left).hasSameTypeAs(e.right);
+    //   e.type = Type.LOVE
+    // } else if (["==", "!="].includes(e.op)) {
+    //   check(e.left).hasSameTypeAs(e.right);
+    //   e.type = Type.LOVE;
+    // }
+    return e;
   }
+
+  UnaryExpression(e) {
+    e.operand = this.analyze(e.operand);
+    if (e.op === "-") {
+      check(e.operand).isNumeric()
+      e.type = e.operand.type;
+    } else if (e.op === "!=") {
+      check(e.operand).isBoolean()
+      e.type = Type.LOVE;
+    } else if (e.op === "!=") {
+      check(e.operand).isBoolean()
+      e.type = Type.LOVE;
+    } else {
+      // Operator is "some"
+      e.type = new OptionalType(e.operand.type);
+    }
+    return e;
+  }
+
+  // UnaryExpression(e) {
+  //   e.operand = this.analyze(e.operand)
+  //   if (e.op === "#") {
+  //     check(e.operand).isAnArray()
+  //     e.type = Type.INT
+  //   } else if (e.op === "-") {
+  //     check(e.operand).isNumeric()
+  //     e.type = e.operand.type
+  //   } else if (e.op === "!") {
+  //     check(e.operand).isBoolean()
+  //     e.type = Type.BOOLEAN
+  //   } else {
+  //     // Operator is "some"
+  //     e.type = new OptionalType(e.operand.type)
+  //   }
+  //   return e
+  // }
   Identifier(i) { }
   GetProperty(p) { }
   Call(c) { }
