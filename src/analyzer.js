@@ -104,8 +104,9 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    console.log(self)
-    must([Type.ANNA, Type.ELSA].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`);
+    console.log(self.type)
+
+    must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`);
   },
   isNumericOrString() {
     must(
@@ -126,9 +127,12 @@ const check = self => ({
     must(self.type.constructor === Type.HERD, 'Herd[] expected');
   },
   isADictionary() {
-    must(self.type.constructor === DictionaryType, 'Trolls[[]] expected');
+    must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected');
   },
   hasSameTypeAs(other) {
+    console.log("moi", self)
+    console.log("moi", self.type)
+    console.log("mes ami", other.type)
     must(self.type === undefined ||
       other.type === undefined ||
       self.type.name === other.type.name,
@@ -264,14 +268,15 @@ class Context {
     return p;
   }
   Variable(d) {
+
+    console.log("Dat big D", d)
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
     // console.log("hakdhkadbhfka", d.expression)
     console.log(d.expression)
-
+    d.type = { ...getType(d.type) }
     check(d).hasSameTypeAs(d.expression);
-
-    console.log(Type)
+    console.log("Dat big D", d)
 
     // d.type = Type[d.type]
     // console.log(d)
