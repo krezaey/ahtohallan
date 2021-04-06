@@ -324,10 +324,24 @@ class Context {
     this.add(c.name, c);
   }
   Method(m) {
-    
+    m.returnType = m.returnType ? this.analyze(m.returnType) : Type.SAMANTHA;
+    //check(d.returnType).isAType(); <---- DO LATER
+    // Declarations generate brand new function objects
+    const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body));
+    // When entering a function body, we must reset the inLoop setting,
+    // because it is possible to declare a function inside a loop!
+    const childContext = this.newChild({ inLoop: false, forFunction: f });
+    m.parameters = childContext.analyze(m.parameters);
+    // f.type = new FunctionType(
+    //   d.parameters.map(p => p.type),
+    //   d.returnType
+    // );
+    // Add before analyzing the body to allow recursion
+    this.add(f.name, f);
+    m.body = childContext.analyze(m.body);
+    return m;
   }
   Field(f) {
-
     f.field = this.analyze(f.field);
     // console.log(f.field)
     return f;
