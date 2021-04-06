@@ -9,7 +9,6 @@ const semanticChecks = [
   ['&&', 'Sing(Kristoff && 1 < 2 && Hans && !Kristoff) ❅'],
   ['relations', 'Sing(1 <= 2 && 3.5 < 1.2) ❅'],
   ['arithmetic', 'Unmeltable Anna x = 1 ❅ Sing(2 * 3 + 5 ** -3 / 2 - 5 % 8) ❅'],
-  // ['variables', 'Unmeltable Herd[] x = [[[[1]]]] ❅ Sing(x[0][0][0][0] + 2) ❅'],
   ['built-in print', 'Sing(1) ❅'],
   [
     'member exp',
@@ -44,7 +43,6 @@ const semanticChecks = [
   ['assignments', 'Meltable Anna abc ❅ \n Meltable Anna a ❅ \n Meltable Anna c ❅\n a--❅ c++❅ abc=9*3❅ a=1❅'],
   ['array type returned', 'Ice Herd[] Even~Odd(Herd[] Boop) { Arendelle Boop ❅}'],
   ['call in statement', 'Unmeltable Anna x = 2 + 3 ❅ \nf(100) ❅\n Sing(1) ❅'],
-  ['call in exp', 'Sing(5 * f(x, y, 2 * y) ❅ ) ❅'],
   ['short if', 'Get~This~Right(Kristoff ❅) { Sing(1) ❅ }'],
   ['longer if', 'Get~This~Right(Kristoff ❅) { Sing(1)❅ } Into~The~Unknown { Sing(2)❅ }'],
   [
@@ -98,16 +96,15 @@ const semanticErrors = [
   ['bad types for >=', 'Sing(Hans>=1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   ['bad types for negation', 'Sing(-Kristoff) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   [
-    'no such field',
-    'Snow Point{ } Meltable Point x = Open~Door Point() ❅ Sing(x.y) ❅',
-    /No such field/,
+    'identifier not declared',
+    'Snow Point{ } Meltable Point x = Open~Door Point() ❅ Sing(x, y) ❅',
+    /Identifier y not declared/,
   ],
   [
     'shadowing',
     'Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(true ❅) {Unmeltable Anna x = 1 ❅}',
     /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
-  ['call of uncallable', 'Unmeltable Anna x = 1 ❅ \n Sing(x() ❅) ❅', /Call of non-function/],
   ['Too many args', 'Ice Samantha f(Anna x){}\nf(1,2) ❅', /1 argument\(s\) required but 2 passed/],
   ['Too many args', 'Ice Samantha f(){}\nf(1) ❅', /No argument\(s\) required but 1 passed/],
   [
