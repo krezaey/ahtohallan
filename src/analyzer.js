@@ -6,17 +6,17 @@ import {
   DictionaryType,
   FunctionType,
   ClassType,
-} from './ast.js';
+} from './ast.js'
 
-import * as stdlib from './stdlib.js';
+import * as stdlib from './stdlib.js'
 
-import util from 'util';
-import { Console } from 'console';
-import { type } from 'os';
+import util from 'util'
+import { Console } from 'console'
+import { type } from 'os'
 
 function must(condition, errorMessage) {
   if (!condition) {
-    throw new Error(errorMessage);
+    throw new Error(errorMessage)
   }
 }
 
@@ -43,28 +43,28 @@ function getType(type) {
 
 Object.assign(Type.prototype, {
   isEquivalentTo(target) {
-    return this == target;
+    return this == target
   },
   isAssignableTo(target) {
-    return this.isEquivalentTo(target);
+    return this.isEquivalentTo(target)
   },
 });
 
 Object.assign(Type.HERD, {
   isEquivalentTo(target) {
-    return target.constructor === Type.HERD;
+    return target.constructor === Type.HERD
   },
   isAssignableTo(target) {
-    return this.isEquivalentTo(target);
+    return this.isEquivalentTo(target)
   },
 });
 
 Object.assign(DictionaryType.prototype, {
   isEquivalentTo(target) {
-    return target.constructor === DictionaryType;
+    return target.constructor === DictionaryType
   },
   isAssignableTo(target) {
-    return this.isEquivalentTo(target);
+    return this.isEquivalentTo(target)
   },
 });
 
@@ -91,11 +91,11 @@ Object.assign(FunctionType.prototype, {
 Object.assign(ClassType.prototype, {
   isEquivalentTo(target) {
     // We're restrictive: requiring the same exact type object for equivalence
-    return this == target;
+    return this == target
   },
   isAssignableTo(target) {
     // We're restrictive: requiring the same exact type object for assignment
-    return this.isEquivalentTo(target);
+    return this.isEquivalentTo(target)
   },
 });
 
@@ -112,19 +112,19 @@ const check = self => ({
     );
   },
   isBoolean() {
-    must(self.type === Type.LOVE, `Expected a Love, found ${self.type.name}`);
+    must(self.type === Type.LOVE, `Expected a Love, found ${self.type.name}`)
   },
   isInteger() {
-    must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`);
+    must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
   },
   isAType() {
-    must(self instanceof Type, 'Type expected');
+    must(self instanceof Type, 'Type expected')
   },
   isAnArray() {
-    must(self.type.constructor === Type.HERD, 'Herd[] expected');
+    must(self.type.constructor === Type.HERD, 'Herd[] expected')
   },
   isADictionary() {
-    must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected');
+    must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
   },
   hasSameTypeAs(other) {
     // console.log("moi", self)
@@ -148,13 +148,13 @@ const check = self => ({
   //   )
   // },
   isNotReadOnly() {
-    must(!self.readOnly, `Cannot melt an Unmeltable ${self.name}`);
+    must(!self.readOnly, `Cannot melt an Unmeltable ${self.name}`)
   },
   areAllDistinct() {
-    must(new Set(self.map(f => f.name)).size === self.length, 'Snowflakes must be distinct');
+    must(new Set(self.map(f => f.name)).size === self.length, 'Snowflakes must be distinct')
   },
   isInTheObject(object) {
-    must(object.type.fields.map(f => f.name).includes(self), 'No such Snowflake');
+    must(object.type.fields.map(f => f.name).includes(self), 'No such Snowflake')
   },
   isCallable() {
     must(
@@ -163,10 +163,10 @@ const check = self => ({
     );
   },
   returnsNothing() {
-    must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`);
+    must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`)
   },
   returnsSomething() {
-    must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!');
+    must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
   },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
     if (expression.name !== undefined) {
@@ -200,7 +200,7 @@ const check = self => ({
       mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`)
   },
   isReturnableFrom(f) {
-    check(self).isAssignableTo(f.type.returnType);
+    check(self).isAssignableTo(f.type.returnType)
   },
   isAccessible(source) {
     // TODO : Make Frozen(this) have the type TROLLS[[]]
@@ -211,68 +211,68 @@ const check = self => ({
       targetTypes.length === self.length,
       `${targetTypes.length} argument(s) required but ${self.length} passed`
     );
-    targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type));
+    targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type))
   },
   matchParametersOf(calleeType) {
-    check(self).match(calleeType.parameterTypes);
+    check(self).match(calleeType.parameterTypes)
   },
   matchFieldsOf(classType) {
-    check(self).match(classType.fields.map(f => f.type));
+    check(self).match(classType.fields.map(f => f.type))
   },
 });
 
 class Context {
   constructor(parent = null, configuration = {}) {
     // Parent (enclosing scope) for static scope analysis
-    this.parent = parent;
+    this.parent = parent
     // All local declarations. Names map to variable declarations, types, and
     // function declarations
-    this.locals = new Map();
+    this.locals = new Map()
     // Whether we are in a loop, so that we know whether breaks and continues
     // are legal here
-    this.inLoop = configuration.inLoop ?? parent?.inLoop ?? false;
+    this.inLoop = configuration.inLoop ?? parent?.inLoop ?? false
     // Whether we are in a function, so that we know whether a return
     // statement can appear here, and if so, how we typecheck it
-    this.function = configuration.forFunction ?? parent?.function ?? null;
+    this.function = configuration.forFunction ?? parent?.function ?? null
   }
   sees(name) {
     // Search "outward" through enclosing scopes
-    return this.locals.has(name) || this.parent?.sees(name);
+    return this.locals.has(name) || this.parent?.sees(name)
   }
   add(name, entity) {
     // No shadowing! Prevent addition if id anywhere in scope chain!
     if (this.sees(name)) {
-      throw new Error(`Identifier ${name} already declared`);
+      throw new Error(`Identifier ${name} already declared`)
     }
-    this.locals.set(name, entity);
+    this.locals.set(name, entity)
   }
   lookup(name) {
-    const entity = this.locals.get(name);
+    const entity = this.locals.get(name)
     if (entity) {
-      return entity;
+      return entity
     } else if (this.parent) {
-      return this.parent.lookup(name);
+      return this.parent.lookup(name)
     }
-    throw new Error(`Identifier ${name} not declared`);
+    throw new Error(`Identifier ${name} not declared`)
   }
   newChild(configuration = {}) {
     // Create new (nested) context, which is just like the current context
     // except that certain fields can be overridden
-    return new Context(this, configuration);
+    return new Context(this, configuration)
   }
   analyze(node) {
-    console.log(`About to analyze a ${node.constructor.name}`);
-    return this[node.constructor.name](node);
+    console.log(`About to analyze a ${node.constructor.name}`)
+    return this[node.constructor.name](node)
   }
   Program(p) {
-    p.instructions = this.analyze(p.instructions);
-    return p;
+    p.instructions = this.analyze(p.instructions)
+    return p
   }
   Variable(d) {
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
     d.type = { ...getType(d.type) }
-    check(d).hasSameTypeAs(d.expression);
+    check(d).hasSameTypeAs(d.expression)
     // d.type = Type[d.type]
     // console.log(d)
     // console.log("hakdhkadbhfka", d.expression)
@@ -280,88 +280,140 @@ class Context {
     // console.log(d.name)
     this.add(d.name, d)
     // console.log('Got var');
-    return d;
+    return d
   }
   ReturnStatement(s) {
     // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression);
     // console.log(util.inspect(this, { depth: 8 }));
-    check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression);
+    check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression)
     // check(s.expression).isReturnableFrom(this.function);
-    return s;
+    return s
   }
   ShortReturnStatement(s) {
     // TODO: Check that (1) the current function has return type Samantha or
     // (2) that there is no current function (we're at the top level)
-    check(this).hasNoFunctionOrFunctionReturnsSamantha();
-    return s;
+    check(this).hasNoFunctionOrFunctionReturnsSamantha()
+    return s
   }
   // Expression(e) {}
   Function(d) {
-    d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA;
+    d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA
     //check(d.returnType).isAType(); <---- DO LATER
     // Declarations generate brand new function objects
-    const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body));
+    const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body))
     // When entering a function body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
-    const childContext = this.newChild({ inLoop: false, forFunction: f });
-    d.parameters = childContext.analyze(d.parameters);
+    const childContext = this.newChild({ inLoop: false, forFunction: f })
+    d.parameters = childContext.analyze(d.parameters)
     // f.type = new FunctionType(
     //   d.parameters.map(p => p.type),
     //   d.returnType
     // );
     // Add before analyzing the body to allow recursion
-    this.add(f.name, f);
-    d.body = childContext.analyze(d.body);
-    return d;
+    this.add(f.name, f)
+    d.body = childContext.analyze(d.body)
+    return d
   }
   Class(c) {
-    this.add(c.name, c);
+    if (this.inLoop) {
+      throw new Error(`Foolish Spirit! You cannot create a class within a Loop!`)
+    }
+    this.add(c.name, c)
     const childContext = this.newChild({ inLoop: false, })
-    c.body = childContext.analyze(c.body);
-    return c;
+    c.body = childContext.analyze(c.body)
+    let that = {
+      name: "this",
+      type: Type.HERD,
+      reference: c
+    }
+    this.add("this", that)
+    return c
   }
   Constructor(c) {
-    this.add(c.name, c);
+    this.add(c.name, c)
   }
   Method(m) {
-    m.returnType = m.returnType ? this.analyze(m.returnType) : Type.SAMANTHA;
+    m.returnType = m.returnType ? this.analyze(m.returnType) : Type.SAMANTHA
     //check(d.returnType).isAType(); <---- DO LATER
     // Declarations generate brand new function objects
-    const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body));
+    const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
     // When entering a function body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
-    const childContext = this.newChild({ inLoop: false, forFunction: f });
-    m.parameters = childContext.analyze(m.parameters);
+    const childContext = this.newChild({ inLoop: false, forFunction: f })
+    m.parameters = childContext.analyze(m.parameters)
     // f.type = new FunctionType(
     //   d.parameters.map(p => p.type),
     //   d.returnType
     // );
     // Add before analyzing the body to allow recursion
-    this.add(f.name, f);
-    m.body = childContext.analyze(m.body);
-    return m;
+    this.add(f.name, f)
+    m.body = childContext.analyze(m.body)
+    return m
   }
   Field(f) {
-    f.field = this.analyze(f.field);
+    f.field = this.analyze(f.field)
     // console.log(f.field)
-    return f;
+    return f
   }
-  IfStatement(s) {  }
+  IfStatement(s) {
+    // analyze all of the condtions
+    for (let condition of s.condition) {
+      let c = this.analyze(condition)
+      condition = c !== undefined? c: condition
+    }
+    // analyze all of the bodies
+    for (let body of s.body) {
+      let b = this.analyze(body)
+      body = b !== undefined? b: body
+    }
+    // analyze the else block
+    let e = this.analyze(s.alternate)
+    s.alternate = e !== undefined ? e : s.alternate
+    
+    // recombine all of the blocks appropriately
+    let final = {elseIf: []}
+    for (let i = 0; i < s.condition.length; i++) {
+      if (i === 0) {
+        // if case
+        final.if = {
+          condition: s.condition[i],
+          body : s.body[i]
+        }
+      } else {
+        // else if cases
+        let elif = {
+          condition: s.condition[i],
+          body : s.body[i]
+        }
+        final.elseIf.push(elif)
+      } 
+    }
+    final.else = {
+      body : s.alternate
+    }
+    return final
+  }
   WhileLoop(w) {
-    const childContext = this.newChild({ inLoop: false, })
-    w.body = childContext.analyze(w.body);
+    let e = this.analyze(w.expression)
+    w.expression = e !== undefined? e : w.expression
+    const childContext = this.newChild({ inLoop: true, })
+    w.body = childContext.analyze(w.body)
     return w
   }
-  Access(a) { }
+  Access(a) {
+    let v = this.analyze(a.accessValue)
+    a.accessValue = v !== undefined ? v : a.accessValue
+    return a
+  }
   ForLoop(f) { }
   SwitchStatement(s) { }
   NewInstance(n) { }
   Array(a) {
-    a.map(e => this.analyze(e));
+    a.map(e => this.analyze(e))
     return a;
   }
   ArrayExpression(a) {
-    this.analyze(a.values);
+    this.analyze(a.values)
     a.type = Type.HERD
     return a
   }
@@ -370,47 +422,60 @@ class Context {
   DictionaryEntries(d) { }
   Parameter(p) {
     this.add(p.name, p)
-    return p;
+    return p
   }
   Parameters(p) {
-    p.parameter = this.analyze(p.parameter);
-    return p;
+    p.parameter = this.analyze(p.parameter)
+    return p
   }
   Argument(a) {
-    let x = this.analyze(a.arg);
+    let x = this.analyze(a.arg)
     x = (x === undefined)? a.arg: x
     console.log(a)
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
-    return a;
+    return a
   }
   Incrementer(i) {
-    let x = this.lookup(i.operand.name);
+    let x = this.lookup(i.operand.name)
     console.log("x", x)
-    check(x).isNumeric();
-    return i;
+    check(x).isNumeric()
+    return i
   }
   BreakStatement(s) {
-    return s;
+    return s
   }
   PlainAssignment(a) {
-    a.expression = this.analyze(a.expression);
-    let x = this.lookup(a.variable.name);
-    check(this).isMeltable(x.mutability);
-    check(x).hasSameTypeAs(a.expression);
-    return a;
+    a.expression = this.analyze(a.expression)
+    let x = this.lookup(a.variable.name)
+    check(this).isMeltable(x.mutability)
+    check(x).hasSameTypeAs(a.expression)
+    return a
   }
-  IncrementalAssignment(i) { }
-  Relation(r) { }
+  IncrementalAssignment(i) {
+    let v = this.analyze(i.variable)
+    i.variable = v !== undefined ? v : i.variable
+    let o = this.analyze(i.operand)
+    i.operand = o !== undefined ? o : i.operand
+    
+    return i
+  }
+  Relation(r) {
+    let left = this.analyze(r.left)
+    let right = this.analyze(r.right)
+    r.left = left !== undefined ? left : r.left
+    r.right = right !== undefined ? right : r.right
+    return r
+  }
   BinaryExpression(e) {
-    let left = this.analyze(e.left);
-    let right = this.analyze(e.right);
-    e.left = (left === undefined) ? e.left: left;
-    e.right = (right === undefined) ? e.right : right;
+    let left = this.analyze(e.left)
+    let right = this.analyze(e.right)
+    e.left = (left === undefined) ? e.left: left
+    e.right = (right === undefined) ? e.right : right
     if (["+"].includes(e.op)) {
-      check(e.left).isNumericOrString();
-      check(e.right).isNumericOrString();
+      check(e.left).isNumericOrString()
+      check(e.right).isNumericOrString()
       if (e.left.type.name === e.right.type.name) {
         e.type = e.left.type
       } else if ((e.left.type.name === "Elsa" || e.left.type.name === "Anna") &&
@@ -420,8 +485,8 @@ class Context {
         e.type = Type.OLAF
       }
     } if (["-", "*", "/", "%", "**", "<", "<=", ">", ">="].includes(e.op)) {
-      check(e.left).isNumeric();
-      check(e.right).isNumeric();
+      check(e.left).isNumeric()
+      check(e.right).isNumeric()
       if (e.left.type.name === e.right.type.name) {
         e.type = e.left.type
       } else {
@@ -432,19 +497,22 @@ class Context {
   }
   UnaryExpression(e) {
     console.log(e)
-    e.right = this.analyze(e.right);
+    e.right = this.analyze(e.right)
     if (e.op === "-") {
       check(e.right).isNumeric()
-      e.type = e.right.type;
+      e.type = e.right.type
     } else if (e.op === "!") {
       check(e.right).isBoolean()
       e.type = Type.LOVE;
     } 
     console.log(e)
-    return e;
+    return e
   }
-  Identifier(i) { }
+  Identifier(i) {
+    return i
+   }
   GetProperty(p) {
+    console.log("Source: ",p.source)
     let x = this.lookup(p.source.name)
     // console.log(x)
     x = x.expression
@@ -459,31 +527,53 @@ class Context {
     return p
   }
   Call(c) {
-    c.name = this.analyze(c.name);
-    c.args = this.analyze(c.args)
+    let name = this.analyze(c.name)
+    let args = this.analyze(c.args)
+    c.name = name !== undefined? name : c.name
+    c.args = args !== undefined? args : c.args
+    if (c.name.name !== "Sing" && c.name.name !== undefined) {
+      let call = this.lookup(c.name.name)
+      if (c.args.length > call.parameters.parameter.length) {
+        throw new Error(`Excuse me old spirit, you have too many arguments to call ${call.name}.`)
+      }
+      if (c.args.length < call.parameters.parameter.length) {
+        throw new Error(`Excuse me old spirit, you have too few arguments to call ${call.name}.`)
+      }
+      for (let i = 0; i < c.args.length; i++) {
+        if ( c.args[i].arg.type.name !== call.parameters.parameter[i].type) {
+          console.log("dsddvsvd: ", call.parameters.parameter[i].type)
+          throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${call.parameters.parameter[i].type}'.`)
+        }
+      }
+      console.log("NAME: ", c.name)
+      console.log("ARGS: ", c.args[0].type)
+      console.log("CALL: ", call.parameters.parameter[1].type)
+      console.log("CALL: ", call.name)
+
+    }
     return c
   }
   Number(n) {
-    return n;
+    return n
   }
   String(s) {
-    return s;
+    return s
   }
   Integer(i) {
-    i.type = Type.ANNA;
-    return i;
+    i.type = Type.ANNA
+    return i
   }
   Float(f) {
-    f.type = Type.ELSA;
-    return f;
+    f.type = Type.ELSA
+    return f
   }
   Phrase(s) {
-    s.type = Type.OLAF;
-    return s;
+    s.type = Type.OLAF
+    return s
   }
   Booley(b) {
-    b.type = Type.LOVE;
-    return b;
+    b.type = Type.LOVE
+    return b
   }
 }
 
@@ -491,12 +581,12 @@ export default function analyze(node) {
   // Allow primitives to be automatically typed
 
   //ADD ALL PRIMITIVES HERE
-  const initialContext = new Context();
+  const initialContext = new Context()
 
   // Add in all the predefined identifiers from the stdlib module
-  const library = { ...stdlib.types, ...stdlib.constants, ...stdlib.functions };
+  const library = { ...stdlib.types, ...stdlib.constants, ...stdlib.functions }
   for (const [name, type] of Object.entries(library)) {
-    initialContext.add(name, type);
+    initialContext.add(name, type)
   }
-  return initialContext.analyze(node);
+  return initialContext.analyze(node)
 }

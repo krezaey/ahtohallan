@@ -42,7 +42,7 @@ const semanticChecks = [
   ['dictionary type for param', `Ice Samantha Even~Odd(Trolls[[]] TrollyBoi) {}`],
   ['assignments', 'Meltable Anna abc ❅ \n Meltable Anna a ❅ \n Meltable Anna c ❅\n a--❅ c++❅ abc=9*3❅ a=1❅'],
   ['array type returned', 'Ice Herd[] Even~Odd(Herd[] Boop) { Arendelle Boop ❅}'],
-  ['call in statement', 'Unmeltable Anna x = 2 + 3 ❅ \nf(100) ❅\n Sing(1) ❅'],
+  ['call in statement', 'Ice Samantha f(Anna num) {}\nUnmeltable Anna x = 2 + 3 ❅ \nf(100) ❅\n Sing(1) ❅'],
   ['short if', 'Get~This~Right(Kristoff ❅) { Sing(1) ❅ }'],
   ['longer if', 'Get~This~Right(Kristoff ❅) { Sing(1)❅ } Into~The~Unknown { Sing(2)❅ }'],
   [
@@ -105,17 +105,17 @@ const semanticErrors = [
     'Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(true ❅) {Unmeltable Anna x = 1 ❅}',
     /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
-  ['Too many args', 'Ice Samantha f(Anna x){}\nf(1,2) ❅', /1 argument\(s\) required but 2 passed/],
-  ['Too many args', 'Ice Samantha f(){}\nf(1) ❅', /No argument\(s\) required but 1 passed/],
+  ['Too many args', 'Ice Samantha f(Anna x){}\nf(1,2) ❅', /Excuse me old spirit, you have too many arguments to call f./],
+  ['Too many args', 'Ice Samantha f(){}\nf(1) ❅', /Excuse me old spirit, you have too many arguments to call f./],
   [
     'Too few args',
     'Ice Samantha f(Anna x, Anna y){} \nf() ❅',
-    /1 argument\(s\) required but 0 passed/,
+    /Excuse me old spirit, you have too few arguments to call f./,
   ],
   [
     'Parameter type mismatch',
     'Ice Samantha f(Anna num) {}\nf(Hans) ❅',
-    /Cannot assign a boolean to a int/,
+    /Excuse me old spirit, the type of your argument 'Hans' does not match the required type 'Anna'./,
   ],
 ];
 
