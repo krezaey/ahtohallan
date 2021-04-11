@@ -1,2 +1,9 @@
- Unmeltable Anna S = 1 ❅
- Snow S {}
+Snow S {
+  Meltable Anna x ❅ 
+  Water( Anna x , Anna b) {
+    Frozen.x = x ❅
+    Frozen.b = b ❅
+  }
+} 
+Unmeltable S y = Open~Door S(1, 2) ❅
+Sing(y.x) ❅

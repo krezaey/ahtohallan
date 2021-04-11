@@ -168,20 +168,12 @@ const check = self => ({
   //   must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
   // },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
-    if (expression.name !== undefined) {
-      // if returning a identifier, find it and check its type
-      if (self.sees(expression.name)) {
-        let exp = self.lookup(expression.name)
-        must(self.function == null || self.function.returnType === exp.type,
-          `Type error: Your proposed return type and actual return type must match, good spirit!`)
-      }
-    } else {
-      // returning an immediate expression value
-      must(
-        self.function == null || self.function.returnType === expression.type.name,
-        `Type error: Your proposed return type and actual return type must match, good spirit!`
-      )
-    }
+    console.log("Ret Type: ", self.function.returnType)
+    console.log("Expression Type: ", expression.type)
+    must(
+      self.function == null || self.function.returnType === expression.type,
+      `Type error: Your proposed return type and actual return type must match, good spirit!`
+    )
   },
   nonDuplicateVariableDeclaration(name) {
     must(!self.sees(name), `Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!`)
@@ -260,7 +252,7 @@ class Context {
     return new Context(this, configuration)
   }
   analyze(node) {
-    //console.log(`About to analyze a ${node.constructor.name}`)
+    console.log(`About to analyze a ${node.constructor.name}`)
     return this[node.constructor.name](node)
   }
   Program(p) {
@@ -270,13 +262,14 @@ class Context {
   Variable(d) {
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
-    d.type = { ...getType(d.type) }
+    d.type = getType(d.type)
     check(d).hasSameTypeAs(d.expression)
     // d.type = Type[d.type]
     // console.log(d)
     // console.log("hakdhkadbhfka", d.expression)
     check(this).nonDuplicateVariableDeclaration(d.name)
     // console.log(d.name)
+    console.log(d.name)
     this.add(d.name, d)
     // console.log('Got var')
     return d
@@ -284,6 +277,13 @@ class Context {
   ReturnStatement(s) {
     // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression)
     // console.log(util.inspect(this, { depth: 8 }))
+    let x = this.analyze(s.expression)
+    s.expression = x!== undefined? x : s.expression
+    if (s.expression.name !== undefined) {
+      let ret = this.lookup(s.expression.name)
+      s.expression.type = getType(ret.type);
+    }
+
     check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression)
     // check(s.expression).isReturnableFrom(this.function)
     return s
@@ -296,7 +296,10 @@ class Context {
   }
   // Expression(e) {}
   Function(d) {
+    console.log(d.returnType)
     d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA
+    d.returnType = getType(d.returnType)
+    console.log(d.returnType)
     //check(d.returnType).isAType() <---- DO LATER
     // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body))
@@ -332,9 +335,8 @@ class Context {
     this.add(c.name, c)
   }
   Method(m) {
-    m.returnType = m.returnType ? this.analyze(m.returnType) : Type.SAMANTHA
-    //check(d.returnType).isAType() <---- DO LATER
-    // Declarations generate brand new function objects
+    m.returnType = m.returnType ? this.analyze(m.returnType) : m.returnType
+    m.returnType = getType(m.returnType)
     const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
     // When entering a function body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
@@ -404,9 +406,76 @@ class Context {
   //   a.accessValue = v !== undefined ? v : a.accessValue
   //   return a
   // }
-  ForLoop(f) { }
-  SwitchStatement(s) { }
-  NewInstance(n) { }
+  ForLoop(f) {
+    // ForLoop = for "("Variable Relation terminal Increment ")" Body
+    let s = this.analyze(f.start)
+    f.start = s !== undefined ? s : f.start
+    let l = this.analyze(f.limit)
+    f.limit = l !== undefined ? l : f.limit
+    // let i = this.analyze(f.increment)
+    // f.increment = i !== undefined ? i : f.increment
+    // let b = this.analyze(f.body)
+    // f.body = b !== undefined ? b : f.body
+    
+    console.log("For Loop Baabys: ", util.inspect(f, {depth : 8}))
+    // constructor(start, limit, increment, body) {
+   }
+  SwitchStatement(s) {
+   // SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* )+ (default ":" Statement*)? "}"
+   // constructor(expression, cases, body, defaultCase)
+   /*
+   
+   let e = this.analyze(s.expression)  // dont think we need all of this but lets see
+   let c = this.anaylze(s.cases)
+   let b = this.analyze(s.body)
+   let d = this.anaylze(s.defaultCase) 
+    s.expression = e !== undefined ? e : s.body
+    s.cases = c !== undefined ? c : s.cases
+    s.body = b !== undefined ? b : s.body
+    s.defaultCases = d !== undefined ? d : s.defaultCases
+    
+   */    
+  }
+  NewInstance(n) {
+    // new identifier "(" Arguments ? ")"
+  // constructor(identifier, args) {s
+    let i = this.analyze(n.identifier)
+    let a = this.analyze(n.args)
+    n.identifier = i !== undefined ? i : n.identifier
+    n.args = a !== undefined ? a : n.args
+    
+    let x = this.lookup(n.identifier)
+    let c = undefined
+    for (let s of x.body) {
+      if (s.parameters !== undefined) {
+        c = s
+        break
+      }
+    }
+
+    if (c !== undefined) {
+      if (n.args.length > c.parameters.parameter.length) {
+        throw new Error(`Excuse me old spirit, you have too many arguments to instantiate ${x.name}.`)
+      }
+      if (n.args.length < c.parameters.parameter.length) {
+        throw new Error(`Excuse me old spirit, you have too few arguments to instantiate ${x.name}.`)
+      }
+      for (let i = 0; i < c.args.length; i++) {
+        if (c.args[i].arg.type.name !== c.parameters.parameter[i].type) {
+          throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type}' .`)
+        }
+      }
+    } else {
+      throw new Error(`Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!`)
+    }
+
+    console.log(x)
+
+
+    return n
+    
+
+  }
   Array(a) {
     a.map(e => this.analyze(e))
     return a
@@ -427,6 +496,14 @@ class Context {
     p.parameter = this.analyze(p.parameter)
     return p
   }
+  Arguments(a) {
+    let x
+    for (let n of a.names) {
+      x = this.analyze(n)
+      n = x !== undefined? x : n
+    }
+    console.log(a)
+  }
   Argument(a) {
     let x = this.analyze(a.arg)
     x = (x === undefined)? a.arg: x
@@ -434,6 +511,7 @@ class Context {
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
+    console.log(a)
     return a
   }
   Incrementer(i) {
@@ -443,6 +521,10 @@ class Context {
     return i
   }
   BreakStatement(s) {
+    return s
+  }
+
+  Switch(s) {
     return s
   }
   PlainAssignment(a) {
@@ -459,16 +541,19 @@ class Context {
     i.operand = o !== undefined ? o : i.operand
     return i
   }
-  // Relation(r) {
-  //   let left = this.analyze(r.left)
-  //   let right = this.analyze(r.right)
-  //   r.left = left !== undefined ? left : r.left
-  //   r.right = right !== undefined ? right : r.right
-  //   return r
-  // }
   BinaryExpression(e) {
     let left = this.analyze(e.left)
     let right = this.analyze(e.right)
+    // if given an identifier get it's type
+    if (left.name !== undefined) {
+      let x = this.lookup(left.name)
+      left.type = x.type
+    }
+    if (right.name !== undefined) {
+      let y = this.lookup(right.name)
+      right.type = y.type
+    }
+
     e.left = (left === undefined) ? e.left: left
     e.right = (right === undefined) ? e.right : right
     if (["+"].includes(e.op)) {
@@ -509,6 +594,8 @@ class Context {
   Identifier(i) {
     return i
    }
+   Case() {}
+   DefaultCase() {}
   GetProperty(p) {
     //console.log("Source: ",p.source)
     let x = this.lookup(p.source.name)
@@ -563,6 +650,7 @@ class Context {
     b.type = Type.LOVE
     return b
   }
+  
 }
 
 export default function analyze(node) {

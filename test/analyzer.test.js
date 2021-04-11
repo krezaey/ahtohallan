@@ -4,6 +4,7 @@ import analyze from '../src/analyzer.js'
 import * as ast from '../src/ast.js'
 
 const semanticChecks = [
+  ['empty for loop', 'Unmeltable Anna x = 10 ❅\nLet~It~Go (Meltable Anna i = 1 ❅ i < x ❅ i+=1 ❅) {}'],
   ['increment and decrement', 'Meltable Anna x = 10 ❅ x-- ❅ x++ ❅'],
   ['||', 'Sing(Kristoff || 1 < 2 || Hans || !Kristoff) ❅'],
   ['&&', 'Sing(Kristoff && 1 < 2 && Hans && !Kristoff) ❅'],
