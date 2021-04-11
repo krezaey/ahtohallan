@@ -521,9 +521,7 @@ class Context {
       check(property).isAccessible(x)
       x = (x.expression === undefined) ? x.values: x.expression
     }
-    console.log(p.property.length)
-    // console.log(util.inspect(x, {depth: 100}))
-    // console.log(util.inspect(p, {depth: 8}));
+    this.type = Type.ANY
     return p
   }
   Call(c) {
@@ -540,15 +538,10 @@ class Context {
         throw new Error(`Excuse me old spirit, you have too few arguments to call ${call.name}.`)
       }
       for (let i = 0; i < c.args.length; i++) {
-        if ( c.args[i].arg.type.name !== call.parameters.parameter[i].type) {
-          console.log("dsddvsvd: ", call.parameters.parameter[i].type)
+        if (c.args[i].arg.type.name !== call.parameters.parameter[i].type) {
           throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${call.parameters.parameter[i].type}'.`)
         }
       }
-      console.log("NAME: ", c.name)
-      console.log("ARGS: ", c.args[0].type)
-      console.log("CALL: ", call.parameters.parameter[1].type)
-      console.log("CALL: ", call.name)
 
     }
     return c

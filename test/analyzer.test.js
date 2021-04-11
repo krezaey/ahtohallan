@@ -12,7 +12,7 @@ const semanticChecks = [
   ['built-in print', 'Sing(1) ❅'],
   [
     'member exp',
-    `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ print(y.x) ❅`,
+    `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ Sing(y.x) ❅`,
   ],
   [
     'array of Classes',
