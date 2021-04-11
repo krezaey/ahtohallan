@@ -1,20 +1,21 @@
-import assert from 'assert';
-import parse from '../src/parser.js';
-import analyze from '../src/analyzer.js';
-import * as ast from '../src/ast.js';
+import assert from 'assert'
+import parse from '../src/parser.js'
+import analyze from '../src/analyzer.js'
+import * as ast from '../src/ast.js'
 
 const semanticChecks = [
   ['increment and decrement', 'Meltable Anna x = 10 ❅ x-- ❅ x++ ❅'],
   ['||', 'Sing(Kristoff || 1 < 2 || Hans || !Kristoff) ❅'],
   ['&&', 'Sing(Kristoff && 1 < 2 && Hans && !Kristoff) ❅'],
   ['relations', 'Sing(1 <= 2 && 3.5 < 1.2) ❅'],
-  ['arithmetic', 'Unmeltable Anna x = 1 ❅ Sing(2 * 3 + 5 ** -3 / 2 - 5 % 8) ❅'],
+  ['arithmetic', 'Unmeltable Anna x = 1 ❅ Sing(2 * 3 + 5.0 ** -3 / 2 - 5.0 % 8) ❅'],
   ['built-in print', 'Sing(1) ❅'],
-  [
+  [ 
     'member exp',
     `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ Sing(y.x) ❅`,
   ],
   [
+
     'array of Classes',
     'Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable Herd[] x = [Open~Door S(1), Open~Door S(3)]❅',
   ],
@@ -23,7 +24,7 @@ const semanticChecks = [
   ['multiple statements', 'Sing(1) ❅ Closed~Door ❅ x += 3 ❅ Arendelle ❅'],
   [
     'variable declarations',
-    `Meltable Anna x = 2 + 3 ❅\n Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅`,
+    `Meltable Olaf x = 2.0 + "3" ❅\n Unmeltable Olaf String~Name = "Who can handle this enormous candle? Unmeltable me" ❅`,
   ],
   [
     'class declarations',
@@ -50,9 +51,19 @@ const semanticChecks = [
     'Get~This~Right(Kristoff ❅) { Sing(1)❅ } The~Next~Right~Thing(Hans ❅) { Sing(2)❅ }',
   ],
   ['while with empty block', 'Lost~In~The~Woods(Hans ❅) {}'],
-];
+]
 
 const semanticErrors = [
+  [
+    'identifier declared twice',
+    'Unmeltable Anna S = 1 ❅\nSnow S {}',
+    /Forgetful spirit! S already declared/
+  ],
+  [
+    'class in loop',
+    'Lost~In~The~Woods(Hans ❅) {Snow S {}}',
+    /Foolish Spirit! You cannot create a class within a Loop!/,
+  ],
   [
     'non-distinct fields',
     'Snow Kristyl { Meltable Olaf fjord = "Hello" ❅ Meltable Olaf fjord = "There" ❅}',
@@ -86,7 +97,7 @@ const semanticErrors = [
   ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return the correct type! You simply must bad spirit!/],
   ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /Type error: Your proposed return type and actual return type must match, good spirit!/],
   ['bad types for +', 'Sing(Hans + 1) ❅', /Expected Anna, Elsa or Olaf, but found Love. Please summon Anna, Elsa or Olaf, good spirit!/],
-  ['bad types for -', 'Sing(Hans-1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
+  ['bad types for -', 'Sing(1.0 - Hans) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   ['bad types for *', 'Sing(Hans*1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   ['bad types for /', 'Sing(Hans/1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   ['bad types for **', 'Sing(Hans**1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
@@ -117,18 +128,18 @@ const semanticErrors = [
     'Ice Samantha f(Anna num) {}\nf(Hans) ❅',
     /Excuse me old spirit, the type of your argument 'Hans' does not match the required type 'Anna'./,
   ],
-];
+]
 
 describe('The analyzer', () => {
   for (const [scenario, source] of semanticChecks) {
     it(`recognizes ${scenario}`, () => {
-      assert.ok(analyze(parse(source)));
-    });
+      assert.ok(analyze(parse(source)))
+    })
   }
   for (const [scenario, source, errorMessagePattern] of semanticErrors) {
     it(`throws on ${scenario}`, () => {
-      assert.throws(() => analyze(parse(source)), errorMessagePattern);
-    });
+      assert.throws(() => analyze(parse(source)), errorMessagePattern)
+    })
   }
-  // console.log("Total Tests: ", semanticChecks.length + semanticErrors.length)
-});
+  console.log("Total Tests: ", semanticChecks.length + semanticErrors.length)
+})

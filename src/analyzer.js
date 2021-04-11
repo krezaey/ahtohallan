@@ -9,7 +9,6 @@ import {
 } from './ast.js'
 
 import * as stdlib from './stdlib.js'
-
 import util from 'util'
 import { Console } from 'console'
 import { type } from 'os'
@@ -42,90 +41,90 @@ function getType(type) {
 }
 
 Object.assign(Type.prototype, {
-  isEquivalentTo(target) {
-    return this == target
-  },
-  isAssignableTo(target) {
-    return this.isEquivalentTo(target)
-  },
-});
+  // isEquivalentTo(target) {
+  //   return this == target
+  // },
+  // isAssignableTo(target) {
+  //   return this.isEquivalentTo(target)
+  // },
+})
 
 Object.assign(Type.HERD, {
-  isEquivalentTo(target) {
-    return target.constructor === Type.HERD
-  },
-  isAssignableTo(target) {
-    return this.isEquivalentTo(target)
-  },
-});
+  // isEquivalentTo(target) {
+  //   return target.constructor === Type.HERD
+  // },
+  // isAssignableTo(target) {
+  //   return this.isEquivalentTo(target)
+  // },
+})
 
-Object.assign(DictionaryType.prototype, {
-  isEquivalentTo(target) {
-    return target.constructor === DictionaryType
-  },
-  isAssignableTo(target) {
-    return this.isEquivalentTo(target)
-  },
-});
+// Object.assign(DictionaryType.prototype, {
+  // isEquivalentTo(target) {
+  //   return target.constructor === DictionaryType
+  // },
+  // isAssignableTo(target) {
+  //   return this.isEquivalentTo(target)
+  // },
+// })
 
 Object.assign(FunctionType.prototype, {
-  isEquivalentTo(target) {
-    return (
-      target.constructor === FunctionType &&
-      this.returnType.isEquivalentTo(target.returnType) &&
-      this.parameterTypes.length === target.parameterTypes.length &&
-      this.parameterTypes.every((t, i) => target.parameterTypes[i].isEquivalentTo(t))
-    );
-  },
-  isAssignableTo(target) {
+  // isEquivalentTo(target) {
+  //   return (
+  //     target.constructor === FunctionType &&
+  //     this.returnType.isEquivalentTo(target.returnType) &&
+  //     this.parameterTypes.length === target.parameterTypes.length &&
+  //     this.parameterTypes.every((t, i) => target.parameterTypes[i].isEquivalentTo(t))
+  //   )
+  // },
+  // isAssignableTo(target) {
     // Functions are covariant on return types, contravariant on parameters.
-    return (
-      target.constructor === FunctionType &&
-      this.returnType.isAssignableTo(target.returnType) &&
-      this.parameterTypes.length === target.parameterTypes.length &&
-      this.parameterTypes.every((t, i) => target.parameterTypes[i].isAssignableTo(t))
-    );
-  },
-});
+    // return (
+    //   target.constructor === FunctionType &&
+    //   this.returnType.isAssignableTo(target.returnType) &&
+    //   this.parameterTypes.length === target.parameterTypes.length &&
+    //   this.parameterTypes.every((t, i) => target.parameterTypes[i].isAssignableTo(t))
+    // )
+  // },
+})
 
 Object.assign(ClassType.prototype, {
-  isEquivalentTo(target) {
-    // We're restrictive: requiring the same exact type object for equivalence
-    return this == target
-  },
-  isAssignableTo(target) {
-    // We're restrictive: requiring the same exact type object for assignment
-    return this.isEquivalentTo(target)
-  },
-});
+  // isEquivalentTo(target) {
+  //   // We're restrictive: requiring the same exact type object for equivalence
+  //   return this == target
+  // },
+  // isAssignableTo(target) {
+  //   // We're restrictive: requiring the same exact type object for assignment
+  //   return this.isEquivalentTo(target)
+  // },
+})
 
 const check = self => ({
   isNumeric() {
-    console.log(self.type)
+    //console.log(self.type)
 
-    must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`);
+    must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
   },
   isNumericOrString() {
     must(
       [Type.ANNA, Type.ELSA, Type.OLAF].includes(self.type),
       `Expected Anna, Elsa or Olaf, but found ${self.type.name}. Please summon Anna, Elsa or Olaf, good spirit!`
-    );
+    )
   },
   isBoolean() {
     must(self.type === Type.LOVE, `Expected a Love, found ${self.type.name}`)
   },
-  isInteger() {
-    must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
-  },
-  isAType() {
-    must(self instanceof Type, 'Type expected')
-  },
-  isAnArray() {
-    must(self.type.constructor === Type.HERD, 'Herd[] expected')
-  },
-  isADictionary() {
-    must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
-  },
+  // isInteger() {
+  //   must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
+  // },
+  // isAType() {
+  //   must(self instanceof Type, 'Type expected')
+  // },
+  // isAnArray() {
+  //   must(self.type.constructor === Type.HERD, 'Herd[] expected')
+  // },
+  // isADictionary() {
+  //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
+  // },
   hasSameTypeAs(other) {
     // console.log("moi", self)
     // console.log("moi", self.type)
@@ -133,7 +132,7 @@ const check = self => ({
     must(self.type === undefined ||
       other.type === undefined ||
       self.type.name === other.type.name,
-      'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!');
+      'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!')
   },
   // allHaveSameType() {
   //   must(
@@ -147,27 +146,27 @@ const check = self => ({
   //     `Cannot assign a ${self.type.name} to a ${type.name}`
   //   )
   // },
-  isNotReadOnly() {
-    must(!self.readOnly, `Cannot melt an Unmeltable ${self.name}`)
-  },
-  areAllDistinct() {
-    must(new Set(self.map(f => f.name)).size === self.length, 'Snowflakes must be distinct')
-  },
-  isInTheObject(object) {
-    must(object.type.fields.map(f => f.name).includes(self), 'No such Snowflake')
-  },
-  isCallable() {
-    must(
-      self.constructor === ClassType || self.type.constructor == FunctionType,
-      'Call of non-function or non-constructor'
-    );
-  },
-  returnsNothing() {
-    must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`)
-  },
-  returnsSomething() {
-    must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
-  },
+  // isNotReadOnly() {
+  //   must(!self.readOnly, `Cannot melt an Unmeltable ${self.name}`)
+  // },
+  // areAllDistinct() {
+  //   must(new Set(self.map(f => f.name)).size === self.length, 'Snowflakes must be distinct')
+  // },
+  // isInTheObject(object) {
+  //   must(object.type.fields.map(f => f.name).includes(self), 'No such Snowflake')
+  // },
+  // isCallable() {
+  //   must(
+  //     self.constructor === ClassType || self.type.constructor == FunctionType,
+  //     'Call of non-function or non-constructor'
+  //   )
+  // },
+  // returnsNothing() {
+  //   must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`)
+  // },
+  // returnsSomething() {
+  //   must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
+  // },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
     if (expression.name !== undefined) {
       // if returning a identifier, find it and check its type
@@ -181,7 +180,7 @@ const check = self => ({
       must(
         self.function == null || self.function.returnType === expression.type.name,
         `Type error: Your proposed return type and actual return type must match, good spirit!`
-      );
+      )
     }
   },
   nonDuplicateVariableDeclaration(name) {
@@ -189,37 +188,37 @@ const check = self => ({
   },
   hasNoFunctionOrFunctionReturnsSamantha() {
     // TODO: Later make the type a "real" type
-    // console.log(self.function.returnType);
+
     must(
       self.function === null || self.function.returnType === 'Samantha',
       `You must return the correct type! You simply must bad spirit!`
-    );
+    )
   },
   isMeltable(mutability) {
     must(
       mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`)
   },
-  isReturnableFrom(f) {
-    check(self).isAssignableTo(f.type.returnType)
-  },
+  // isReturnableFrom(f) {
+  //   check(self).isAssignableTo(f.type.returnType)
+  // },
   isAccessible(source) {
     // TODO : Make Frozen(this) have the type TROLLS[[]]
     must(source !== undefined || source.type !== undefined || source.type.name === Type.HERD.name || source.type.name === Type.TROLLS.name, `Bad spirit!!! You can't access that value type. Seek the Trolls[[]] or find a Herd[]!`)
   },
-  match(targetTypes) {
-    must(
-      targetTypes.length === self.length,
-      `${targetTypes.length} argument(s) required but ${self.length} passed`
-    );
-    targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type))
-  },
-  matchParametersOf(calleeType) {
-    check(self).match(calleeType.parameterTypes)
-  },
-  matchFieldsOf(classType) {
-    check(self).match(classType.fields.map(f => f.type))
-  },
-});
+  // match(targetTypes) {
+  //   must(
+  //     targetTypes.length === self.length,
+  //     `${targetTypes.length} argument(s) required but ${self.length} passed`
+  //   )
+  //   targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type))
+  // },
+  // matchParametersOf(calleeType) {
+  //   check(self).match(calleeType.parameterTypes)
+  // },
+  // matchFieldsOf(classType) {
+  //   check(self).match(classType.fields.map(f => f.type))
+  // },
+})
 
 class Context {
   constructor(parent = null, configuration = {}) {
@@ -242,7 +241,7 @@ class Context {
   add(name, entity) {
     // No shadowing! Prevent addition if id anywhere in scope chain!
     if (this.sees(name)) {
-      throw new Error(`Identifier ${name} already declared`)
+      throw new Error(`Forgetful spirit! ${name} already declared!`)
     }
     this.locals.set(name, entity)
   }
@@ -261,7 +260,7 @@ class Context {
     return new Context(this, configuration)
   }
   analyze(node) {
-    console.log(`About to analyze a ${node.constructor.name}`)
+    //console.log(`About to analyze a ${node.constructor.name}`)
     return this[node.constructor.name](node)
   }
   Program(p) {
@@ -279,14 +278,14 @@ class Context {
     check(this).nonDuplicateVariableDeclaration(d.name)
     // console.log(d.name)
     this.add(d.name, d)
-    // console.log('Got var');
+    // console.log('Got var')
     return d
   }
   ReturnStatement(s) {
-    // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression);
-    // console.log(util.inspect(this, { depth: 8 }));
+    // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression)
+    // console.log(util.inspect(this, { depth: 8 }))
     check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression)
-    // check(s.expression).isReturnableFrom(this.function);
+    // check(s.expression).isReturnableFrom(this.function)
     return s
   }
   ShortReturnStatement(s) {
@@ -298,7 +297,7 @@ class Context {
   // Expression(e) {}
   Function(d) {
     d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA
-    //check(d.returnType).isAType(); <---- DO LATER
+    //check(d.returnType).isAType() <---- DO LATER
     // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body))
     // When entering a function body, we must reset the inLoop setting,
@@ -306,18 +305,18 @@ class Context {
     const childContext = this.newChild({ inLoop: false, forFunction: f })
     d.parameters = childContext.analyze(d.parameters)
     // f.type = new FunctionType(
-    //   d.parameters.map(p => p.type),
-    //   d.returnType
-    // );
+    //   d.parameters.map(p => p.type), d.returnType
+    // )
     // Add before analyzing the body to allow recursion
     this.add(f.name, f)
     d.body = childContext.analyze(d.body)
     return d
   }
-  Class(c) {
+  Snow(c) {
     if (this.inLoop) {
       throw new Error(`Foolish Spirit! You cannot create a class within a Loop!`)
     }
+    // console.log(c.name)
     this.add(c.name, c)
     const childContext = this.newChild({ inLoop: false, })
     c.body = childContext.analyze(c.body)
@@ -334,7 +333,7 @@ class Context {
   }
   Method(m) {
     m.returnType = m.returnType ? this.analyze(m.returnType) : Type.SAMANTHA
-    //check(d.returnType).isAType(); <---- DO LATER
+    //check(d.returnType).isAType() <---- DO LATER
     // Declarations generate brand new function objects
     const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
     // When entering a function body, we must reset the inLoop setting,
@@ -344,7 +343,7 @@ class Context {
     // f.type = new FunctionType(
     //   d.parameters.map(p => p.type),
     //   d.returnType
-    // );
+    // )
     // Add before analyzing the body to allow recursion
     this.add(f.name, f)
     m.body = childContext.analyze(m.body)
@@ -359,12 +358,12 @@ class Context {
     // analyze all of the condtions
     for (let condition of s.condition) {
       let c = this.analyze(condition)
-      condition = c !== undefined? c: condition
+      condition = c !== undefined ? c: condition
     }
     // analyze all of the bodies
     for (let body of s.body) {
       let b = this.analyze(body)
-      body = b !== undefined? b: body
+      body = b !== undefined ? b: body
     }
     // analyze the else block
     let e = this.analyze(s.alternate)
@@ -400,17 +399,17 @@ class Context {
     w.body = childContext.analyze(w.body)
     return w
   }
-  Access(a) {
-    let v = this.analyze(a.accessValue)
-    a.accessValue = v !== undefined ? v : a.accessValue
-    return a
-  }
+  // Access(a) {
+  //   let v = this.analyze(a.accessValue)
+  //   a.accessValue = v !== undefined ? v : a.accessValue
+  //   return a
+  // }
   ForLoop(f) { }
   SwitchStatement(s) { }
   NewInstance(n) { }
   Array(a) {
     a.map(e => this.analyze(e))
-    return a;
+    return a
   }
   ArrayExpression(a) {
     this.analyze(a.values)
@@ -431,7 +430,7 @@ class Context {
   Argument(a) {
     let x = this.analyze(a.arg)
     x = (x === undefined)? a.arg: x
-    console.log(a)
+    //console.log(a)
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
@@ -439,7 +438,7 @@ class Context {
   }
   Incrementer(i) {
     let x = this.lookup(i.operand.name)
-    console.log("x", x)
+    //console.log("x", x)
     check(x).isNumeric()
     return i
   }
@@ -458,16 +457,15 @@ class Context {
     i.variable = v !== undefined ? v : i.variable
     let o = this.analyze(i.operand)
     i.operand = o !== undefined ? o : i.operand
-    
     return i
   }
-  Relation(r) {
-    let left = this.analyze(r.left)
-    let right = this.analyze(r.right)
-    r.left = left !== undefined ? left : r.left
-    r.right = right !== undefined ? right : r.right
-    return r
-  }
+  // Relation(r) {
+  //   let left = this.analyze(r.left)
+  //   let right = this.analyze(r.right)
+  //   r.left = left !== undefined ? left : r.left
+  //   r.right = right !== undefined ? right : r.right
+  //   return r
+  // }
   BinaryExpression(e) {
     let left = this.analyze(e.left)
     let right = this.analyze(e.right)
@@ -493,31 +491,31 @@ class Context {
         e.type = Type.ELSA
       }
     }
-    return e;
+    return e
   }
   UnaryExpression(e) {
-    console.log(e)
+    //console.log(e)
     e.right = this.analyze(e.right)
     if (e.op === "-") {
       check(e.right).isNumeric()
       e.type = e.right.type
     } else if (e.op === "!") {
       check(e.right).isBoolean()
-      e.type = Type.LOVE;
+      e.type = Type.LOVE
     } 
-    console.log(e)
+    //console.log(e)
     return e
   }
   Identifier(i) {
     return i
    }
   GetProperty(p) {
-    console.log("Source: ",p.source)
+    //console.log("Source: ",p.source)
     let x = this.lookup(p.source.name)
     // console.log(x)
     x = x.expression
     for (let property of p.property) {
-      console.log(util.inspect(x, {depth: 100}))
+      //console.log(util.inspect(x, {depth: 100}))
       check(property).isAccessible(x)
       x = (x.expression === undefined) ? x.values: x.expression
     }
@@ -545,9 +543,6 @@ class Context {
 
     }
     return c
-  }
-  Number(n) {
-    return n
   }
   String(s) {
     return s

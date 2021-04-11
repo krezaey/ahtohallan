@@ -1,5 +1,5 @@
-import assert from 'assert';
-import parse, { syntaxIsOkay } from '../src/parser.js';
+import assert from 'assert'
+import parse, { syntaxIsOkay } from '../src/parser.js'
 
 const goodPrograms = [
   `Unmeltable Anna x = -2 + 3 ❅`,
@@ -57,7 +57,7 @@ const goodPrograms = [
   `Get~This~Right(Kristoff ❅) { Sing(1)❅ } Into~The~Unknown { Sing(2)❅ }`,
   `Get~This~Right(Kristoff ❅) { Sing(1)❅ } The~Next~Right~Thing(Hans ❅) { Sing(2)❅ }`,
   `Lost~In~The~Woods(Hans ❅) {}`,
-];
+]
 
 const badPrograms = [
   `Anna Elsa`,
@@ -88,30 +88,30 @@ const badPrograms = [
   `Lost~In~The~Woods(Hans) {}`,
   `Get~This~Right(Kristoff) { Sing(1)❅ } Into~The~Unknown { Sing(2)❅ }`,
   `Get~This~Right(Kristoff) { Sing(1)❅ } The~Next~Right~Thing(Hans ❅) { Sing(2)❅ }`,
-];
+]
 
 describe('The Syntax Checker', () => {
   for (const program of goodPrograms) {
     it(`Successfully recognizes ${program}`, () => {
-      assert.ok(syntaxIsOkay(program));
-    });
+      assert.ok(syntaxIsOkay(program))
+    })
   }
   for (const program of badPrograms) {
     it(`Successfully rejects ${program}`, () => {
-      assert.ok(!syntaxIsOkay(program));
-    });
+      assert.ok(!syntaxIsOkay(program))
+    })
   }
-});
+})
 
 describe('The Parser', () => {
   for (const program of goodPrograms) {
     it(`Successfully recognizes ${program}`, () => {
-      assert.ok(parse(program));
-    });
+      assert.ok(parse(program))
+    })
   }
   for (const program of badPrograms) {
     it(`Successfully rejects ${program}`, () => {
-      assert.throws(() => parse(program));
-    });
+      assert.throws(() => parse(program))
+    })
   }
-});
+})
