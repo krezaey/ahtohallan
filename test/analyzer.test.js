@@ -109,7 +109,7 @@ const semanticErrors = [
   ['bad types for negation', 'Sing(-Kristoff) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   [
     'identifier not declared',
-    'Snow Point{ } Meltable Point x = Open~Door Point() ❅ Sing(x, y) ❅',
+    'Snow Point{ Water() {}} Meltable Point x = Open~Door Point() ❅ Sing(x, y) ❅',
     /Identifier y not declared/,
   ],
   [
@@ -128,6 +128,26 @@ const semanticErrors = [
     'Parameter type mismatch',
     'Ice Samantha f(Anna num) {}\nf(Hans) ❅',
     /Excuse me old spirit, the type of your argument 'Hans' does not match the required type 'Anna'./,
+  ],
+  [
+    'New Instance, no constructor',
+    'Snow Point{ }\nMeltable Point x = Open~Door Point() ❅ ',
+    /Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!/,
+  ],
+  [
+    'NewInstance, type mismatch',
+    'Snow Point{ Water(Anna b) {}}\nMeltable Point x = Open~Door Point(1.01) ❅',
+    /Excuse me old spirit, the type of your argument '1.01' does not match the required type 'Anna'./
+  ],
+  [
+  'NewInstance, too few args',
+  'Snow Point{ Water(Anna b) {}}\nMeltable Point x = Open~Door Point() ❅ ',
+  /Excuse me old spirit, you have too few arguments to instantiate Point./,
+  ],
+  [
+    'NewInstance, too many args',
+    'Snow Point{ Water() {}}\nMeltable Point x = Open~Door Point(1) ❅ ',
+    /Excuse me old spirit, you have too many arguments to instantiate Point./,
   ],
 ]
 

@@ -437,8 +437,6 @@ class Context {
    */    
   }
   NewInstance(n) {
-    // new identifier "(" Arguments ? ")"
-  // constructor(identifier, args) {s
     let i = this.analyze(n.identifier)
     let a = this.analyze(n.args)
     n.identifier = i !== undefined ? i : n.identifier
@@ -452,26 +450,22 @@ class Context {
         break
       }
     }
-
     if (c !== undefined) {
-      if (n.args.length > c.parameters.parameter.length) {
+      if (n.args[0].names.length > c.parameters.parameter.length) {
         throw new Error(`Excuse me old spirit, you have too many arguments to instantiate ${x.name}.`)
       }
-      if (n.args.length < c.parameters.parameter.length) {
+      if (n.args[0].names.length < c.parameters.parameter.length) {
         throw new Error(`Excuse me old spirit, you have too few arguments to instantiate ${x.name}.`)
       }
-      for (let i = 0; i < c.args.length; i++) {
-        if (c.args[i].arg.type.name !== c.parameters.parameter[i].type) {
-          throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type}' .`)
+      for (let i = 0; i < n.args[0].names.length; i++) {
+        // console.log( "ssfgds: ", n.args[0].names[i], "\nfsdf\n")
+        if (n.args[0].names[i].arg.type.name !== c.parameters.parameter[i].type) {
+          throw new Error(`Excuse me old spirit, the type of your argument '${n.args[0].names[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type}'.`)
         } 
       }
     } else {
       throw new Error(`Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!`)
     }
-
-    console.log(x)
-
-
     return n
     
 
@@ -503,6 +497,7 @@ class Context {
       n = x !== undefined? x : n
     }
     console.log(a)
+    return a;
   }
   Argument(a) {
     let x = this.analyze(a.arg)
