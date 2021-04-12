@@ -1,17 +1,4 @@
-Unmeltable Love k = Kristoff❅
-Unmeltable Love y = Hans ❅
-Unmeltable Samantha z ❅ 
-All~Is~Found(k ❅) {
-  Show~Yourself(1):
-    ~* Code block for case 1 here *~
-    Closed~Door ❅
-  Show~Yourself(y):
-    ~* Code block for case 2 here *~
-    Closed~Door ❅
-  Show~Yourself(z):
-    ~* Code block for case 3 here *~
-    Closed~Door ❅
-  I~Seek~The~Truth:
-    ~* Code block for the default here *~
-    Closed~Door ❅
+Unmeltable Anna x = 1 ❅
+Lost~In~The~Woods(Kristoff ❅) {
+  Unmeltable Anna x = 1 ❅
 }

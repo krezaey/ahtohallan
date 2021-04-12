@@ -52,7 +52,7 @@ const semanticChecks = [
     'even longer if',
     'Get~This~Right(Kristoff ❅) { Sing(1)❅ } The~Next~Right~Thing(Hans ❅) { Sing(2)❅ }',
   ],
-  ['while with empty block', 'Lost~In~The~Woods(Hans ❅) {}'],
+  ['while with empty block', 'Unmeltable Love a = Kristoff ❅\nLost~In~The~Woods(a ❅) {}'],
 ]
 
 const semanticErrors = [
@@ -115,7 +115,7 @@ const semanticErrors = [
   ],
   [
     'shadowing',
-    'Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(true ❅) {Unmeltable Anna x = 1 ❅}',
+    'Unmeltable Anna x = 1 ❅ \n Lost~In~The~Woods(Kristoff ❅) {Unmeltable Anna x = 1 ❅}',
     /Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!/,
   ],
   ['Too many args', 'Ice Samantha f(Anna x){}\nf(1,2) ❅', /Excuse me old spirit, you have too many arguments to call f./],

@@ -100,8 +100,6 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    //console.log(self.type)
-
     must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
   },
   isNumericOrStringOrBoolean() {
@@ -132,9 +130,6 @@ const check = self => ({
   //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
   // },
   hasSameTypeAs(other) {
-    // console.log("moi", self)
-    // console.log("moi", self.type)
-    // console.log("mes ami", other.type)
     must(self.type === undefined ||
       other.type === undefined ||
       self.type.name === other.type.name,
@@ -174,8 +169,6 @@ const check = self => ({
   //   must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
   // },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
-    console.log("Ret Type: ", self.function.returnType)
-    console.log("Expression Type: ", expression.type)
     must(
       self.function == null || self.function.returnType === expression.type,
       `Type error: Your proposed return type and actual return type must match, good spirit!`
@@ -188,7 +181,7 @@ const check = self => ({
     // TODO: Later make the type a "real" type
 
     must(
-      self.function === null || self.function.returnType === 'Samantha',
+      self.function === null || self.function.returnType === Type.SAMANTHA,
       `You must return the correct type! You simply must bad spirit!`
     )
   },
@@ -270,43 +263,27 @@ class Context {
     d.expression = x === undefined ? d.expression : x
     d.type = getType(d.type)
     check(d).hasSameTypeAs(d.expression)
-    // d.type = Type[d.type]
-    // console.log(d)
-    // console.log("hakdhkadbhfka", d.expression)
     check(this).nonDuplicateVariableDeclaration(d.name)
-    // console.log(d.name)
-    console.log(d.name)
     this.add(d.name, d)
-    // console.log('Got var')
     return d
   }
   ReturnStatement(s) {
-    // Check if type of return expression value is the same as the type of the function if the function exists    s.exp = this.analyze(s.expression)
-    // console.log(util.inspect(this, { depth: 8 }))
     let x = this.analyze(s.expression)
     s.expression = x!== undefined? x : s.expression
-    if (s.expression.name !== undefined) {
+    if (s.expression.name !== undefined && s.expression.type === undefined) {
       let ret = this.lookup(s.expression.name)
-      s.expression.type = getType(ret.type);
+      s.expression.type = ret.type;
     }
-
     check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression)
-    // check(s.expression).isReturnableFrom(this.function)
     return s
   }
   ShortReturnStatement(s) {
-    // TODO: Check that (1) the current function has return type Samantha or
-    // (2) that there is no current function (we're at the top level)
     check(this).hasNoFunctionOrFunctionReturnsSamantha()
     return s
   }
-  // Expression(e) {}
   Function(d) {
-    console.log(d.returnType)
-    d.returnType = d.returnType ? this.analyze(d.returnType) : Type.SAMANTHA
+    d.returnType = this.analyze(d.returnType)
     d.returnType = getType(d.returnType)
-    console.log(d.returnType)
-    //check(d.returnType).isAType() <---- DO LATER
     // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body))
     // When entering a function body, we must reset the inLoop setting,
@@ -325,7 +302,6 @@ class Context {
     if (this.inLoop) {
       throw new Error(`Foolish Spirit! You cannot create a class within a Loop!`)
     }
-    // console.log(c.name)
     this.add(c.name, c)
     const childContext = this.newChild({ inLoop: false, })
     c.body = childContext.analyze(c.body)
@@ -338,13 +314,15 @@ class Context {
     return c
   }
   Constructor(c) {
+    // TO DO!
     this.add(c.name, c)
+    return c
   }
   Method(m) {
     m.returnType = m.returnType ? this.analyze(m.returnType) : m.returnType
     m.returnType = getType(m.returnType)
     const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
-    // When entering a function body, we must reset the inLoop setting,
+    // When entering a method body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
     const childContext = this.newChild({ inLoop: false, forFunction: f })
     m.parameters = childContext.analyze(m.parameters)
@@ -359,7 +337,6 @@ class Context {
   }
   Field(f) {
     f.field = this.analyze(f.field)
-    // console.log(f.field)
     return f
   }
   IfStatement(s) {
@@ -402,36 +379,35 @@ class Context {
   }
   WhileLoop(w) {
     let e = this.analyze(w.expression)
-    w.expression = e !== undefined? e : w.expression
+    w.expression = e !== undefined ? e : w.expression
+    if (w.expression.name !== undefined) {
+      let x = this.lookup(w.expression.name)
+      w.expression.type = x.type
+    }
     const childContext = this.newChild({ inLoop: true, })
     w.body = childContext.analyze(w.body)
     return w
   }
-  // Access(a) {
-  //   let v = this.analyze(a.accessValue)
-  //   a.accessValue = v !== undefined ? v : a.accessValue
-  //   return a
-  // }
+  Access(a) {
+    // TO DO!
+    let v = this.analyze(a.accessValue)
+    a.accessValue = v !== undefined ? v : a.accessValue
+    return a
+  }
   ForLoop(f) {
-    // ForLoop = for "("Variable Relation terminal Increment ")" Body
     let s = this.analyze(f.start)
     f.start = s !== undefined ? s : f.start
     let l = this.analyze(f.limit)
     f.limit = l !== undefined ? l : f.limit
-    // let i = this.analyze(f.increment)
-    // f.increment = i !== undefined ? i : f.increment
-    // let b = this.analyze(f.body)
-    // f.body = b !== undefined ? b : f.body
-    
-    console.log("For Loop Baabys: ", util.inspect(f, {depth : 8}))
-    // constructor(start, limit, increment, body) {
+    let i = this.analyze(f.increment)
+    f.increment = i !== undefined ? i : f.increment
+    const childContext = this.newChild({ inLoop: true, })
+    let b = childContext.analyze(f.body)
+    f.body = b !== undefined ? b : f.body
+    return f;
    }
   SwitchStatement(s) {
-   // SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* )+ (default ":" Statement*)? "}"
-   // constructor(expression, cases, body, defaultCase)
-  //  /*
-   
-    let e = this.analyze(s.expression)  // dont think we need all of this but lets see
+    let e = this.analyze(s.expression)
     let c = this.analyze(s.cases)
     let b = this.analyze(s.body)
     let d = this.analyze(s.defaultCase) 
@@ -444,7 +420,6 @@ class Context {
       let x = this.lookup(s.expression.name)
       s.expression.type = x.type
     }
-    console.log(s.cases)
     let y;
     check(s.expression).isNumericOrStringOrBoolean()
     for (let ca of s.cases) {
@@ -457,8 +432,6 @@ class Context {
     return s
   }
   NewInstance(n) {
-    // new identifier "(" Arguments ? ")"
-  // constructor(identifier, args) {s
     let i = this.analyze(n.identifier)
     let a = this.analyze(n.args)
     n.identifier = i !== undefined ? i : n.identifier
@@ -480,7 +453,6 @@ class Context {
         throw new Error(`Excuse me old spirit, you have too few arguments to instantiate ${x.name}.`)
       }
       for (let i = 0; i < n.args[0].names.length; i++) {
-        // console.log( "ssfgds: ", n.args[0].names[i], "\nfsdf\n")
         if (n.args[0].names[i].arg.type.name !== c.parameters.parameter[i].type) {
           throw new Error(`Excuse me old spirit, the type of your argument '${n.args[0].names[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type}'.`)
         } 
@@ -488,13 +460,7 @@ class Context {
     } else {
       throw new Error(`Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!`)
     }
-
-    console.log(x)
-
-
     return n
-    
-
   }
   Array(a) {
     a.map(e => this.analyze(e))
@@ -505,10 +471,21 @@ class Context {
     a.type = Type.HERD
     return a
   }
-  Dictionary(d) { }
-  DictionaryEntry(d) { }
-  DictionaryEntries(d) { }
+  Dictionary(d) {
+    // TO DO
+   }
+  DictionaryEntry(d) {
+    // TO DO
+  }
+  DictionaryEntries(d) {
+    // TO DO
+  }
   Parameter(p) {
+    let n = this.analyze(p.name) 
+    p.name = n !== undefined ? n : p.name
+    let t = this.analyze(p.type);
+    p.type = t !== undefined ? t : p.type
+    p.type = getType(p.type)
     this.add(p.name, p)
     return p
   }
@@ -522,22 +499,18 @@ class Context {
       x = this.analyze(n)
       n = x !== undefined? x : n
     }
-    console.log(a)
     return a;
   }
   Argument(a) {
     let x = this.analyze(a.arg)
     x = (x === undefined)? a.arg: x
-    //console.log(a)
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
-    console.log(a)
     return a
   }
   Incrementer(i) {
     let x = this.lookup(i.operand.name)
-    //console.log("x", x)
     check(x).isNumeric()
     return i
   }
@@ -596,7 +569,6 @@ class Context {
     return e
   }
   UnaryExpression(e) {
-    //console.log(e)
     e.right = this.analyze(e.right)
     if (e.op === "-") {
       check(e.right).isNumeric()
@@ -605,21 +577,16 @@ class Context {
       check(e.right).isBoolean()
       e.type = Type.LOVE
     } 
-    //console.log(e)
     return e
   }
   Identifier(i) {
     return i
-   }
-   Case() {}
-   DefaultCase() {}
+  }
   GetProperty(p) {
-    //console.log("Source: ",p.source)
+    //SUS TO DO!
     let x = this.lookup(p.source.name)
-    // console.log(x)
     x = x.expression
     for (let property of p.property) {
-      //console.log(util.inspect(x, {depth: 100}))
       check(property).isAccessible(x)
       x = (x.expression === undefined) ? x.values: x.expression
     }
@@ -640,11 +607,10 @@ class Context {
         throw new Error(`Excuse me old spirit, you have too few arguments to call ${call.name}.`)
       }
       for (let i = 0; i < c.args.length; i++) {
-        if (c.args[i].arg.type.name !== call.parameters.parameter[i].type) {
-          throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${call.parameters.parameter[i].type}'.`)
+        if (c.args[i].arg.type.name !== call.parameters.parameter[i].type.name) {
+          throw new Error(`Excuse me old spirit, the type of your argument '${c.args[i].arg.value}' does not match the required type '${call.parameters.parameter[i].type.name}'.`)
         }
       }
-
     }
     return c
   }
@@ -667,7 +633,6 @@ class Context {
     b.type = Type.LOVE
     return b
   }
-  
 }
 
 export default function analyze(node) {
