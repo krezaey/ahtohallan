@@ -7,7 +7,7 @@ Ahtohallan {
     ReturnStatement = return Expression  --long
                     | return terminal   --short
     Assignment = Increment| PlainAssignment
-    PlainAssignment = (identifier| GetProperty) "=" Expression
+    PlainAssignment = (GetProperty | identifier) "=" Expression
     Increment = Incrementer | IncrementalAssignment
     IncrementalAssignment = (identifier | GetProperty) incAssignop Expression
     Incrementer = (identifier | GetProperty) incop terminal
@@ -53,7 +53,7 @@ Ahtohallan {
     GetProperty = (Call | identifier | this) (AccessDot | AccessBrackets)+
     AccessDot = "." (identifier | Call )
     AccessBrackets = AccessInt | AccessKeyValue
-    AccessInt = "[" int "]"
+    AccessInt = "[" (int | identifier)"]"
     AccessKeyValue = openDict (identifier | string | int) closeDict
     PlainExpression = Expression2
     ParenthesisExpression =  "(" PlainExpression ")"

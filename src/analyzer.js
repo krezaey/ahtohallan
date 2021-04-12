@@ -100,22 +100,24 @@ Object.assign(ClassType.prototype, {
 
 const check = self => ({
   isNumeric() {
-    must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
+    must([Type.ANNA, Type.ELSA, Type.ANY].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
   },
   isNumericOrStringOrBoolean() {
     must(
-      [Type.ANNA, Type.ELSA, Type.OLAF, Type.LOVE].includes(self.type),
+      [Type.ANNA, Type.ELSA, Type.OLAF, Type.LOVE, Type.ANY].includes(self.type),
       `Expected Anna, Elsa, Olaf, or Love, but found ${self.type.name}. Please summon Anna, Elsa, Olaf or some Love, good spirit!`
     )
   },
   isNumericOrString() {
     must(
-      [Type.ANNA, Type.ELSA, Type.OLAF].includes(self.type),
+      [Type.ANNA, Type.ELSA, Type.OLAF, Type.ANY].includes(self.type),
       `Expected Anna, Elsa or Olaf, but found ${self.type.name}. Please summon Anna, Elsa or Olaf, good spirit!`
     )
   },
   isBoolean() {
-    must(self.type === Type.LOVE, `Expected a Love, found ${self.type.name}`)
+    must(
+      [Type.ANY, Type.LOVE].includes(self.type),
+      `Expected a Love, found ${self.type.name}`)
   },
   // isInteger() {
   //   must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
@@ -130,9 +132,14 @@ const check = self => ({
   //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
   // },
   hasSameTypeAs(other) {
-    must(self.type === undefined ||
+    console.log("SELF: ",self)
+    console.log("OTHER: ", other)
+    must(
       other.type === undefined ||
-      self.type.name === other.type.name,
+      other.type === Type.ANY ||
+      self.type === undefined ||
+      self.type === Type.ANY ||
+      self.type === other.type,
       'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!')
   },
   // allHaveSameType() {
@@ -170,8 +177,8 @@ const check = self => ({
   // },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
     must(
-      self.function == null || self.function.returnType === expression.type,
-      `Type error: Your proposed return type and actual return type must match, good spirit!`
+      self.function == null || self.function.returnType === expression.type || expression.type === Type.ANY ||self.function.returnType === Type.ANY, 
+      `You must return ${self.function.returnType.name}! You simply must bad spirit!`
     )
   },
   nonDuplicateVariableDeclaration(name) {
@@ -182,7 +189,7 @@ const check = self => ({
 
     must(
       self.function === null || self.function.returnType === Type.SAMANTHA,
-      `You must return the correct type! You simply must bad spirit!`
+      `You must return Samantha! You simply must bad spirit!`
     )
   },
   isMeltable(mutability) {
@@ -192,9 +199,23 @@ const check = self => ({
   // isReturnableFrom(f) {
   //   check(self).isAssignableTo(f.type.returnType)
   // },
+  isSnow(x, name) {
+    // Only class objects are stored as a name and a body
+    must( Object.keys(x).length === 2 && x.name !== undefined && x.body !== undefined,
+    `Bad spirit! Cannot create a new instance of '${name}' when there is no Snow!`
+    )
+  },
+  inSnowUseFrozen() {
+    must (self.isInClass, `Bad Spirit! You cannot use Frozen if you are not in Snow!`)
+  },
   isAccessible(source) {
-    // TODO : Make Frozen(this) have the type TROLLS[[]]
-    must(source !== undefined || source.type !== undefined || source.type.name === Type.HERD.name || source.type.name === Type.TROLLS.name, `Bad spirit!!! You can't access that value type. Seek the Trolls[[]] or find a Herd[]!`)
+    console.log(source);
+    // in a class and source is this
+    // is a herd
+    // is a trolls
+    // is an instance of snow
+    must(source !== undefined && source.type !== undefined && (source.type === Type.HERD || source.type === Type.TROLLS || source.type === Type.ANY),
+      `Bad spirit!!! You can't access that value type. Seek the Trolls[[]], find a Herd[], get an instance of Snow, or be in Snow and use Frozen!`)
   },
   // match(targetTypes) {
   //   must(
@@ -218,6 +239,10 @@ class Context {
     // All local declarations. Names map to variable declarations, types, and
     // function declarations
     this.locals = new Map()
+    // Whether we are in a class, so that we know if the use of this is 
+    // acceptable
+    this.inClass = configuration.inClass ?? parent?.inClass ?? false
+    this.classFields = new Map()
     // Whether we are in a loop, so that we know whether breaks and continues
     // are legal here
     this.inLoop = configuration.inLoop ?? parent?.inLoop ?? false
@@ -227,14 +252,36 @@ class Context {
   }
   sees(name) {
     // Search "outward" through enclosing scopes
-    return this.locals.has(name) || this.parent?.sees(name)
+    return this.locals.has(name) || this.parent?.sees(name) 
+  }
+  seesField(name) {
+    return this.classFields.has(name) || this.parent?.seesField(name) 
+  }
+  isInClass() {
+    return this.inClass || this.parent?.isInClass
+  }
+  addField(name, entity) {
+    if (this.seesField(name) ) {
+      throw new Error(`Forgetful spirit! Snowflake ${name} is already declared!`)
+    }
+    this.classFields.set(name, entity)
   }
   add(name, entity) {
     // No shadowing! Prevent addition if id anywhere in scope chain!
-    if (this.sees(name)) {
+    if (this.sees(name) ) {
+      let x = this.lookup(name)
       throw new Error(`Forgetful spirit! ${name} already declared!`)
     }
     this.locals.set(name, entity)
+  }
+  lookupField(name) {
+    const entity = this.classFields.get(name)
+    if (entity) {
+      return entity
+    } else if (this.parent) {
+      return this.parent.lookup(name)
+    }
+    throw new Error(`Snowflake ${name} not instantiated`)
   }
   lookup(name) {
     const entity = this.locals.get(name)
@@ -262,7 +309,11 @@ class Context {
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
     d.type = getType(d.type)
-    check(d).hasSameTypeAs(d.expression)
+    console.log(d)
+    if (d.expression !== "❅") {
+      // if you initialize it to an actual value
+      check(d).hasSameTypeAs(d.expression)
+    }
     check(this).nonDuplicateVariableDeclaration(d.name)
     this.add(d.name, d)
     return d
@@ -302,20 +353,27 @@ class Context {
     if (this.inLoop) {
       throw new Error(`Foolish Spirit! You cannot create a class within a Loop!`)
     }
-    this.add(c.name, c)
-    const childContext = this.newChild({ inLoop: false, })
+    const childContext = this.newChild({ inClass : true})
     c.body = childContext.analyze(c.body)
-    let that = {
-      name: "this",
-      type: Type.HERD,
-      reference: c
-    }
-    this.add("this", that)
+    this.add(c.name, c)
     return c
   }
   Constructor(c) {
-    // TO DO!
-    this.add(c.name, c)
+    // console.log(util.inspect(this, {depth: 20}))
+    c.returnType = Type.SAMANTHA
+    c.name = "Constructor"
+    const f = (c.function = new Function(c.returnType, c.name, c.parameters, c.body))
+    // When entering a method body, we must reset the inLoop setting,
+    // because it is possible to declare a function inside a loop!
+    const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true,  })
+    c.parameters = childContext.analyze(c.parameters)
+    // f.type = new FunctionType(
+    //   d.parameters.map(p => p.type),
+    //   d.returnType
+    // )
+    // Add before analyzing the body to allow recursion
+    // this.add(f.name, f)
+    c.body = childContext.analyze(c.body)
     return c
   }
   Method(m) {
@@ -324,7 +382,7 @@ class Context {
     const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
     // When entering a method body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
-    const childContext = this.newChild({ inLoop: false, forFunction: f })
+    const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true })
     m.parameters = childContext.analyze(m.parameters)
     // f.type = new FunctionType(
     //   d.parameters.map(p => p.type),
@@ -336,7 +394,10 @@ class Context {
     return m
   }
   Field(f) {
+    f.field.originalName = f.field.name
+    f.field.name = "Frozen."+ f.field.name
     f.field = this.analyze(f.field)
+    this.addField(f.field.originalName, f)
     return f
   }
   IfStatement(s) {
@@ -389,9 +450,11 @@ class Context {
     return w
   }
   Access(a) {
-    // TO DO!
     let v = this.analyze(a.accessValue)
     a.accessValue = v !== undefined ? v : a.accessValue
+    // if (a.accessMethod === "[]") {
+      // TO DO: make sure access value is of type Anna
+    // } 
     return a
   }
   ForLoop(f) {
@@ -439,6 +502,8 @@ class Context {
     
     let x = this.lookup(n.identifier)
     let c = undefined
+    check(this).isSnow(x, n.identifier)
+
     for (let s of x.body) {
       if (s.parameters !== undefined) {
         c = s
@@ -453,8 +518,8 @@ class Context {
         throw new Error(`Excuse me old spirit, you have too few arguments to instantiate ${x.name}.`)
       }
       for (let i = 0; i < n.args[0].names.length; i++) {
-        if (n.args[0].names[i].arg.type.name !== c.parameters.parameter[i].type) {
-          throw new Error(`Excuse me old spirit, the type of your argument '${n.args[0].names[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type}'.`)
+        if (n.args[0].names[i].arg.type.name !== c.parameters.parameter[i].type.name) {
+          throw new Error(`Excuse me old spirit, the type of your argument '${n.args[0].names[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type.name}'.`)
         } 
       }
     } else {
@@ -471,15 +536,15 @@ class Context {
     a.type = Type.HERD
     return a
   }
-  Dictionary(d) {
-    // TO DO
-   }
-  DictionaryEntry(d) {
-    // TO DO
-  }
-  DictionaryEntries(d) {
-    // TO DO
-  }
+  // Dictionary(d) {
+  //   // TO DO
+  //  }
+  // DictionaryEntry(d) {
+  //   // TO DO
+  // }
+  // DictionaryEntries(d) {
+  //   // TO DO
+  // }
   Parameter(p) {
     let n = this.analyze(p.name) 
     p.name = n !== undefined ? n : p.name
@@ -518,10 +583,26 @@ class Context {
     return s
   }
   PlainAssignment(a) {
-    a.expression = this.analyze(a.expression)
-    let x = this.lookup(a.variable.name)
-    check(this).isMeltable(x.mutability)
-    check(x).hasSameTypeAs(a.expression)
+    let e = this.analyze(a.expression)
+    a.expression = e !== undefined ? e : a.expression
+    let v = this.analyze(a.variable)
+    a.variable = v !== undefined? v: a.variable
+    let x;
+    if (a.variable.name !== undefined) {
+      // a is an identifier
+      x = this.lookup(a.variable.name)
+      check(this).isMeltable(x.mutability)
+      check(x).hasSameTypeAs(a.expression)
+    } else if (a.variable.source !== undefined) {
+      // a is a get property/access
+      if (a.variable.source === "Frozen") {
+        // if we use this
+        check(this).inSnowUseFrozen()
+      } else {
+        x = this.lookup(a.variable.source.name)
+        check(x).hasSameTypeAs(a.expression)
+      }
+    }
     return a
   }
   IncrementalAssignment(i) {
@@ -560,7 +641,7 @@ class Context {
     } if (["-", "*", "/", "%", "**", "<", "<=", ">", ">="].includes(e.op)) {
       check(e.left).isNumeric()
       check(e.right).isNumeric()
-      if (e.left.type.name === e.right.type.name) {
+      if (e.left.type.name === e.right.type.name && e.op !== "/") {
         e.type = e.left.type
       } else {
         e.type = Type.ELSA
@@ -583,14 +664,27 @@ class Context {
     return i
   }
   GetProperty(p) {
-    //SUS TO DO!
-    let x = this.lookup(p.source.name)
-    x = x.expression
-    for (let property of p.property) {
-      check(property).isAccessible(x)
-      x = (x.expression === undefined) ? x.values: x.expression
+    let s = this.analyze(p.source)
+    let access = this.analyze(p.property)
+    p.source = s !== undefined ? s : p.source
+    p.property = access !== undefined? access : p.property
+    console.log(p)
+    let x;
+    if (p.source.name !== undefined) {
+      x = this.lookup(p.source.name)
+      p.source.type = x.type
     }
-    this.type = Type.ANY
+    if (p.source === "Frozen") {
+      check(this).inSnowUseFrozen()
+    } else {
+      check(this).isAccessible(p.source)
+    }
+    // if (p.property.accessMethod === "[[]]") {
+      // TO DO: Make sure type is Trolls[[]]
+    // } else if (p.property.accessMethod === "[]") {
+      // TO DO: Make sure type is Herd[]
+    // }
+    p.type = Type.ANY
     return p
   }
   Call(c) {

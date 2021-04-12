@@ -1,4 +1,10 @@
-Unmeltable Anna x = 1 ❅
-Lost~In~The~Woods(Kristoff ❅) {
-  Unmeltable Anna x = 1 ❅
-}
+Snow S {
+  Meltable Herd[] y ❅ 
+  Water( Anna x ) {
+    Frozen.x = x ❅
+    Frozen.y.x = 2 ❅
+    }
+  } 
+  Unmeltable Point y = Open~Door S(1) ❅ 
+  y.x = 3 ❅
+  Sing(y.x) ❅

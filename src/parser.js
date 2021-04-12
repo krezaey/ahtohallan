@@ -64,13 +64,13 @@ const astBuilder = grammar.createSemantics().addOperation('tree', {
     return new ast.WhileLoop(expression.tree(), body.tree())
   },
   AccessDot(_dot, accessValue) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree(), ".")
   },
   AccessInt(_bracketOpen, accessValue, _bracketClosed) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree(), "[]")
   },
   AccessKeyValue(_bracketOpen, accessValue, _bracketClosed) {
-    return new ast.Access(accessValue.tree())
+    return new ast.Access(accessValue.tree(), "[[]]")
   },
   ForLoop(_for, _left, start, limit, _terminal, increment, _right, body) {
     return new ast.ForLoop(start.tree(), limit.tree(), increment.tree(), body.tree())

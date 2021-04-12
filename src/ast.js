@@ -69,8 +69,8 @@ export class WhileLoop {
 }
 
 export class Access {
-  constructor(accessValue) {
-    this.accessValue = accessValue
+  constructor(accessValue, accessMethod) {
+    Object.assign(this, { accessMethod, accessValue})
   }
 }
 

@@ -4,6 +4,7 @@ import analyze from '../src/analyzer.js'
 import * as ast from '../src/ast.js'
 
 const semanticChecks = [
+  ['GetProperty mass test', 'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}}\nUnmeltable Point y = Open~Door S(1) ❅\ny.x = 3 ❅\nSing(y.x) ❅'],
   ['Switch Statement', 'Unmeltable Anna k = 3❅\nAll~Is~Found(k ❅) {\nShow~Yourself(1):\nClosed~Door ❅\nShow~Yourself(2):\nClosed~Door ❅\nShow~Yourself(3):\nClosed~Door ❅\nI~Seek~The~Truth:\nClosed~Door ❅}',],
   ['empty for loop', 'Unmeltable Anna x = 10 ❅\nLet~It~Go (Meltable Anna i = 1 ❅ i < x ❅ i+=1 ❅) {}'],
   ['increment and decrement', 'Meltable Anna x = 10 ❅ x-- ❅ x++ ❅'],
@@ -94,10 +95,10 @@ const semanticErrors = [
   [
     'return value from void function',
     'Ice Samantha f() {Arendelle "Return!" ❅}',
-    /Type error: Your proposed return type and actual return type must match, good spirit!/,
+    /You must return Samantha! You simply must bad spirit!/,
   ],
-  ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return the correct type! You simply must bad spirit!/],
-  ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /Type error: Your proposed return type and actual return type must match, good spirit!/],
+  ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return Samantha! You simply must bad spirit!/],
+  ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /You must return Anna! You simply must bad spirit!/],
   ['bad types for +', 'Sing(Hans + 1) ❅', /Expected Anna, Elsa or Olaf, but found Love. Please summon Anna, Elsa or Olaf, good spirit!/],
   ['bad types for -', 'Sing(1.0 - Hans) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
   ['bad types for *', 'Sing(Hans*1) ❅', /Expected Anna or Elsa, but found Love. Please summon Anna or Elsa, good spirit!/],
@@ -149,6 +150,11 @@ const semanticErrors = [
     'NewInstance, too many args',
     'Snow Point{ Water() {}}\nMeltable Point x = Open~Door Point(1) ❅ ',
     /Excuse me old spirit, you have too many arguments to instantiate Point./,
+  ],
+  [
+    'NewInstance of a non class',
+    'Unmeltable Anna Point = x ❅\nMeltable Point x = Open~Door Point() ❅',
+    /Bad spirit! Cannot create a new instance of 'Point' when there is no Snow!/
   ],
   [
     'Switch Statement, bad case type',
