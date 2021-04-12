@@ -104,6 +104,12 @@ const check = self => ({
 
     must(self.type.name === "Anna" || self.type.name === "Elsa", `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
   },
+  isNumericOrStringOrBoolean() {
+    must(
+      [Type.ANNA, Type.ELSA, Type.OLAF, Type.LOVE].includes(self.type),
+      `Expected Anna, Elsa, Olaf, or Love, but found ${self.type.name}. Please summon Anna, Elsa, Olaf or some Love, good spirit!`
+    )
+  },
   isNumericOrString() {
     must(
       [Type.ANNA, Type.ELSA, Type.OLAF].includes(self.type),
@@ -423,20 +429,36 @@ class Context {
   SwitchStatement(s) {
    // SwitchStatement = switch "(" Expression ")" "{" (case "(" typeValue ")" ":" Statement* )+ (default ":" Statement*)? "}"
    // constructor(expression, cases, body, defaultCase)
-   /*
+  //  /*
    
-   let e = this.analyze(s.expression)  // dont think we need all of this but lets see
-   let c = this.anaylze(s.cases)
-   let b = this.analyze(s.body)
-   let d = this.anaylze(s.defaultCase) 
-    s.expression = e !== undefined ? e : s.body
+    let e = this.analyze(s.expression)  // dont think we need all of this but lets see
+    let c = this.analyze(s.cases)
+    let b = this.analyze(s.body)
+    let d = this.analyze(s.defaultCase) 
+    s.expression = e !== undefined ? e : s.expression
     s.cases = c !== undefined ? c : s.cases
     s.body = b !== undefined ? b : s.body
-    s.defaultCases = d !== undefined ? d : s.defaultCases
-    
-   */    
+    s.defaultCase = d !== undefined ? d : s.defaultCase
+
+    if (s.expression.name !== undefined) {
+      let x = this.lookup(s.expression.name)
+      s.expression.type = x.type
+    }
+    console.log(s.cases)
+    let y;
+    check(s.expression).isNumericOrStringOrBoolean()
+    for (let ca of s.cases) {
+      if (ca.name !== undefined) {
+        y = this.lookup(ca.name)
+        ca.type = y.type
+      }
+      check(ca).isNumericOrStringOrBoolean()
+    }
+    return s
   }
   NewInstance(n) {
+    // new identifier "(" Arguments ? ")"
+  // constructor(identifier, args) {s
     let i = this.analyze(n.identifier)
     let a = this.analyze(n.args)
     n.identifier = i !== undefined ? i : n.identifier
@@ -466,6 +488,10 @@ class Context {
     } else {
       throw new Error(`Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!`)
     }
+
+    console.log(x)
+
+
     return n
     
 
@@ -516,10 +542,6 @@ class Context {
     return i
   }
   BreakStatement(s) {
-    return s
-  }
-
-  Switch(s) {
     return s
   }
   PlainAssignment(a) {

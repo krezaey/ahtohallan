@@ -4,6 +4,7 @@ import analyze from '../src/analyzer.js'
 import * as ast from '../src/ast.js'
 
 const semanticChecks = [
+  ['Switch Statement', 'Unmeltable Anna k = 3❅\nAll~Is~Found(k ❅) {\nShow~Yourself(1):\nClosed~Door ❅\nShow~Yourself(2):\nClosed~Door ❅\nShow~Yourself(3):\nClosed~Door ❅\nI~Seek~The~Truth:\nClosed~Door ❅}',],
   ['empty for loop', 'Unmeltable Anna x = 10 ❅\nLet~It~Go (Meltable Anna i = 1 ❅ i < x ❅ i+=1 ❅) {}'],
   ['increment and decrement', 'Meltable Anna x = 10 ❅ x-- ❅ x++ ❅'],
   ['||', 'Sing(Kristoff || 1 < 2 || Hans || !Kristoff) ❅'],
@@ -148,6 +149,11 @@ const semanticErrors = [
     'NewInstance, too many args',
     'Snow Point{ Water() {}}\nMeltable Point x = Open~Door Point(1) ❅ ',
     /Excuse me old spirit, you have too many arguments to instantiate Point./,
+  ],
+  [
+    'Switch Statement, bad case type',
+    'Unmeltable Love k = Kristoff❅\nUnmeltable Love y = Hans ❅\nUnmeltable Samantha z ❅\nAll~Is~Found(k ❅) {\nShow~Yourself(1):\nClosed~Door ❅\nShow~Yourself(y):\nClosed~Door ❅\nShow~Yourself(z):\nClosed~Door ❅\nI~Seek~The~Truth:\nClosed~Door ❅}',
+    /Expected Anna, Elsa, Olaf, or Love, but found Samantha. Please summon Anna, Elsa, Olaf or some Love, good spirit!/
   ],
 ]
 
