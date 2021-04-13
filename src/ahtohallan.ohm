@@ -31,7 +31,7 @@ Ahtohallan {
     typeValue =   float | int | string | boolean | noneType | identifier
     Array = "[" ListOf<(typeValue | ObjectTypeValue), ","> "]"
     Dictionary = openDict DictionaryEntries? closeDict
-    DictionaryEntry = (string | identifier | int) ":" Expression
+    DictionaryEntry = (string | identifier | int | float) ":" Expression
     DictionaryEntries = ListOf<DictionaryEntry, ",">
     controlFlow = if | elseIf | else | while | switch | case | default | for
     Expression2 = Expression2 logicalop Expression3                    -- logicalop

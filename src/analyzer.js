@@ -145,8 +145,6 @@ const check = self => ({
   //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
   // },
   hasSameTypeAs(other) {
-    // console.log("SELF: ",self)
-    // console.log("OTHER: ", other)
     must(
       other.type === undefined ||
       other.type === Type.ANY ||
@@ -313,7 +311,6 @@ class Context {
     return new Context(this, configuration)
   }
   analyze(node) {
-    console.log(`About to analyze a ${node.constructor.name}`)
     return this[node.constructor.name](node)
   }
   Program(p) {
@@ -324,7 +321,6 @@ class Context {
     let x = this.analyze(d.expression)
     d.expression = x === undefined ? d.expression : x
     d.type = getType(d.type)
-    console.log(d)
     if (d.expression !== "❅") {
       // if you initialize it to an actual value
       check(d).hasSameTypeAs(d.expression)
@@ -553,25 +549,18 @@ class Context {
     return d
   }
   DictionaryEntry(d) {
-    //constructor(key, value) 
     let k = this.analyze(d.key)
     let v = this.analyze(d.value)
     d.key = k !== undefined ? k : d.key
     d.value = v !== undefined ? v : d.value
-    console.log("pppppppppooooooooppppppooooooppeeeeeeeepppppeeeeeeeee!\n", d)   
     if (d.key.name !== undefined) {
       let x = this.lookup(d.key.name)
       d.key.type = x.type
     }
-    
+    check(d.key).isNumericOrString()
     return d
     
   }
-/* Dictionary = openDict DictionaryEntries? closeDict
-    DictionaryEntry = (string | identifier | int) ":" Expression
-    DictionaryEntries = ListOf<DictionaryEntry, ",">
-    */
-  // 
   DictionaryEntries(d) {
     let e = this.analyze(d.entries)
     d.entries = e !== undefined? e : d.entries
@@ -621,18 +610,12 @@ class Context {
     a.variable = v !== undefined? v: a.variable
     let x;
     if (a.variable.name !== undefined) {
-      // a is an identifier
       x = this.lookup(a.variable.name)
       check(this).isMeltable(x.mutability)
       check(x).hasSameTypeAs(a.expression)
     } else if (a.variable.source !== undefined) {
-      // a is a get property/access
       if (a.variable.source === "Frozen") {
-        // if we use this
         check(this).inSnowUseFrozen()
-      } else if (a.variable.source === undefined) {
-        x = this.lookup(a.variable.source.name)
-        check(x).hasSameTypeAs(a.expression)
       }
     }
     return a
@@ -712,7 +695,6 @@ class Context {
     } else {
       check(this).isAccessible(p.source)
     }
-    console.log("sknosnvofsnovnso", p.property[0].accessMethod)
     if (p.property[0].accessMethod === "[[]]") {
       check(p.source).isTrollsOrAny()
     } else if (p.property[0].accessMethod === "[]") {
@@ -723,7 +705,6 @@ class Context {
         check(p.property[0].accessValue).HerdAccessIsAnna()
        }
     } else if (p.source !== "Frozen") {
-      console.log("TROLL TOOOLLLLL", p)
       check(p.source).isTrollsOrAny()
     }
     p.type = Type.ANY

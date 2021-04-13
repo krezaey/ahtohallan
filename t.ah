@@ -4,8 +4,10 @@ Snow S {
     Frozen.x = x ❅
     Frozen.y.x = 2 ❅
     }
+  Crystal Anna fff () {
+    Arendelle Frozen.y ❅ 
+  }
   } 
-
   Meltable Olaf x = "sds"  ❅ 
   Unmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅ 
   y[[x]] = 3.0 ❅
