@@ -99,6 +99,15 @@ Object.assign(ClassType.prototype, {
 })
 
 const check = self => ({
+  HerdAccessIsAnna() {
+    must(Type.ANNA ===self.type, `Expected Anna, but found ${self.type.name}. Please summon Anna to get Sven from the Herd, good spirit!`)
+  },
+  isHerdOrAny() {
+    must([Type.HERD, Type.ANY].includes(self.type), `Expected a Herd, but found otherwise. Please summon the Herd, good spirit!`)
+  },
+  isTrollsOrAny() {
+    must([Type.TROLLS, Type.ANY].includes(self.type), `Expected the Trolls, but found otherwise. Please seek guidance from the Trolls, good spirit!`)
+  },
   isNumeric() {
     must([Type.ANNA, Type.ELSA, Type.ANY].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
   },
@@ -117,10 +126,14 @@ const check = self => ({
   isBoolean() {
     must(
       [Type.ANY, Type.LOVE].includes(self.type),
-      `Expected a Love, found ${self.type.name}`)
+      `Expected a Love, found ${self.type.name}`
+    )
   },
   // isInteger() {
   //   must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
+  // },
+  // isFloat() {
+  //   must(self.type.constructor === Type.Elsa, `Expected an Elsa, ${self.type.name}`)
   // },
   // isAType() {
   //   must(self instanceof Type, 'Type expected')
@@ -132,15 +145,16 @@ const check = self => ({
   //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
   // },
   hasSameTypeAs(other) {
-    console.log("SELF: ",self)
-    console.log("OTHER: ", other)
+    // console.log("SELF: ",self)
+    // console.log("OTHER: ", other)
     must(
       other.type === undefined ||
       other.type === Type.ANY ||
       self.type === undefined ||
       self.type === Type.ANY ||
       self.type === other.type,
-      'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!')
+      'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!'
+    )
   },
   // allHaveSameType() {
   //   must(
@@ -194,7 +208,8 @@ const check = self => ({
   },
   isMeltable(mutability) {
     must(
-      mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`)
+      mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`
+    )
   },
   // isReturnableFrom(f) {
   //   check(self).isAssignableTo(f.type.returnType)
@@ -209,7 +224,6 @@ const check = self => ({
     must (self.isInClass, `Bad Spirit! You cannot use Frozen if you are not in Snow!`)
   },
   isAccessible(source) {
-    console.log(source);
     // in a class and source is this
     // is a herd
     // is a trolls
@@ -225,6 +239,7 @@ const check = self => ({
   //   targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type))
   // },
   // matchParametersOf(calleeType) {
+    
   //   check(self).match(calleeType.parameterTypes)
   // },
   // matchFieldsOf(classType) {
@@ -359,13 +374,12 @@ class Context {
     return c
   }
   Constructor(c) {
-    // console.log(util.inspect(this, {depth: 20}))
     c.returnType = Type.SAMANTHA
     c.name = "Constructor"
     const f = (c.function = new Function(c.returnType, c.name, c.parameters, c.body))
     // When entering a method body, we must reset the inLoop setting,
     // because it is possible to declare a function inside a loop!
-    const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true,  })
+    const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true, })
     c.parameters = childContext.analyze(c.parameters)
     // f.type = new FunctionType(
     //   d.parameters.map(p => p.type),
@@ -452,9 +466,6 @@ class Context {
   Access(a) {
     let v = this.analyze(a.accessValue)
     a.accessValue = v !== undefined ? v : a.accessValue
-    // if (a.accessMethod === "[]") {
-      // TO DO: make sure access value is of type Anna
-    // } 
     return a
   }
   ForLoop(f) {
@@ -467,7 +478,7 @@ class Context {
     const childContext = this.newChild({ inLoop: true, })
     let b = childContext.analyze(f.body)
     f.body = b !== undefined ? b : f.body
-    return f;
+    return f
    }
   SwitchStatement(s) {
     let e = this.analyze(s.expression)
@@ -483,7 +494,7 @@ class Context {
       let x = this.lookup(s.expression.name)
       s.expression.type = x.type
     }
-    let y;
+    let y
     check(s.expression).isNumericOrStringOrBoolean()
     for (let ca of s.cases) {
       if (ca.name !== undefined) {
@@ -536,15 +547,36 @@ class Context {
     a.type = Type.HERD
     return a
   }
-  // Dictionary(d) {
-  //   // TO DO
-  //  }
-  // DictionaryEntry(d) {
-  //   // TO DO
-  // }
-  // DictionaryEntries(d) {
-  //   // TO DO
-  // }
+  Dictionary(d) {
+    let e = this.analyze(d.entries)
+    d.entries = e !== undefined? e : d.entries
+    return d
+  }
+  DictionaryEntry(d) {
+    //constructor(key, value) 
+    let k = this.analyze(d.key)
+    let v = this.analyze(d.value)
+    d.key = k !== undefined ? k : d.key
+    d.value = v !== undefined ? v : d.value
+    console.log("pppppppppooooooooppppppooooooppeeeeeeeepppppeeeeeeeee!\n", d)   
+    if (d.key.name !== undefined) {
+      let x = this.lookup(d.key.name)
+      d.key.type = x.type
+    }
+    
+    return d
+    
+  }
+/* Dictionary = openDict DictionaryEntries? closeDict
+    DictionaryEntry = (string | identifier | int) ":" Expression
+    DictionaryEntries = ListOf<DictionaryEntry, ",">
+    */
+  // 
+  DictionaryEntries(d) {
+    let e = this.analyze(d.entries)
+    d.entries = e !== undefined? e : d.entries
+    return d
+  }
   Parameter(p) {
     let n = this.analyze(p.name) 
     p.name = n !== undefined ? n : p.name
@@ -562,13 +594,13 @@ class Context {
     let x
     for (let n of a.names) {
       x = this.analyze(n)
-      n = x !== undefined? x : n
+      n = x !== undefined ? x : n
     }
-    return a;
+    return a
   }
   Argument(a) {
     let x = this.analyze(a.arg)
-    x = (x === undefined)? a.arg: x
+    x = (x === undefined) ? a.arg: x
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
@@ -598,7 +630,7 @@ class Context {
       if (a.variable.source === "Frozen") {
         // if we use this
         check(this).inSnowUseFrozen()
-      } else {
+      } else if (a.variable.source === undefined) {
         x = this.lookup(a.variable.source.name)
         check(x).hasSameTypeAs(a.expression)
       }
@@ -668,22 +700,32 @@ class Context {
     let access = this.analyze(p.property)
     p.source = s !== undefined ? s : p.source
     p.property = access !== undefined? access : p.property
-    console.log(p)
-    let x;
+    let x, name
     if (p.source.name !== undefined) {
       x = this.lookup(p.source.name)
       p.source.type = x.type
+      name = p.source.name
     }
     if (p.source === "Frozen") {
       check(this).inSnowUseFrozen()
+      name = p.source
     } else {
       check(this).isAccessible(p.source)
     }
-    // if (p.property.accessMethod === "[[]]") {
-      // TO DO: Make sure type is Trolls[[]]
-    // } else if (p.property.accessMethod === "[]") {
-      // TO DO: Make sure type is Herd[]
-    // }
+    console.log("sknosnvofsnovnso", p.property[0].accessMethod)
+    if (p.property[0].accessMethod === "[[]]") {
+      check(p.source).isTrollsOrAny()
+    } else if (p.property[0].accessMethod === "[]") {
+      check(p.source).isHerdOrAny()
+      if (p.property[0].accessValue.name !== undefined) {
+        x = this.lookup(p.property[0].accessValue.name)
+        p.property[0].accessValue.type = x.type
+        check(p.property[0].accessValue).HerdAccessIsAnna()
+       }
+    } else if (p.source !== "Frozen") {
+      console.log("TROLL TOOOLLLLL", p)
+      check(p.source).isTrollsOrAny()
+    }
     p.type = Type.ANY
     return p
   }

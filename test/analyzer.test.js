@@ -4,6 +4,7 @@ import analyze from '../src/analyzer.js'
 import * as ast from '../src/ast.js'
 
 const semanticChecks = [
+  ['GetProperty object test', 'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}} \nUnmeltable Trolls[[]] y = [[1:2 ❅,2:2 ❅,3:2 ❅]] ❅ \nMeltable Olaf x = "sds"  ❅ \ny[[x]] = 3.0 ❅\nSing(y[[x]]) ❅'],
   ['GetProperty mass test', 'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}}\nUnmeltable Point y = Open~Door S(1) ❅\ny.x = 3 ❅\nSing(y.x) ❅'],
   ['Switch Statement', 'Unmeltable Anna k = 3❅\nAll~Is~Found(k ❅) {\nShow~Yourself(1):\nClosed~Door ❅\nShow~Yourself(2):\nClosed~Door ❅\nShow~Yourself(3):\nClosed~Door ❅\nI~Seek~The~Truth:\nClosed~Door ❅}',],
   ['empty for loop', 'Unmeltable Anna x = 10 ❅\nLet~It~Go (Meltable Anna i = 1 ❅ i < x ❅ i+=1 ❅) {}'],
@@ -96,7 +97,7 @@ const semanticErrors = [
     'return value from void function',
     'Ice Samantha f() {Arendelle "Return!" ❅}',
     /You must return Samantha! You simply must bad spirit!/,
-  ],
+  ], //HI QUICHE
   ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return Samantha! You simply must bad spirit!/],
   ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /You must return Anna! You simply must bad spirit!/],
   ['bad types for +', 'Sing(Hans + 1) ❅', /Expected Anna, Elsa or Olaf, but found Love. Please summon Anna, Elsa or Olaf, good spirit!/],
@@ -161,6 +162,16 @@ const semanticErrors = [
     'Unmeltable Love k = Kristoff❅\nUnmeltable Love y = Hans ❅\nUnmeltable Samantha z ❅\nAll~Is~Found(k ❅) {\nShow~Yourself(1):\nClosed~Door ❅\nShow~Yourself(y):\nClosed~Door ❅\nShow~Yourself(z):\nClosed~Door ❅\nI~Seek~The~Truth:\nClosed~Door ❅}',
     /Expected Anna, Elsa, Olaf, or Love, but found Samantha. Please summon Anna, Elsa, Olaf or some Love, good spirit!/
   ],
+  [
+    'Get Property [] not Herd',
+    'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}}\nUnmeltable Trolls[[]] y = [[1:2 ❅,3:4 ❅,5:6 ❅]] ❅ \nMeltable Elsa x = 1.0  ❅ \ny[x] = 3.0 ❅\nSing(y.x) ❅',
+    /Expected a Herd, but found otherwise. Please summon the Herd, good spirit!/
+  ],
+  [
+    'Get Property [] not int',
+    'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅\n}\n}\nUnmeltable Herd[] y = [1,2,3,4,5] ❅\nMeltable Elsa x = 1.0  ❅\ny[x] = 3.0 ❅\nSing(y.x) ❅',
+    /Expected Anna, but found Elsa. Please summon Anna to get Sven from the Herd, good spirit!/
+  ]
 ]
 
 describe('The analyzer', () => {

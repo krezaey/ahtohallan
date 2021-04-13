@@ -5,6 +5,8 @@ Snow S {
     Frozen.y.x = 2 ❅
     }
   } 
-  Unmeltable Point y = Open~Door S(1) ❅ 
-  y.x = 3 ❅
+
+  Meltable Olaf x = "sds"  ❅ 
+  Unmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅ 
+  y[[x]] = 3.0 ❅
   Sing(y.x) ❅
