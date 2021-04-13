@@ -219,7 +219,7 @@ const check = self => ({
     )
   },
   inSnowUseFrozen() {
-    must (self.isInClass, `Bad Spirit! You cannot use Frozen if you are not in Snow!`)
+    must (self.isInClass(), `Bad Spirit! You cannot use Frozen if you are not in Snow!`)
   },
   isAccessible(source) {
     // in a class and source is this
@@ -267,16 +267,10 @@ class Context {
     // Search "outward" through enclosing scopes
     return this.locals.has(name) || this.parent?.sees(name) 
   }
-  seesField(name) {
-    return this.classFields.has(name) || this.parent?.seesField(name) 
-  }
   isInClass() {
     return this.inClass || this.parent?.isInClass
   }
   addField(name, entity) {
-    if (this.seesField(name) ) {
-      throw new Error(`Forgetful spirit! Snowflake ${name} is already declared!`)
-    }
     this.classFields.set(name, entity)
   }
   add(name, entity) {
@@ -286,15 +280,6 @@ class Context {
       throw new Error(`Forgetful spirit! ${name} already declared!`)
     }
     this.locals.set(name, entity)
-  }
-  lookupField(name) {
-    const entity = this.classFields.get(name)
-    if (entity) {
-      return entity
-    } else if (this.parent) {
-      return this.parent.lookup(name)
-    }
-    throw new Error(`Snowflake ${name} not instantiated`)
   }
   lookup(name) {
     const entity = this.locals.get(name)

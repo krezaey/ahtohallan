@@ -4,7 +4,7 @@ import analyze from '../src/analyzer.js'
 import * as ast from '../src/ast.js'
 
 const semanticChecks = [
-  ['MultiTest', 'Snow S {\nMeltable Herd[] y ❅ \nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅\n}\nCrystal Anna fff () {\nArendelle Frozen.y ❅ }\n}\nMeltable Olaf x = "sds"  ❅ \nUnmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅\ny[[x]] = 3.0 ❅\nSing(y.x) ❅'],
+  ['MultiTest', 'Meltable Anna j ❅ Snow S {\nMeltable Herd[] y ❅ \nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅\n}\nCrystal Anna fff () {\nArendelle j ❅ }\n}\nMeltable Olaf x = "sds"  ❅ \nUnmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅\ny[[x]] = 3.0 ❅\nSing(y.x) ❅'],
   ['Dictionary id as key', 'Meltable Olaf x = "sds"❅ \nUnmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅ '],
   ['GetProperty object test', 'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}} \nUnmeltable Trolls[[]] y = [[1:2 ❅,2:2 ❅,3:2 ❅]] ❅ \nMeltable Olaf x = "sds"  ❅ \ny[[x]] = 3.0 ❅\nSing(y[[x]]) ❅'],
   ['GetProperty mass test', 'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅}}\nUnmeltable Point y = Open~Door S(1) ❅\ny.x = 3 ❅\nSing(y.x) ❅'],
@@ -173,7 +173,7 @@ const semanticErrors = [
     'Get Property [] not int',
     'Snow S {\nMeltable Herd[] y ❅\nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅\n}\n}\nUnmeltable Herd[] y = [1,2,3,4,5] ❅\nMeltable Elsa x = 1.0  ❅\ny[x] = 3.0 ❅\nSing(y.x) ❅',
     /Expected Anna, but found Elsa. Please summon Anna to get Sven from the Herd, good spirit!/
-  ]
+  ],
 ]
 
 describe('The analyzer', () => {
