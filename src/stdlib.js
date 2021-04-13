@@ -1,4 +1,4 @@
-import { Type, FunctionType, Variable, Function} from "./ast.js"
+import { Type, Variable, Function} from "./ast.js"
 
 function makeConstant(name, type, value) {
     return Object.assign(new Variable(name, true), { type, value })
@@ -9,17 +9,17 @@ function makeFunction(name, type) {
 }
 
 export const types = {
-    int: Type.INT,
-    float: Type.FLOAT,
-    boolean: Type.BOOLEAN,
-    string: Type.STRING,
-    void: Type.VOID,
+    Anna: Type.ANNA,
+    Elsa: Type.ELSA,
+    Love: Type.LOVE,
+    Olaf: Type.OLAF,
+    Samantha: Type.SAMANTHA,
 }
 
 export const constants = {
-    π: makeConstant("π", Type.FLOAT, Math.PI),
+    π: makeConstant("π", Type.ELSA, Math.PI),
 }
 
 export const functions = {
-    print: makeFunction("Sing", new FunctionType([Type.ANY], Type.VOID)),
+    Sing: makeFunction("Sing", Type.SAMANTHA),
 }

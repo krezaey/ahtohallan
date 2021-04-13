@@ -1,17 +1,9 @@
 import {
-  Variable,
   Type,
   Function,
-  // ArrayType,
-  DictionaryType,
-  FunctionType,
-  ClassType,
 } from './ast.js'
 
 import * as stdlib from './stdlib.js'
-import util from 'util'
-import { Console } from 'console'
-import { type } from 'os'
 
 function must(condition, errorMessage) {
   if (!condition) {
@@ -40,76 +32,30 @@ function getType(type) {
   }
 }
 
-Object.assign(Type.prototype, {
-  // isEquivalentTo(target) {
-  //   return this == target
-  // },
-  // isAssignableTo(target) {
-  //   return this.isEquivalentTo(target)
-  // },
-})
-
-Object.assign(Type.HERD, {
-  // isEquivalentTo(target) {
-  //   return target.constructor === Type.HERD
-  // },
-  // isAssignableTo(target) {
-  //   return this.isEquivalentTo(target)
-  // },
-})
-
-// Object.assign(DictionaryType.prototype, {
-  // isEquivalentTo(target) {
-  //   return target.constructor === DictionaryType
-  // },
-  // isAssignableTo(target) {
-  //   return this.isEquivalentTo(target)
-  // },
-// })
-
-Object.assign(FunctionType.prototype, {
-  // isEquivalentTo(target) {
-  //   return (
-  //     target.constructor === FunctionType &&
-  //     this.returnType.isEquivalentTo(target.returnType) &&
-  //     this.parameterTypes.length === target.parameterTypes.length &&
-  //     this.parameterTypes.every((t, i) => target.parameterTypes[i].isEquivalentTo(t))
-  //   )
-  // },
-  // isAssignableTo(target) {
-    // Functions are covariant on return types, contravariant on parameters.
-    // return (
-    //   target.constructor === FunctionType &&
-    //   this.returnType.isAssignableTo(target.returnType) &&
-    //   this.parameterTypes.length === target.parameterTypes.length &&
-    //   this.parameterTypes.every((t, i) => target.parameterTypes[i].isAssignableTo(t))
-    // )
-  // },
-})
-
-Object.assign(ClassType.prototype, {
-  // isEquivalentTo(target) {
-  //   // We're restrictive: requiring the same exact type object for equivalence
-  //   return this == target
-  // },
-  // isAssignableTo(target) {
-  //   // We're restrictive: requiring the same exact type object for assignment
-  //   return this.isEquivalentTo(target)
-  // },
-})
-
 const check = self => ({
   HerdAccessIsAnna() {
-    must(Type.ANNA ===self.type, `Expected Anna, but found ${self.type.name}. Please summon Anna to get Sven from the Herd, good spirit!`)
+    must(
+      Type.ANNA === self.type,
+      `Expected Anna, but found ${self.type.name}. Please summon Anna to get Sven from the Herd, good spirit!`
+    )
   },
   isHerdOrAny() {
-    must([Type.HERD, Type.ANY].includes(self.type), `Expected a Herd, but found otherwise. Please summon the Herd, good spirit!`)
+    must(
+      [Type.HERD, Type.ANY].includes(self.type),
+      `Expected a Herd, but found otherwise. Please summon the Herd, good spirit!`
+    )
   },
   isTrollsOrAny() {
-    must([Type.TROLLS, Type.ANY].includes(self.type), `Expected the Trolls, but found otherwise. Please seek guidance from the Trolls, good spirit!`)
+    must(
+      [Type.TROLLS, Type.ANY].includes(self.type), 
+      `Expected the Trolls, but found otherwise. Please seek guidance from the Trolls, good spirit!`
+    )
   },
   isNumeric() {
-    must([Type.ANNA, Type.ELSA, Type.ANY].includes(self.type), `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`)
+    must(
+      [Type.ANNA, Type.ELSA, Type.ANY].includes(self.type), 
+      `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`
+    )
   },
   isNumericOrStringOrBoolean() {
     must(
@@ -129,21 +75,6 @@ const check = self => ({
       `Expected a Love, found ${self.type.name}`
     )
   },
-  // isInteger() {
-  //   must(self.type === Type.ANNA, `Expected an Anna, found ${self.type.name}`)
-  // },
-  // isFloat() {
-  //   must(self.type.constructor === Type.Elsa, `Expected an Elsa, ${self.type.name}`)
-  // },
-  // isAType() {
-  //   must(self instanceof Type, 'Type expected')
-  // },
-  // isAnArray() {
-  //   must(self.type.constructor === Type.HERD, 'Herd[] expected')
-  // },
-  // isADictionary() {
-  //   must(self.type.constructor === Type.TROLLS, 'Trolls[[]] expected')
-  // },
   hasSameTypeAs(other) {
     must(
       other.type === undefined ||
@@ -154,39 +85,6 @@ const check = self => ({
       'Excuse me old spirit, it appears that your declared variable type and your chosen expression are not the same! How embarrassing!'
     )
   },
-  // allHaveSameType() {
-  //   must(
-  //     self.slice(1).every(e => e.type.isEquivalentTo(self[0].type)),
-  //     "Not all elements have the same type"
-  //   )
-  // },
-  // isAssignableTo(type) {
-  //   must(
-  //     type === Type.ANY || self.type.isAssignableTo(type),
-  //     `Cannot assign a ${self.type.name} to a ${type.name}`
-  //   )
-  // },
-  // isNotReadOnly() {
-  //   must(!self.readOnly, `Cannot melt an Unmeltable ${self.name}`)
-  // },
-  // areAllDistinct() {
-  //   must(new Set(self.map(f => f.name)).size === self.length, 'Snowflakes must be distinct')
-  // },
-  // isInTheObject(object) {
-  //   must(object.type.fields.map(f => f.name).includes(self), 'No such Snowflake')
-  // },
-  // isCallable() {
-  //   must(
-  //     self.constructor === ClassType || self.type.constructor == FunctionType,
-  //     'Call of non-function or non-constructor'
-  //   )
-  // },
-  // returnsNothing() {
-  //   must(self.type.returnType === Type.SAMANTHA, `${self.type.returnType} should be returned here`)
-  // },
-  // returnsSomething() {
-  //   must(self.type.returnType !== Type.SAMANTHA, 'Cannot return a value here. It is Samantha!')
-  // },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
     must(
       self.function == null || self.function.returnType === expression.type || expression.type === Type.ANY ||self.function.returnType === Type.ANY, 
@@ -194,11 +92,12 @@ const check = self => ({
     )
   },
   nonDuplicateVariableDeclaration(name) {
-    must(!self.sees(name), `Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!`)
+    must(
+      !self.sees(name), 
+      `Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!`
+    )
   },
   hasNoFunctionOrFunctionReturnsSamantha() {
-    // TODO: Later make the type a "real" type
-
     must(
       self.function === null || self.function.returnType === Type.SAMANTHA,
       `You must return Samantha! You simply must bad spirit!`
@@ -206,43 +105,28 @@ const check = self => ({
   },
   isMeltable(mutability) {
     must(
-      mutability === "Meltable", `You cannot melt the permafrost bad spirit! It simply cannot melt!`
+      mutability === "Meltable",
+      `You cannot melt the permafrost bad spirit! It simply cannot melt!`
     )
   },
-  // isReturnableFrom(f) {
-  //   check(self).isAssignableTo(f.type.returnType)
-  // },
   isSnow(x, name) {
-    // Only class objects are stored as a name and a body
-    must( Object.keys(x).length === 2 && x.name !== undefined && x.body !== undefined,
-    `Bad spirit! Cannot create a new instance of '${name}' when there is no Snow!`
+    must( 
+      Object.keys(x).length === 2 && x.name !== undefined && x.body !== undefined,
+      `Bad spirit! Cannot create a new instance of '${name}' when there is no Snow!`
     )
   },
   inSnowUseFrozen() {
-    must (self.isInClass(), `Bad Spirit! You cannot use Frozen if you are not in Snow!`)
+    must(
+      self.isInClass(), 
+      `Bad Spirit! You cannot use Frozen if you are not in Snow!`
+    )
   },
   isAccessible(source) {
-    // in a class and source is this
-    // is a herd
-    // is a trolls
-    // is an instance of snow
-    must(source !== undefined && source.type !== undefined && (source.type === Type.HERD || source.type === Type.TROLLS || source.type === Type.ANY),
-      `Bad spirit!!! You can't access that value type. Seek the Trolls[[]], find a Herd[], get an instance of Snow, or be in Snow and use Frozen!`)
-  },
-  // match(targetTypes) {
-  //   must(
-  //     targetTypes.length === self.length,
-  //     `${targetTypes.length} argument(s) required but ${self.length} passed`
-  //   )
-  //   targetTypes.forEach((type, i) => check(self[i]).isAssignableTo(type))
-  // },
-  // matchParametersOf(calleeType) {
-    
-  //   check(self).match(calleeType.parameterTypes)
-  // },
-  // matchFieldsOf(classType) {
-  //   check(self).match(classType.fields.map(f => f.type))
-  // },
+    must(
+      source !== undefined && source.type !== undefined && (source.type === Type.HERD || source.type === Type.TROLLS || source.type === Type.ANY),
+      `Bad spirit!!! You can't access that value type. Seek the Trolls[[]], find a Herd[], get an instance of Snow, or be in Snow and use Frozen!`
+    )
+  }
 })
 
 class Context {
@@ -268,7 +152,7 @@ class Context {
     return this.locals.has(name) || this.parent?.sees(name) 
   }
   isInClass() {
-    return this.inClass || this.parent?.isInClass
+    return this.inClass
   }
   addField(name, entity) {
     this.classFields.set(name, entity)
@@ -291,8 +175,6 @@ class Context {
     throw new Error(`Identifier ${name} not declared`)
   }
   newChild(configuration = {}) {
-    // Create new (nested) context, which is just like the current context
-    // except that certain fields can be overridden
     return new Context(this, configuration)
   }
   analyze(node) {
@@ -303,11 +185,9 @@ class Context {
     return p
   }
   Variable(d) {
-    let x = this.analyze(d.expression)
-    d.expression = x === undefined ? d.expression : x
+    d.expression = this.analyze(d.expression)
     d.type = getType(d.type)
     if (d.expression !== "❅") {
-      // if you initialize it to an actual value
       check(d).hasSameTypeAs(d.expression)
     }
     check(this).nonDuplicateVariableDeclaration(d.name)
@@ -315,11 +195,10 @@ class Context {
     return d
   }
   ReturnStatement(s) {
-    let x = this.analyze(s.expression)
-    s.expression = x!== undefined? x : s.expression
+    s.expression = this.analyze(s.expression)
     if (s.expression.name !== undefined && s.expression.type === undefined) {
       let ret = this.lookup(s.expression.name)
-      s.expression.type = ret.type;
+      s.expression.type = ret.type
     }
     check(this).hasNoFunctionOrFunctionReturnTypeMatches(s.expression)
     return s
@@ -331,16 +210,9 @@ class Context {
   Function(d) {
     d.returnType = this.analyze(d.returnType)
     d.returnType = getType(d.returnType)
-    // Declarations generate brand new function objects
     const f = (d.function = new Function(d.returnType, d.name, d.parameters, d.body))
-    // When entering a function body, we must reset the inLoop setting,
-    // because it is possible to declare a function inside a loop!
     const childContext = this.newChild({ inLoop: false, forFunction: f })
     d.parameters = childContext.analyze(d.parameters)
-    // f.type = new FunctionType(
-    //   d.parameters.map(p => p.type), d.returnType
-    // )
-    // Add before analyzing the body to allow recursion
     this.add(f.name, f)
     d.body = childContext.analyze(d.body)
     return d
@@ -358,32 +230,17 @@ class Context {
     c.returnType = Type.SAMANTHA
     c.name = "Constructor"
     const f = (c.function = new Function(c.returnType, c.name, c.parameters, c.body))
-    // When entering a method body, we must reset the inLoop setting,
-    // because it is possible to declare a function inside a loop!
     const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true, })
     c.parameters = childContext.analyze(c.parameters)
-    // f.type = new FunctionType(
-    //   d.parameters.map(p => p.type),
-    //   d.returnType
-    // )
-    // Add before analyzing the body to allow recursion
-    // this.add(f.name, f)
     c.body = childContext.analyze(c.body)
     return c
   }
   Method(m) {
-    m.returnType = m.returnType ? this.analyze(m.returnType) : m.returnType
+    m.returnType = this.analyze(m.returnType)
     m.returnType = getType(m.returnType)
     const f = (m.function = new Function(m.returnType, m.name, m.parameters, m.body))
-    // When entering a method body, we must reset the inLoop setting,
-    // because it is possible to declare a function inside a loop!
     const childContext = this.newChild({ inLoop: false, forFunction: f, inClass: true })
     m.parameters = childContext.analyze(m.parameters)
-    // f.type = new FunctionType(
-    //   d.parameters.map(p => p.type),
-    //   d.returnType
-    // )
-    // Add before analyzing the body to allow recursion
     this.add(f.name, f)
     m.body = childContext.analyze(m.body)
     return m
@@ -396,31 +253,21 @@ class Context {
     return f
   }
   IfStatement(s) {
-    // analyze all of the condtions
     for (let condition of s.condition) {
-      let c = this.analyze(condition)
-      condition = c !== undefined ? c: condition
+      condition = this.analyze(condition)
     }
-    // analyze all of the bodies
     for (let body of s.body) {
-      let b = this.analyze(body)
-      body = b !== undefined ? b: body
+      body = this.analyze(body)
     }
-    // analyze the else block
-    let e = this.analyze(s.alternate)
-    s.alternate = e !== undefined ? e : s.alternate
-    
-    // recombine all of the blocks appropriately
+    s.alternate = this.analyze(s.alternate)
     let final = {elseIf: []}
     for (let i = 0; i < s.condition.length; i++) {
       if (i === 0) {
-        // if case
         final.if = {
           condition: s.condition[i],
           body : s.body[i]
         }
       } else {
-        // else if cases
         let elif = {
           condition: s.condition[i],
           body : s.body[i]
@@ -434,8 +281,7 @@ class Context {
     return final
   }
   WhileLoop(w) {
-    let e = this.analyze(w.expression)
-    w.expression = e !== undefined ? e : w.expression
+    w.expression = this.analyze(w.expression)
     if (w.expression.name !== undefined) {
       let x = this.lookup(w.expression.name)
       w.expression.type = x.type
@@ -445,31 +291,22 @@ class Context {
     return w
   }
   Access(a) {
-    let v = this.analyze(a.accessValue)
-    a.accessValue = v !== undefined ? v : a.accessValue
+    a.accessValue = this.analyze(a.accessValue)
     return a
   }
   ForLoop(f) {
-    let s = this.analyze(f.start)
-    f.start = s !== undefined ? s : f.start
-    let l = this.analyze(f.limit)
-    f.limit = l !== undefined ? l : f.limit
-    let i = this.analyze(f.increment)
-    f.increment = i !== undefined ? i : f.increment
+    f.start = this.analyze(f.start)
+    f.limit = this.analyze(f.limit)
+    f.increment = this.analyze(f.increment)
     const childContext = this.newChild({ inLoop: true, })
-    let b = childContext.analyze(f.body)
-    f.body = b !== undefined ? b : f.body
+    f.body = childContext.analyze(f.body)
     return f
    }
   SwitchStatement(s) {
-    let e = this.analyze(s.expression)
-    let c = this.analyze(s.cases)
-    let b = this.analyze(s.body)
-    let d = this.analyze(s.defaultCase) 
-    s.expression = e !== undefined ? e : s.expression
-    s.cases = c !== undefined ? c : s.cases
-    s.body = b !== undefined ? b : s.body
-    s.defaultCase = d !== undefined ? d : s.defaultCase
+    s.expression = this.analyze(s.expression)
+    s.cases = this.analyze(s.cases)
+    s.body = this.analyze(s.body)
+    s.defaultCase = this.analyze(s.defaultCase) 
 
     if (s.expression.name !== undefined) {
       let x = this.lookup(s.expression.name)
@@ -487,11 +324,8 @@ class Context {
     return s
   }
   NewInstance(n) {
-    let i = this.analyze(n.identifier)
-    let a = this.analyze(n.args)
-    n.identifier = i !== undefined ? i : n.identifier
-    n.args = a !== undefined ? a : n.args
-    
+    n.identifier = this.analyze(n.identifier)
+    n.args = this.analyze(n.args)
     let x = this.lookup(n.identifier)
     let c = undefined
     check(this).isSnow(x, n.identifier)
@@ -529,33 +363,26 @@ class Context {
     return a
   }
   Dictionary(d) {
-    let e = this.analyze(d.entries)
-    d.entries = e !== undefined? e : d.entries
+    d.entries = this.analyze(d.entries)
     return d
   }
   DictionaryEntry(d) {
-    let k = this.analyze(d.key)
-    let v = this.analyze(d.value)
-    d.key = k !== undefined ? k : d.key
-    d.value = v !== undefined ? v : d.value
+    d.key = this.analyze(d.key)
+    d.value = this.analyze(d.value)
     if (d.key.name !== undefined) {
       let x = this.lookup(d.key.name)
       d.key.type = x.type
     }
     check(d.key).isNumericOrString()
     return d
-    
   }
   DictionaryEntries(d) {
-    let e = this.analyze(d.entries)
-    d.entries = e !== undefined? e : d.entries
+    d.entries = this.analyze(d.entries)
     return d
   }
   Parameter(p) {
-    let n = this.analyze(p.name) 
-    p.name = n !== undefined ? n : p.name
-    let t = this.analyze(p.type);
-    p.type = t !== undefined ? t : p.type
+    p.name = this.analyze(p.name) 
+    p.type = this.analyze(p.type)
     p.type = getType(p.type)
     this.add(p.name, p)
     return p
@@ -565,16 +392,13 @@ class Context {
     return p
   }
   Arguments(a) {
-    let x
     for (let n of a.names) {
-      x = this.analyze(n)
-      n = x !== undefined ? x : n
+      n = this.analyze(n)
     }
     return a
   }
   Argument(a) {
-    let x = this.analyze(a.arg)
-    x = (x === undefined) ? a.arg: x
+    a.arg = this.analyze(a.arg)
     if (a.arg.name !== undefined) {
       this.lookup(a.arg.name)
     }
@@ -590,10 +414,10 @@ class Context {
   }
   PlainAssignment(a) {
     let e = this.analyze(a.expression)
-    a.expression = e !== undefined ? e : a.expression
+    a.expression = this.analyze(a.expression)
     let v = this.analyze(a.variable)
-    a.variable = v !== undefined? v: a.variable
-    let x;
+    a.variable = this.analyze(a.variable)
+    let x
     if (a.variable.name !== undefined) {
       x = this.lookup(a.variable.name)
       check(this).isMeltable(x.mutability)
@@ -606,27 +430,21 @@ class Context {
     return a
   }
   IncrementalAssignment(i) {
-    let v = this.analyze(i.variable)
-    i.variable = v !== undefined ? v : i.variable
-    let o = this.analyze(i.operand)
-    i.operand = o !== undefined ? o : i.operand
+    i.variable = this.analyze(i.variable)
+    i.operand = this.analyze(i.operand)
     return i
   }
   BinaryExpression(e) {
-    let left = this.analyze(e.left)
-    let right = this.analyze(e.right)
-    // if given an identifier get it's type
-    if (left.name !== undefined) {
-      let x = this.lookup(left.name)
-      left.type = x.type
+    e.left = this.analyze(e.left)
+    e.right = this.analyze(e.right)
+    if (e.left.name !== undefined) {
+      let x = this.lookup(e.left.name)
+      e.left.type = x.type
     }
-    if (right.name !== undefined) {
-      let y = this.lookup(right.name)
-      right.type = y.type
+    if (e.right.name !== undefined) {
+      let y = this.lookup(e.right.name)
+      e.right.type = y.type
     }
-
-    e.left = (left === undefined) ? e.left: left
-    e.right = (right === undefined) ? e.right : right
     if (["+"].includes(e.op)) {
       check(e.left).isNumericOrString()
       check(e.right).isNumericOrString()
@@ -664,10 +482,8 @@ class Context {
     return i
   }
   GetProperty(p) {
-    let s = this.analyze(p.source)
-    let access = this.analyze(p.property)
-    p.source = s !== undefined ? s : p.source
-    p.property = access !== undefined? access : p.property
+    p.source = this.analyze(p.source)
+    p.property = this.analyze(p.property)
     let x, name
     if (p.source.name !== undefined) {
       x = this.lookup(p.source.name)
@@ -696,10 +512,8 @@ class Context {
     return p
   }
   Call(c) {
-    let name = this.analyze(c.name)
-    let args = this.analyze(c.args)
-    c.name = name !== undefined? name : c.name
-    c.args = args !== undefined? args : c.args
+    c.name = this.analyze(c.name)
+    c.args = this.analyze(c.args)
     if (c.name.name !== "Sing" && c.name.name !== undefined) {
       let call = this.lookup(c.name.name)
       if (c.args.length > call.parameters.parameter.length) {
@@ -738,12 +552,7 @@ class Context {
 }
 
 export default function analyze(node) {
-  // Allow primitives to be automatically typed
-
-  //ADD ALL PRIMITIVES HERE
   const initialContext = new Context()
-
-  // Add in all the predefined identifiers from the stdlib module
   const library = { ...stdlib.types, ...stdlib.constants, ...stdlib.functions }
   for (const [name, type] of Object.entries(library)) {
     initialContext.add(name, type)

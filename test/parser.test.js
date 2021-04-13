@@ -3,9 +3,7 @@ import parse, { syntaxIsOkay } from '../src/parser.js'
 
 const goodPrograms = [
   `Unmeltable Anna x = -2 + 3 ❅`,
-  `Unmeltable Anna x = 1 ❅
-
-  `,
+  `Unmeltable Anna x = 1 ❅`,
   `Meltable Love bool = Hans ❅`,
   `~* This is a comment *~`,
   `Let~It~Go (Meltable Anna i = 1 ❅ i < 10 ❅ i+=1 ❅) {}`,

@@ -1,7 +1,6 @@
 import assert from 'assert'
 import parse from '../src/parser.js'
 import analyze from '../src/analyzer.js'
-import * as ast from '../src/ast.js'
 
 const semanticChecks = [
   ['MultiTest', 'Meltable Anna j ❅ Snow S {\nMeltable Herd[] y ❅ \nWater( Anna x ) {\nFrozen.x = x ❅\nFrozen.y.x = 2 ❅\n}\nCrystal Anna fff () {\nArendelle j ❅ }\n}\nMeltable Olaf x = "sds"  ❅ \nUnmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅\ny[[x]] = 3.0 ❅\nSing(y.x) ❅'],
@@ -21,7 +20,6 @@ const semanticChecks = [
     `Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable S y = Open~Door S(1) ❅ Sing(y.x) ❅`,
   ],
   [
-
     'array of Classes',
     'Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable Herd[] x = [Open~Door S(1), Open~Door S(3)]❅',
   ],
@@ -99,7 +97,7 @@ const semanticErrors = [
     'return value from void function',
     'Ice Samantha f() {Arendelle "Return!" ❅}',
     /You must return Samantha! You simply must bad spirit!/,
-  ], //HI QUICHE
+  ],
   ['return nothing from non-void', 'Ice Olaf f() {Arendelle ❅}', /You must return Samantha! You simply must bad spirit!/],
   ['return type mismatch', 'Ice Anna f() {Arendelle Hans ❅}', /You must return Anna! You simply must bad spirit!/],
   ['bad types for +', 'Sing(Hans + 1) ❅', /Expected Anna, Elsa or Olaf, but found Love. Please summon Anna, Elsa or Olaf, good spirit!/],

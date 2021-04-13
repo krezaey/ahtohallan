@@ -20,12 +20,6 @@ export class ShortReturnStatement {
   // Empty
 }
 
-// export class Expression {Fd
-//   constructor(expression) {
-//     this.expression = expression
-//   }
-// }
-
 export class Function {
   constructor(returnType, name, parameters, body) {
     Object.assign(this, { returnType, name, parameters, body })
@@ -162,58 +156,17 @@ export class IncrementalAssignment {
   }
 }
 
-// export class Relation {
-//   constructor(left, op, right) {
-//     Object.assign(this, { left, op, right })
-//   }
-// }
-
 export class BinaryExpression {
   constructor(left, op, right) {
     Object.assign(this, { left, op, right })
   }
 }
 
-// export class Expression2_logicalop {
-//   constructor(left, op, right) {
-//     Object.assign(this, { left, op, right })
-//   }
-// }
-
-// export class Expression4_addop {
-//   constructor(left, op, right) {
-//     Object.assign(this, { left, op, right })
-//   }
-// }
-
-// export class Expression5_mulop {
-//   constructor(left, op, right) {
-//     Object.assign(this, { left, op, right })
-//   }
-// }
-
-// export class Expression6_exp {
-//   constructor(left, op, right) {
-//     Object.assign(this, { left, op, right })
-//   }
-// }
-
 export class UnaryExpression {
   constructor(op, right) {
     Object.assign(this, { op, right })
   }
 }
-// export class Expression8_negop {
-//   constructor(op, right) {
-//     Object.assign(this, { op, right })
-//   }
-// }
-
-// export class Expression9_prefixop {
-//   constructor(op, right) {
-//     Object.assign(this, { op, right })
-//   }
-// }
 
 export class Identifier {
   constructor(name) {
@@ -247,40 +200,6 @@ export class Type {
   static TROLLS = new Type('Trolls[[]]')
   static TYPE = new Type('Type')
   static ANY = new Type('Any')
-
-  // isEquivalentTo(target) {
-  //   return this === target
-  // }
-
-  // isAssignableTo(target) {
-  //   return this.isEquivalentTo(target)
-  // }
-}
-
-// export class ArrayType extends Type {
-//   constructor(baseType) {
-//     super(`[${baseType.name}]`)
-//   }
-// }
-
-export class DictionaryType extends Type {
-  constructor(keyType, valueType) {
-    super(`(${keyType.map(t => t.name).join(',')}):${valueType.name}`)
-  }
-}
-
-export class FunctionType extends Type {
-  constructor(parameterTypes, returnType) {
-    super(`(${parameterTypes.map(t => t.name).join(',')})->${returnType ? returnType.name: "Samantha"}`)
-    Object.assign(this, { parameterTypes, returnType })
-  }
-}
-
-export class ClassType extends Type {
-  constructor(name, body) {
-    super(name)
-    this.body = body
-  }
 }
 
 export class Booley {
@@ -306,11 +225,3 @@ export class Phrase {
     Object.assign(this, {value, type : Type.OLAF})
   }
 }
-
-
-// export class VoidType extends Type {
-//   constructor(value) {
-//     super(null)
-//     this.value = value
-//   }
-// }
