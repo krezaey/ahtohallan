@@ -70,15 +70,17 @@ Ahtohallan introduces these language features:
 | array      | `Herd`              | `Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅`                                                 |
 | dictionary | `Trolls[[]]`        | `Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅` |
 | none       | `Samantha`          | `Meltable Elsa n = Samantha ❅`                                                                                    |
+Note: Regarding Herds, key values can only be of type Anna, Elsa, Olaf! Value types are unrestricted!
 
-To access these elements of arrays or dictionary types, simply use the respective bracket notation:
+
+To access these elements of Herd[] or Trolls[[]] types, simply use the respective bracket notation:
 ```
 Meltable Herd[] me = ["Carrot", "Coal", "Twigs", "Warm Hugs"] ❅
-~* We used single brackets at array declaration, so access as such! *~
+~* We used single brackets at Herd[] declaration, so access as such! *~
 Sing(me[0]) ❅
 
 Unmeltable Trolls[[]] annaLoveHistory = [["Hans loved Anna." : Hans ❅ , "Kristoff loves Anna." : Kristoff ❅]] ❅
-~* We used double brackets at array declaration, so access as such! *~
+~* We used double brackets at Trolls[[]] declaration, so access as such! *~
 Sing(annaLoveHistory[["Hans loved Anna."]]) ❅
 
 ```
