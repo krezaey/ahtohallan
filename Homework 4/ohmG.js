@@ -34,16 +34,16 @@ const grammars = {
     }`,
   adaFloat: `Ada {
       numericLiteral = basedLiteral | decimalLiteral
-	    decimalLiteral = numeral ("." numeral)? exponent?
-	    numeral = digit ("_"? digit)*
-	    exponent = ("E" | "e") ("+" | "-")? numeral
-	    basedLiteral =  base "#" basedNumeral ( "." basedNumeral )? "#" ( exponent )?
-	    base = numeral
-	    basedNumeral = extendedDigit ("_"? extendedDigit)*
-	    extendedDigit = digit | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
+      decimalLiteral = numeral ("." numeral)? exponent?
+      numeral = digit ("_"? digit)*
+      exponent = ("E" | "e") ("+" | "-")? numeral
+      basedLiteral =  base "#" basedNumeral ( "." basedNumeral )? "#" ( exponent )?
+      base = numeral
+      basedNumeral = extendedDigit ("_"? extendedDigit)*
+      extendedDigit = digit | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
     }`,
   notThreeEndingInOO: `LatinLettersNoOO {
-	    allowed = ~notAllowed strings 
+      allowed = ~notAllowed strings 
       strings = letter*
       notAllowed = (letter caseInsensitiveLetters) end
       caseInsensitiveLetters = caseInsO caseInsO
@@ -71,9 +71,9 @@ const grammars = {
     }`,
   notDogDoorDenNoLookAround: `________`,
   notDogDoorDenWithLookAround: `notDogDoorDenWithLookAround {
-	    allowed = ~notAllowed strings
-	    notAllowed = ("dog" | "door" | "den") end
-	    strings = (letter)*
+      allowed = ~notAllowed strings
+      notAllowed = ("dog" | "door" | "den") end
+      strings = (letter)*
     }`,
 }
 
