@@ -69,7 +69,28 @@ const grammars = {
   mLComment: `nonNestingMLComments {
       comment =   "(*"(~"*)" any)*  "*)"  
     }`,
-  notDogDoorDenNoLookAround: `________`,
+  notDogDoorDenNoLookAround: `NoLookarounds {
+	  valid = greaterThan4 | four | three | lessThan3 
+    lessThan3 = letter? letter?
+    greaterThan4 = letter letter letter letter letter  letter*
+    four = startsWithNoD4 | startsWithD4 | startsWithDO4 | startsWithDOO4
+    three = startsWithNoD3 | startsWithD3 | startsWithDO3 | startsWithDE3
+    startsWithNoD3 = noD letter letter
+    startsWithD3 = "d" noOE letter
+    startsWithDO3 = "do" noG
+    startsWithDE3 = "de" noN
+    startsWithNoD4 = noD letter letter letter
+    startsWithD4 = "d" noO letter letter
+    startsWithDO4 = "do" noO letter
+    startsWithDOO4 = "doo" noR
+    noD = "a" | "b" | "c" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
+    caps = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" 
+    noO= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
+    noG= "a" | "b" | "c" | "d" | "e" | "f" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
+    noN= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
+    noR= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
+    noOE= "a" | "b" | "c" | "d" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps 
+ }`,
   notDogDoorDenWithLookAround: `notDogDoorDenWithLookAround {
       allowed = ~notAllowed strings
       notAllowed = ("dog" | "door" | "den") end
