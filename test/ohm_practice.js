@@ -1,21 +1,21 @@
 import ohm from 'ohm-js'
 
 const grammars = {
-  canadianPostalCode: `CPC {
+  canadianPostalCode: `
       code = fsa " " ldu
       fsa = firstLetter digit validLetter
       ldu = digit validLetter digit
       validLetter = "A" | "B" | "C" | "E" | "G" | "H" | "J" | "K" | "L" | "M" | "N" | "P" | "R" | "S" | "T" | "V" | "W" | "X" | "Y" | "Z"
       firstLetter = ~notFirst validLetter
       notFirst = "W" | "Z"
-    }`,
-  visa: `Visa {
+    `,
+  visa: `
       cardNumber = start short makeLong?
       short = digit digit digit digit digit digit digit digit digit digit digit digit 
       makeLong = digit digit digit 
       start = "4"
-    }`,
-  masterCard: `MasterCard {
+    `,
+  masterCard: `
       cardNumber = start5 | start2
       start5 = "5" oneTo5 twelve make14
       start2 = (base2 | tail2 | general2 | secondary2) twelve
@@ -31,8 +31,8 @@ const grammars = {
       twelve = digit digit digit digit digit digit digit digit digit digit digit digit 
       make14 = digit digit 
       oneTo5 = "1" | "2" | "3" | "4" | "5"
-    }`,
-  adaFloat: `Ada {
+    `,
+  adaFloat: `
       numericLiteral = basedLiteral | decimalLiteral
       decimalLiteral = numeral ("." numeral)? exponent?
       numeral = digit ("_"? digit)*
@@ -41,22 +41,22 @@ const grammars = {
       base = numeral
       basedNumeral = extendedDigit ("_"? extendedDigit)*
       extendedDigit = digit | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
-    }`,
-  notThreeEndingInOO: `LatinLettersNoOO {
+    `,
+  notThreeEndingInOO: `
       allowed = ~notAllowed strings 
       strings = letter*
       notAllowed = (letter caseInsensitiveLetters) end
       caseInsensitiveLetters = caseInsO caseInsO
       caseInsO = caseInsensitive<"o">
-    }`,
-  divisibleBy64: `BinMod64 {  
-      valid = padding "1" internal ending "0"*
+    `,
+  divisibleBy64: `  
+      valid = padding ("1" internal ending "0"*)?
       padding = "0" *
       internal = ( x | "1")*
       x = ("0")* "1" 
       ending = "0" "0" "0" "0" "0" "0"
-    }`,
-  eightThroughTwentyNine: `Dec8To29 {	
+    `,
+  eightThroughTwentyNine: `	
       valid = regDec | edge
       edge = "2" "9" ("." "0"+)?
       regDec = whole ("." digit+)?
@@ -65,11 +65,11 @@ const grammars = {
       tens = "1" digit
       twenties = "2" oneTo8
       oneTo8 = ~"9" digit
-    }`,
-  mLComment: `nonNestingMLComments {
+    `,
+  mLComment: `
       comment =   "(*"(~"*)" any)*  "*)"  
-    }`,
-  notDogDoorDenNoLookAround: `NoLookarounds {
+    `,
+  notDogDoorDenNoLookAround: `
 	  valid = greaterThan4 | four | three | lessThan3 
     lessThan3 = letter? letter?
     greaterThan4 = letter letter letter letter letter  letter*
@@ -89,13 +89,12 @@ const grammars = {
     noG= "a" | "b" | "c" | "d" | "e" | "f" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
     noN= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
     noR= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps
-    noOE= "a" | "b" | "c" | "d" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps 
- }`,
-  notDogDoorDenWithLookAround: `notDogDoorDenWithLookAround {
+    noOE= "a" | "b" | "c" | "d" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | caps `,
+  notDogDoorDenWithLookAround: `
       allowed = ~notAllowed strings
       notAllowed = ("dog" | "door" | "den") end
       strings = (letter)*
-    }`,
+    `,
 }
 
 export function matches(name, string) {

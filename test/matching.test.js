@@ -1,6 +1,6 @@
 import assert from 'assert'
-import { matches as regexMatches } from '../regex_practice.js'
-import { matches as ohmMatches } from '../ohm_practice.js'
+import { matches as regexMatches } from './regex_practice.js'
+import { matches as ohmMatches } from './ohm_practice.js'
 
 const FIXTURE = {
   canadianPostalCode: {
