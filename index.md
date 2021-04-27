@@ -4,13 +4,13 @@
 Hello, hello, and welcome to the show! This is Ahtohallan, a a magical language from the depths of the FCU (Frozen Cinematic Universe). Although it is inspired by our love of the FCU, one doesn't need to be a Frozen connoisseur to understand or use Ahtohallan! If you are, however, we hope you have fun seeing all the magical things water, code, and a little bit of love can offer!
 
 Ahtohallan introduces these language features:
-- An object oriented programming leanguage reminiscent of JavaScript
+- An object oriented programming language reminiscent of JavaScript
 - Frozen casing: A style of casing where everything is capitalized, and separated by ~ Like~This ! Additionally, all keywords should be capitalized.
 - Like ice, the language is strong and dynamic
 - No primitive types
 - Typed parameters
 - Function return types
-- Built-in functions
+- Minimal Built-in functions
 - In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
 - Introducing universe appropriate error messages!
 
