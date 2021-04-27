@@ -174,7 +174,7 @@ const semanticErrors = [
   ],
 ]
 
-describe('The analyzer', () => {
+describe('The Analyzer', () => {
   for (const [scenario, source] of semanticChecks) {
     it(`recognizes ${scenario}`, () => {
       assert.ok(analyze(parse(source)))

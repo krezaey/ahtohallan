@@ -1,8 +1,8 @@
 // import * as ast from "./ast.js"
 
-// export default function optimize(node) {
-//   return optimizers[node.constructor.name](node)
-// }
+export default function optimize(node) {
+  return optimizers[node.constructor.name](node)
+}
 
 // Taken from Carlos Lang 
 // const optimizers = {
@@ -28,4 +28,4 @@
 //     },
 //     Variable(v) {
 //       return v
-//     }
+    // }
