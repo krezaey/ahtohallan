@@ -1,7 +1,7 @@
 ![Image](ahtohallan_logo.png)
 
 ## About Ahtohallan
-Hello, hello, and welcome to the show! This is Ahtohallan, a a magical language from the depths of the FCU (Frozen Cinematic Universe). Although it is inspired by our love of the FCU, one doesn't need to be a Frozen connoisseur to understand or use Ahtohallan! If you are, however, we hope you have fun seeing all the magical things water, code, and a little bit of love can offer!
+Hello, hello, and welcome to the show! This is Ahtohallan, a magical language from the depths of the FCU (Frozen Cinematic Universe). Although it is inspired by our love of the FCU, one doesn't need to be a Frozen connoisseur to understand or use Ahtohallan! If you are, however, we hope you have fun seeing all the magical things water, code, and a little bit of love can offer!
 
 Ahtohallan introduces these language features:
 - An object oriented programming language reminiscent of JavaScript
@@ -14,8 +14,8 @@ Ahtohallan introduces these language features:
 - In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
 - Introducing universe appropriate error messages!
 
-#### [View Github Repo](https://github.com/krezaey/ahtohallan)        
-#### [View Grammar](https://github.com/krezaey/ahtohallan/blob/main/src/ahtohallan.ohm)
+#### [View Github Repo + Get More Info About Ahtohallan](https://github.com/krezaey/ahtohallan)        
+#### [View Ahtohallan's Grammar](https://github.com/krezaey/ahtohallan/blob/main/src/ahtohallan.ohm)
 
 ## Example Programs
 
