@@ -122,7 +122,7 @@ export class Parameter {
 
 export class Parameters {
   constructor(parameter) {
-    this.parrameter = parameter
+    this.parameter = parameter
   }
 }
 
