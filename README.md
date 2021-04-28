@@ -141,6 +141,10 @@ In Ahtohallan functions are declared using the keyword `Ice`.
 This is followed by a return type and a function name. The parameters are in `()` and each parameter has a type and a name. The function block is denoted by `{}`.
 
 ```
+Ice Samantha Function~Name(Olaf String, Anna Int, Elsa Float) {
+  ~* This is a comment *~
+  Sing("Hello, Hello, and Welcome to my Show") ❅
+}
 ```
 
 ### Classes

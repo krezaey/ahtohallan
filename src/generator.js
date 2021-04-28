@@ -27,23 +27,24 @@ export default function generate(program) {
     // Key idea: when generating an expression, just return the JS string; when
     // generating a statement, write lines of translated JS to the output array.
     Program(p) {
-      gen(p.statements)
+      gen(p.instructions)
     },
     Variable(d) {
       if (d.mutabiltiy === 'Meltable') {
-        output.push(`let ${gen(d.variable)} = ${gen(d.initializer)};`)
+        output.push(`let ${gen(d.variable)} = ${gen(d.expression)};`)
       }
       else {
-        output.push(`const ${gen(d.variable)} = ${gen(d.initializer)};`)
+        output.push(`const ${gen(d.variable)} = ${gen(d.expression)};`)
       }
     },
     ReturnStatement(r) { 
-    
+      output.push(`return ${gen(r.expression)};`)
     },
     ShortReturnStatement(r) {
-
+      output.push(`return;`)
     },
     Function(f) {
+      //need to add
       return targetName(f)
     },
     Snow(c) {
@@ -80,6 +81,7 @@ export default function generate(program) {
       return `${gen(e.array)}[${gen(e.index)}]`
     },
     ForLoop(s) {
+      //need to adjust
       const i = targetName(s.iterator)
       const op = s.op === "..." ? "<=" : "<"
       output.push(`for (let ${i} = ${gen(s.low)}; ${i} ${op} ${gen(s.high)}; ${i}++) {`)
@@ -89,14 +91,17 @@ export default function generate(program) {
     SwitchStatement(s) {
 
     },
+    BreakStatement(s) {
+      output.push("break;")
+    },
     NewInstance(n) {
 
     },
-    Array(a) {
-      return a.map(gen)
-    },
+    // Array(a) {
+    //   return a.map(gen)
+    // },
     ArrayExpression(e) {
-        return `[${gen(e.elements).join(",")}]`
+      return `[${gen(e.elements).join(",")}]`
     },
     Dictionary() {
 
@@ -120,28 +125,33 @@ export default function generate(program) {
         
     },
     Increment(s) {
-      output.push(`${gen(s.variable)}++;`)
-      output.push(`${gen(s.variable)}--;`)
-    },
-    BreakStatement(s) {
-        output.push("break;")
+      if (s.op === "++") {
+        output.push(`${gen(s.operand)}++;`)
+      }
+      if (s.op === "--") {
+        output.push(`${gen(s.operand)}--;`)
+      }
     },
     PlainAssignment(s) {
-      output.push(`${gen(s.target)} = ${gen(s.source)};`)
+      output.push(`${gen(s.variable)} = ${gen(s.expression)};`)
     },
     IncrementalAssignment(s) {
-      output.push(`${gen(s.variable)}+=;`)
-      output.push(`${gen(s.variable)}-=;`)
+      if (s.operand === "+=") {
+        output.push(`${gen(s.variable)}+= ${gen(s.operand)};`)
+      }
+      if (s.op === "-=") {
+        output.push(`${gen(s.variable)}-= ${gen(s.operand)};`)
+      }
     },
     BinaryExpression(e) {
       const op = { "==": "===", "!=": "!==" }[e.op] ?? e.op
       return `(${gen(e.left)} ${op} ${gen(e.right)})`
     },
     UnaryExpression(e) {
-        return `${e.op}(${gen(e.operand)})`
+        return `${e.op}(${gen(e.right)})`
     },
     Identifier(i) {
-
+      return
     }, 
     GetProperty() {
 
@@ -158,8 +168,7 @@ export default function generate(program) {
       }
       output.push(`${targetCode};`)
     },
-    String(e) {
-      // This ensures in JavaScript they get quotes!
+    Booley(e) {
       return e
     },
     Integer(e) {
@@ -172,9 +181,10 @@ export default function generate(program) {
       // This ensures in JavaScript they get quotes!
       return JSON.stringify(e)
     },
-    Booley(e) {
-      return e
-    },
+    // String(e) {
+    //   // This ensures in JavaScript they get quotes!
+    //   return e
+    // }, 
   }
 
   gen(program)
