@@ -130,15 +130,15 @@ const fixtures = [
     `,
     expected: dedent`
       class Point {
-        let state = false; 
+        this.state = false;
 
         constructor(name, segments, length) {
-          this.name = name; 
-          this.segments = segments; 
+          this.name = name;
+          this.segments = segments;
           this.length = length;
         }
 
-        function Print~Point~Info() {
+        function PrintPointInfo () {
           console.log(this.name);
         }
       }

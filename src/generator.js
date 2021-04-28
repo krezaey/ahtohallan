@@ -65,12 +65,12 @@ export default function generate(program) {
       output.push(`}`)
     },
     Snow(c) {
-      output.push(`class ${gen(f.name)} {`)
+      output.push(`class ${gen(c.name)} {`)
       gen(c.body)
       output.push(`}`)
     },
     Constructor(c) {
-      output.push(`constructor ${gen(c.parameters).join(", ")} {`)
+      output.push(`constructor(${gen(c.parameters).join(", ")}) {`)
       gen(c.body)
       output.push(`}`)
     },
@@ -80,7 +80,7 @@ export default function generate(program) {
       output.push(`}`)
     },
     Field(f) {
-      return targetName(f)
+      output.push(`${gen(f.field.name)} = ${gen(f.field.expression)};`)
     },
     IfStatement(s) {
       output.push(`if (${gen(s.condition[0])}) {`)
@@ -99,6 +99,7 @@ export default function generate(program) {
       output.push("}")
     },
     Access(a) {
+      console.log(a)
       let method
       let property = ""
       switch (a.accessMethod) {
@@ -113,7 +114,7 @@ export default function generate(program) {
           break
       }
       property += method === "." ? "." : "["
-      property += `${accessValue}`
+      property += `${gen(a.accessValue)}`
       property += method === "." ? "" : "]"
       return property
     },
@@ -186,6 +187,7 @@ export default function generate(program) {
       return args
     },
     Argument(a) {
+      a.arg._return = true
       return gen(a.arg)
     },
     Incrementer(s) {
@@ -203,6 +205,7 @@ export default function generate(program) {
       }
     },
     PlainAssignment(s) {
+      s.variable._return = true
       output.push(`${gen(s.variable)} = ${gen(s.expression)};`)
     },
     IncrementalAssignment(s) {
@@ -224,9 +227,12 @@ export default function generate(program) {
       return `${gen(i.name)}`
     },
     GetProperty(p) {
-      let property = `${p.source}`
+      let property = `${gen(p.source)}`
       for (let prop of p.property) {
         property += gen(prop)
+      }
+      if (p._return === true) {
+        return property
       }
       output.push(property)
     },
@@ -241,6 +247,9 @@ export default function generate(program) {
       output.push(`${targetCode};`)
     },
     String(s) {
+      if (s.includes("Frozen")) {
+        return s.replace("Frozen", "this")
+      }
       let name = s.includes("~") ? (s.replace(/[~]+/g, '')) : s
       return name
     },

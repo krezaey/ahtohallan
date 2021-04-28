@@ -1,7 +1,13 @@
-Meltable Anna x = 0 ❅ 
-Get~This~Right (x < 1 ❅) {
-  Sing("X is less than 1!") ❅
-}
-The~Next~Right~Thing (x == 1 ❅) {
-  Sing("X is equal to 1!") ❅
+Snow Point {
+  Meltable Love state = Hans ❅
+
+  Water (Olaf name, Anna segments, Elsa length) {
+    Frozen.name = name ❅
+    Frozen.segments = segments ❅
+    Frozen.length = length ❅
+  }
+
+  Crystal Samantha Print~Point~Info() {
+    Sing(Frozen.name) ❅
+  }
 }
