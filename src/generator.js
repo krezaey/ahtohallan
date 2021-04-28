@@ -134,17 +134,6 @@ export default function generate(program) {
       output.push(`default:`)
       gen(s.defaultCase)
       output.push("}")
-      // expression, cases, body, defaultCase)
-      // switch (s.condition) {
-      // if (s.alternate.constructor === SwitchStatement) {
-      //   output.push(`} case1 (${gen(s.condition)}) {`)
-      //   gen(s.body)
-      //   output.push("}")
-      // } else {
-      //   output.push(`} case2 (${gen(s.condition)}) {`)
-      //   gen(s.body)
-      //   output.push("}")
-      // }
     },
     BreakStatement(s) {
       output.push("break;")
@@ -157,7 +146,7 @@ export default function generate(program) {
       return a.map(gen)
     },
     ArrayExpression(e) {
-      return `[${gen(e.elements).join(",")}]`
+      return `[${gen(e.values).join(",")}]`
     },
     Dictionary(d) {
       return `{${gen(d.entries).join(", ")}}`
@@ -209,7 +198,8 @@ export default function generate(program) {
       output.push(`${gen(s.variable)} = ${gen(s.expression)};`)
     },
     IncrementalAssignment(s) {
-      if (s.operand === "+=") {
+      if (s.op === "+=") {
+        s.operand._return = true
         output.push(`${gen(s.variable)}+= ${gen(s.operand)};`)
       }
       if (s.op === "-=") {
@@ -218,6 +208,8 @@ export default function generate(program) {
     },
     BinaryExpression(e) {
       const op = { "==": "===", "!=": "!==" }[e.op] ?? e.op
+      e.left._return = true
+      e.right._return = true
       return `(${gen(e.left)} ${op} ${gen(e.right)})`
     },
     UnaryExpression(e) {

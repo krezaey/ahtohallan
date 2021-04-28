@@ -101,13 +101,13 @@ const fixtures = [
     `,
     expected: dedent`
     let population = 8;
-    let citizens = ["Sage", "Keziah", "Elise", "Ona", "Dr. Toal", "Michael", "Ameya", "Salem"];
-    for (int i = 0; i < population; i++) {
-      if (i % 2) {
-        console.log(citizens[i] + " is a trusted citizen of Arendelle");
+    let citizens = ["Sage","Keziah","Elise","Ona","Dr. Toal","Michael","Ameya","Salem"];
+    for (let i = 0; (i < population); i++) {
+      if ((i % 2)) {
+        console.log((citizens[i] + " is a trusted citizen of Arendelle"));
       } else {
-        console.log(citizens[i] + " is on the Arendelle watchlist for suspicious activities");
-      }  
+        console.log((citizens[i] + " is on the Arendelle watchlist for suspicious activities"));
+      }
     }
     `,
   },
