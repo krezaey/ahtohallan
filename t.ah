@@ -1,8 +1,10 @@
-Ice Olaf Even~Odd(Anna num) {
-  Get~This~Right (num % 2 == 0 ❅) {
-    Arendelle "This number is even." ❅
-  }
-  Into~The~Unknown {
-    Arendelle "This number is odd." ❅
-  }
+Meltable Anna x = 0 ❅ 
+Get~This~Right (x < 1 ❅) {
+  Sing("X is less than 1!") ❅
+}
+The~Next~Right~Thing (x == 1 ❅) {
+  Sing("X is equal to 1!") ❅
+}
+Into~The~Unknown {
+  Sing("X is neither less than 1 or equal to 1, meaning it is greater!") ❅
 }

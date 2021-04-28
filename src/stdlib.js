@@ -5,7 +5,7 @@ function makeConstant(name, type, value) {
 }
 
 function makeFunction(name, type) {
-    return Object.assign(new Function(name), { type })
+    return Object.assign(new Function(type, name))
 }
 
 export const types = {

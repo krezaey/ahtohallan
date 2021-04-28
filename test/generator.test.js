@@ -39,21 +39,19 @@ const fixtures = [
         Sing("X is less than 1!") ❅
       }
       The~Next~Right~Thing (x == 1 ❅) {
-        Sing("X is less than 1!") ❅
+        Sing("X is equal to 1!") ❅
       }
       Into~The~Unknown {
         Sing("X is neither less than 1 or equal to 1, meaning it is greater!") ❅
       }
     `,
     expected: dedent`
-      let x = 0; 
-      if (x < 1) {
+      let x = 0;
+      if ((x < 1)) {
         console.log("X is less than 1!");
-      }
-      else if (x === 1) {
-        console.log("X is less than 1!");
-      }
-      else {
+      } else if ((x === 1)) {
+        console.log("X is equal to 1!");
+      } else {
         console.log("X is neither less than 1 or equal to 1, meaning it is greater!");
       }
     `,
@@ -83,8 +81,8 @@ const fixtures = [
       }
     `,
     expected: dedent`
-      function square (number) {
-        return number * number;
+      function Square(Number) {
+        return (Number * Number);
       }
     `,
   },

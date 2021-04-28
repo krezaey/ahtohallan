@@ -5,7 +5,7 @@ export default function generate(program) {
   const output = []
 
   const standardFunctions = new Map([
-    [stdlib.functions.Sing, x => `console.log(${x})`],
+    [stdlib.functions.Sing.name, x => `console.log(${x})`],
   ])
 
   // Variable and function names in JS will be suffixed with _1, _2, _3,
@@ -28,7 +28,7 @@ export default function generate(program) {
   // }
 
   const gen = node => {
-    // console.log(`About to analyze a ${node.constructor.name}`)
+    console.log(`About to analyze a ${node.constructor.name}`)
     // console.log(node)
     return generators[node.constructor.name](node)
   }
@@ -40,11 +40,11 @@ export default function generate(program) {
       gen(p.instructions)
     },
     Variable(d) {
-      if (d.mutabiltiy === 'Meltable') {
-        output.push(`let ${gen(d.variable)} = ${gen(d.expression)};`)
+      if (d.mutability === 'Meltable') {
+        output.push(`let ${gen(d.name)} = ${gen(d.expression)};`)
       }
       else {
-        output.push(`const ${gen(d.variable)} = ${gen(d.expression)};`)
+        output.push(`const ${gen(d.name)} = ${gen(d.expression)};`)
       }
     },
     ReturnStatement(r) {
@@ -80,12 +80,15 @@ export default function generate(program) {
       return targetName(f)
     },
     IfStatement(s) {
-      output.push(`if (${gen(s.condition)}) {`)
-      gen(s.body)
-      if (s.alternate.constructor === IfStatement) {
-        output.push("} else")
-        gen(s.alternate)
-      } else {
+      output.push(`if (${gen(s.condition[0])}) {`)
+      gen(s.body[0])
+      for (let i = 1; i < s.condition.length; i++) {
+        output.push(`} else if (${gen(s.condition[i])}) {`)
+        gen(s.body[i])
+      }
+      console.log(s.body)
+      if (s.alternate.length > 0) {
+        console.log("We have the else")
         output.push("} else {")
         gen(s.alternate)
         output.push("}")
@@ -216,15 +219,15 @@ export default function generate(program) {
       output.push(property)
     },
     Call(c) {
-      const targetCode = standardFunctions.has(c.callee)
-        ? standardFunctions.get(c.callee)(gen(c.args))
-        : c.callee.constructor === StructType
-          ? `new ${gen(c.callee)}(${gen(c.args).join(", ")})`
-          : `${gen(c.callee)}(${gen(c.args).join(", ")})`
-      // Calls in expressions vs in statements are handled differently
-      if (c.callee instanceof Type || c.callee.type.returnType !== Type.VOID) {
-        return targetCode
-      }
+      console.log("Call name, ", c.name)
+      console.log("Meep! ", standardFunctions.get(c.name))
+      const targetCode = standardFunctions.has(c.name)
+        ? standardFunctions.get(c.name)(gen(c.args))
+        : `${gen(c.name)}(${gen(c.args).join(", ")})`
+      // // Calls in expressions vs in statements are handled differently
+      // if (c.name instanceof Type || c.name.type.returnType !== Type.SAMANTHA) {
+      //   return targetCode
+      // }
       output.push(`${targetCode};`)
     },
     String(s) {
