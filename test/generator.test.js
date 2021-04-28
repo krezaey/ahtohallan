@@ -127,8 +127,7 @@ const fixtures = [
     `
   },
   {
-    //new instance cannot be set to variable
-    name: "class creation",
+    name: "class creation and new instances",
     source: `
       Snow Point {
         Meltable Love state = Hans ❅
@@ -143,6 +142,7 @@ const fixtures = [
           Sing(Frozen.name) ❅
         }
       }
+
     `,
     expected: dedent`
       class Point {
@@ -248,10 +248,11 @@ const fixtures = [
       Ice Samantha inc() {
         Meltable Anna x = 2 ❅
         Meltable Anna y = 0 ❅
+        Meltable Anna z = -1 ❅
         x++ ❅
         x-- ❅
         Get~This~Right (x == 2 ❅) {
-          Sing("We're back at where we started!") ❅
+          z += 2 ❅
         }
         Let~It~Go (Meltable Anna i = 10 ❅ i == 3 ❅ i-- ❅) {
           Sing("Let it Go!") ❅
@@ -263,10 +264,11 @@ const fixtures = [
       function inc() {
         let x = 2;
         let y = 0;
+        let z = -(1);
         x++;
         x--;
         if ((x === 2)) {
-          console.log("We're back at where we started!");
+          z+= 2;
         }
         for (let i = 10; (i === 3); i--) {
           console.log("Let it Go!");

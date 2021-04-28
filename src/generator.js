@@ -205,7 +205,7 @@ export default function generate(program) {
         s.operand._return = true
         output.push(`${gen(s.variable)}+= ${gen(s.operand)};`)
       }
-      if (s.op === "-=") {
+      else if (s.op === "-=") {
         s.operand._return = true
         output.push(`${gen(s.variable)}-= ${gen(s.operand)};`)
       }
