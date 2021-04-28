@@ -66,9 +66,9 @@ const fixtures = [
       }
     `,
     expected: dedent`
-      let x = false; 
-      while (x === true) {
-        const y = "TRUEEE!"; 
+      let x = false;
+      while ((x === true)) {
+        const y = "TRUEEE!";
         console.log(y);
       }
     `,

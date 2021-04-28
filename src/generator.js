@@ -234,7 +234,7 @@ export default function generate(program) {
       return s
     },
     Booley(e) {
-      return e
+      return e.value === 'Hans'? false : true
     },
     Integer(e) {
       console.log(e)

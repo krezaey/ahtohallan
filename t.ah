@@ -1,10 +1,5 @@
-Meltable Anna x = 0 ❅ 
-Get~This~Right (x < 1 ❅) {
-  Sing("X is less than 1!") ❅
-}
-The~Next~Right~Thing (x == 1 ❅) {
-  Sing("X is equal to 1!") ❅
-}
-Into~The~Unknown {
-  Sing("X is neither less than 1 or equal to 1, meaning it is greater!") ❅
+Meltable Love x = Hans ❅
+Lost~In~The~Woods(x == Kristoff ❅) {
+  Unmeltable Olaf y = "TRUEEE!" ❅
+  Sing(y) ❅
 }
