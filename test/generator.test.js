@@ -1,4 +1,4 @@
-import assert from "assert/strict"
+import assert from "assert"
 import parse from "../src/parser.js"
 import analyze from "../src/analyzer.js"
 import optimize from "../src/optimizer.js"
@@ -12,9 +12,10 @@ const fixtures = [
   {
     name: "small program",
     source: `
+      Meltable Anna num = 2 ❅
       Ice Olaf Even~Odd(Anna num) {
-        Get~This~Right (num % 2 == 0) {
-          Arendell "This number is even." ❅
+        Get~This~Right (num % 2 == 0 ❅) {
+          Arendelle "This number is even." ❅
         }
         Into~The~Unknown {
           Arendelle "This number is odd." ❅
@@ -22,6 +23,7 @@ const fixtures = [
       }
     `,
     expected: dedent`
+      let num = 2;
       function Even~Odd(num) {
         if (num % 2 === 0) {
           return "This number is even.";
@@ -35,6 +37,7 @@ const fixtures = [
   {
     name: "if program",
     source: `
+      Meltable Anna x = 0 ❅ 
       Get~This~Right (x < 1 ❅) {
         Sing("X is less than 1!") ❅
       }
@@ -46,6 +49,7 @@ const fixtures = [
       }
     `,
     expected: dedent`
+      let x = 0; 
       if (x < 1) {
         console.log("X is less than 1!");
       }
@@ -53,19 +57,21 @@ const fixtures = [
         console.log("X is less than 1!");
       }
       else {
-        console.log(("X is neither less than 1 or equal to 1, meaning it is greater!");
+        console.log("X is neither less than 1 or equal to 1, meaning it is greater!");
       }
     `,
   },
   {
     name: "while program",
     source: `
+      Meltable Love x = Hans ❅
       Lost~In~The~Woods(x == Kristoff ❅) {
         Unmeltable Olaf y = "TRUEEE!" ❅
         Sing(y) ❅
       }
     `,
     expected: dedent`
+      let x = false; 
       while (x === true) {
         const y = "TRUEEE!"; 
         console.log(y);
@@ -80,7 +86,7 @@ const fixtures = [
       }
     `,
     expected: dedent`
-      function square (int number) {
+      function square (number) {
         return number * number;
       }
     `,
@@ -88,10 +94,10 @@ const fixtures = [
   {
     name: "arrays program",
     source: `
-      Anna population = 6 ❅
+      Meltable Anna population = 8 ❅
       Meltable Herd[] citizens = ["Sage", "Keziah", "Elise", "Ona", "Dr. Toal", "Michael", "Ameya", "Salem"] ❅
-      Let~It~Go(Meltable Anna i = 0 ❅ i < citizens ❅ i++ ❅) {
-        Get~This~Right(i % 2) {
+      Let~It~Go(Meltable Anna i = 0 ❅ i < population ❅ i++ ❅) {
+        Get~This~Right(i % 2 ❅) {
           Sing(citizens[i] + " is a trusted citizen of Arendelle") ❅
         } Into~The~Unknown{
           Sing(citizens[i] + " is on the Arendelle watchlist for suspicious activities") ❅
@@ -99,10 +105,10 @@ const fixtures = [
       }
     `,
     expected: dedent`
-    int population = 6;
+    let population = 8;
     let citizens = ["Sage", "Keziah", "Elise", "Ona", "Dr. Toal", "Michael", "Ameya", "Salem"];
-    for(int i = 0; i < citizens; i++) {
-      if(i % 2){
+    for (int i = 0; i < population; i++) {
+      if (i % 2) {
         console.log(citizens[i] + " is a trusted citizen of Arendelle");
       } else {
         console.log(citizens[i] + " is on the Arendelle watchlist for suspicious activities");
@@ -126,11 +132,9 @@ const fixtures = [
           Sing(Frozen.name) ❅
         }
       }
-
-      
     `,
     expected: dedent`
-      Class Point {
+      class Point {
         let state = false; 
 
         constructor(name, segments, length) {
@@ -160,11 +164,11 @@ const fixtures = [
           result = "The sum was something else not listed." ❅
           Closed~Door ❅
       }
-      Arendelle result;
+      Arendelle result ❅
       `,
     expected: dedent`
       let result = ""; 
-      switch(x + y) {
+      switch (x + y) {
         case 1:
           result = "The sum was one.";
           break;
@@ -175,7 +179,7 @@ const fixtures = [
           result = "The sum was something else not listed.";
           break;
       }
-      Arendelle result;
+      return result;
     `,
   },
   {

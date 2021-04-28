@@ -1,4 +1,4 @@
-import { IfStatement, Type, StructType } from "./ast.js"
+import { IfStatement, Type, SwitchStatement } from "./ast.js"
 import * as stdlib from "./stdlib.js"
 
 export default function generate(program) {
@@ -37,31 +37,38 @@ export default function generate(program) {
         output.push(`const ${gen(d.variable)} = ${gen(d.expression)};`)
       }
     },
-    ReturnStatement(r) { 
+    ReturnStatement(r) {
       output.push(`return ${gen(r.expression)};`)
     },
     ShortReturnStatement(r) {
       output.push(`return;`)
     },
     Function(f) {
-      //need to add
-      return targetName(f)
+      output.push(`function ${gen(f.name)} (${gen(f.parameters).join(", ")}) {`)
+      gen(f.body)
+      output.push(`}`)
     },
     Snow(c) {
-      
+      output.push(`class ${gen(f.name)} {`)
+      gen(c.body)
+      output.push(`}`)
     },
     Constructor(c) {
-
+      output.push(`constructor ${gen(c.parameters).join(", ")} {`)
+      gen(c.body)
+      output.push(`}`)
     },
     Method(m) {
-
+      output.push(`function ${gen(m.name)} (${gen(m.parameters).join(", ")}) {`)
+      gen(m.body)
+      output.push(`}`)
     },
     Field(f) {
-        return targetName(f)
+      return targetName(f)
     },
     IfStatement(s) {
-      output.push(`if (${gen(s.test)}) {`)
-      gen(s.consequent)
+      output.push(`if (${gen(s.condition)}) {`)
+      gen(s.body)
       if (s.alternate.constructor === IfStatement) {
         output.push("} else")
         gen(s.alternate)
@@ -72,29 +79,55 @@ export default function generate(program) {
       }
     },
     WhileLoop(s) {
-      output.push(`while (${gen(s.test)}) {`)
+      output.push(`while (${gen(s.expression)}) {`)
       gen(s.body)
       output.push("}")
     },
     Access(a) {
-      //array
-      return `${gen(e.array)}[${gen(e.index)}]`
+      let method
+      let property = ""
+      switch (a.accessMethod) {
+        case "[[]]":
+          method = "[]"
+          break
+        case ".":
+          method = "."
+          break
+        case "[]":
+          method = "[]"
+          break
+      }
+      property += method === "." ? "." : "["
+      property += `${accessValue}`
+      property += method === "." ? "" : "]"
+      return property
     },
     ForLoop(s) {
-      //need to adjust
-      const i = targetName(s.iterator)
-      const op = s.op === "..." ? "<=" : "<"
-      output.push(`for (let ${i} = ${gen(s.low)}; ${i} ${op} ${gen(s.high)}; ${i}++) {`)
+      const i = targetName(s.start)
+      output.push(`for (let ${i}; ${i} ${op} ${gen(s.limit)}; ${s.increment}++) {`)
       gen(s.body)
       output.push("}")
     },
-    SwitchStatement(s) {
-
+    SwitchStatement(s) { // this is incomplete, please work on later
+      output.push(`switch (${gen(s.condition)}) {`)
+      gen(s.body)
+      output.push("}")
+      // switch (s.condition) {
+      // if (s.alternate.constructor === SwitchStatement) {
+      //   output.push(`} case1 (${gen(s.condition)}) {`)
+      //   gen(s.body)
+      //   output.push("}")
+      // } else {
+      //   output.push(`} case2 (${gen(s.condition)}) {`)
+      //   gen(s.body)
+      //   output.push("}")
+      // }
     },
     BreakStatement(s) {
       output.push("break;")
     },
     NewInstance(n) {
+      output.push(`new ${gen(n.identifier)}(${gen(n.args).join(", ")})`)
 
     },
     // Array(a) {
@@ -103,26 +136,38 @@ export default function generate(program) {
     ArrayExpression(e) {
       return `[${gen(e.elements).join(",")}]`
     },
-    Dictionary() {
-
-    }, 
-    DictionaryEntry() {
-
+    Dictionary(d) {
+      return `{${gen(d.entries).join(", ")}}`
     },
-    DictionaryEntries() {
-
-    }, 
+    DictionaryEntry(d) {
+      return `${gen(d.key)}:${gen(d.value)}`
+    },
+    DictionaryEntries(d) {
+      return `${gen(d.entries).join(", ")}`
+    },
     Parameter(p) {
       return targetName(p)
-    }, 
+    },
     Parameters(p) {
-      
+      let params = ``
+      for (let p of p.parameter) {
+        params += `${gen(p)}, `
+      }
+      // return `${gen(p.parameter).join(", ")}`
     },
     Arguments(a) {
-
-    }, 
+      let args = ``
+      for (let arg of a.names) {
+        args += `${gen(arg)},`
+      }
+      if (a.names.length > 0) {
+        args = args.slice(0, this.args.length - 2)
+      }
+      // output.push(arguments)
+      return args
+    },
     Argument(a) {
-        
+      return gen(a.arg)
     },
     Increment(s) {
       if (s.op === "++") {
@@ -148,20 +193,24 @@ export default function generate(program) {
       return `(${gen(e.left)} ${op} ${gen(e.right)})`
     },
     UnaryExpression(e) {
-        return `${e.op}(${gen(e.right)})`
+      return `${e.op}(${gen(e.right)})`
     },
     Identifier(i) {
-      return
-    }, 
-    GetProperty() {
-
-    }, 
+      return `${(i.name)}`
+    },
+    GetProperty(p) {
+      let property = `${p.source}`
+      for (let prop of p.property) {
+        property += gen(prop)
+      }
+      output.push(property)
+    },
     Call(c) {
       const targetCode = standardFunctions.has(c.callee)
-      ? standardFunctions.get(c.callee)(gen(c.args))
-      : c.callee.constructor === StructType
-      ? `new ${gen(c.callee)}(${gen(c.args).join(", ")})`
-      : `${gen(c.callee)}(${gen(c.args).join(", ")})`
+        ? standardFunctions.get(c.callee)(gen(c.args))
+        : c.callee.constructor === StructType
+          ? `new ${gen(c.callee)}(${gen(c.args).join(", ")})`
+          : `${gen(c.callee)}(${gen(c.args).join(", ")})`
       // Calls in expressions vs in statements are handled differently
       if (c.callee instanceof Type || c.callee.type.returnType !== Type.VOID) {
         return targetCode

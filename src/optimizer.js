@@ -1,7 +1,7 @@
 // import * as ast from "./ast.js"
 
 export default function optimize(node) {
-  return optimizers[node.constructor.name](node)
+  //return optimizers[node.constructor.name](node)
 }
 
 // Taken from Carlos Lang 

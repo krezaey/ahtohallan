@@ -64,7 +64,7 @@ export class WhileLoop {
 
 export class Access {
   constructor(accessValue, accessMethod) {
-    Object.assign(this, { accessMethod, accessValue})
+    Object.assign(this, { accessMethod, accessValue })
   }
 }
 
@@ -122,7 +122,7 @@ export class Parameter {
 
 export class Parameters {
   constructor(parameter) {
-    this.parameter = parameter
+    this.parrameter = parameter
   }
 }
 
@@ -204,24 +204,24 @@ export class Type {
 
 export class Booley {
   constructor(value) {
-    Object.assign(this, {value, type : Type.LOVE})
+    Object.assign(this, { value, type: Type.LOVE })
   }
 }
 
 export class Integer {
   constructor(value) {
-    Object.assign(this, {value, type : Type.ANNA})
+    Object.assign(this, { value, type: Type.ANNA })
   }
 }
 
 export class Float {
   constructor(value) {
-    Object.assign(this, {value, type : Type.ELSA})
+    Object.assign(this, { value, type: Type.ELSA })
   }
 }
 
 export class Phrase {
   constructor(value) {
-    Object.assign(this, {value, type : Type.OLAF})
+    Object.assign(this, { value, type: Type.OLAF })
   }
 }

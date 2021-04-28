@@ -12,7 +12,7 @@ function must(condition, errorMessage) {
 }
 
 function getType(type) {
-  switch(type) {
+  switch (type) {
     case "Anna":
       return Type.ANNA
     case "Elsa":
@@ -47,13 +47,13 @@ const check = self => ({
   },
   isTrollsOrAny() {
     must(
-      [Type.TROLLS, Type.ANY].includes(self.type), 
+      [Type.TROLLS, Type.ANY].includes(self.type),
       `Expected the Trolls, but found otherwise. Please seek guidance from the Trolls, good spirit!`
     )
   },
   isNumeric() {
     must(
-      [Type.ANNA, Type.ELSA, Type.ANY].includes(self.type), 
+      [Type.ANNA, Type.ELSA, Type.ANY].includes(self.type),
       `Expected Anna or Elsa, but found ${self.type.name}. Please summon Anna or Elsa, good spirit!`
     )
   },
@@ -87,13 +87,13 @@ const check = self => ({
   },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
     must(
-      self.function == null || self.function.returnType === expression.type || expression.type === Type.ANY ||self.function.returnType === Type.ANY, 
+      self.function == null || self.function.returnType === expression.type || expression.type === Type.ANY || self.function.returnType === Type.ANY,
       `You must return ${self.function.returnType.name}! You simply must bad spirit!`
     )
   },
   nonDuplicateVariableDeclaration(name) {
     must(
-      !self.sees(name), 
+      !self.sees(name),
       `Duplicate Variable Declaration: Your proposed variable declaration has already been declared, good spirit! Please choose another name!`
     )
   },
@@ -110,14 +110,14 @@ const check = self => ({
     )
   },
   isSnow(x, name) {
-    must( 
+    must(
       Object.keys(x).length === 2 && x.name !== undefined && x.body !== undefined,
       `Bad spirit! Cannot create a new instance of '${name}' when there is no Snow!`
     )
   },
   inSnowUseFrozen() {
     must(
-      self.isInClass(), 
+      self.isInClass(),
       `Bad Spirit! You cannot use Frozen if you are not in Snow!`
     )
   },
@@ -149,7 +149,7 @@ class Context {
   }
   sees(name) {
     // Search "outward" through enclosing scopes
-    return this.locals.has(name) || this.parent?.sees(name) 
+    return this.locals.has(name) || this.parent?.sees(name)
   }
   isInClass() {
     return this.inClass
@@ -159,7 +159,7 @@ class Context {
   }
   add(name, entity) {
     // No shadowing! Prevent addition if id anywhere in scope chain!
-    if (this.sees(name) ) {
+    if (this.sees(name)) {
       let x = this.lookup(name)
       throw new Error(`Forgetful spirit! ${name} already declared!`)
     }
@@ -221,7 +221,7 @@ class Context {
     if (this.inLoop) {
       throw new Error(`Foolish Spirit! You cannot create a class within a Loop!`)
     }
-    const childContext = this.newChild({ inClass : true})
+    const childContext = this.newChild({ inClass: true })
     c.body = childContext.analyze(c.body)
     this.add(c.name, c)
     return c
@@ -247,7 +247,7 @@ class Context {
   }
   Field(f) {
     f.field.originalName = f.field.name
-    f.field.name = "Frozen."+ f.field.name
+    f.field.name = "Frozen." + f.field.name
     f.field = this.analyze(f.field)
     this.addField(f.field.originalName, f)
     return f
@@ -260,23 +260,23 @@ class Context {
       body = this.analyze(body)
     }
     s.alternate = this.analyze(s.alternate)
-    let final = {elseIf: []}
+    let final = { elseIf: [] }
     for (let i = 0; i < s.condition.length; i++) {
       if (i === 0) {
         final.if = {
           condition: s.condition[i],
-          body : s.body[i]
+          body: s.body[i]
         }
       } else {
         let elif = {
           condition: s.condition[i],
-          body : s.body[i]
+          body: s.body[i]
         }
         final.elseIf.push(elif)
-      } 
+      }
     }
     final.else = {
-      body : s.alternate
+      body: s.alternate
     }
     return final
   }
@@ -301,12 +301,12 @@ class Context {
     const childContext = this.newChild({ inLoop: true, })
     f.body = childContext.analyze(f.body)
     return f
-   }
+  }
   SwitchStatement(s) {
     s.expression = this.analyze(s.expression)
     s.cases = this.analyze(s.cases)
     s.body = this.analyze(s.body)
-    s.defaultCase = this.analyze(s.defaultCase) 
+    s.defaultCase = this.analyze(s.defaultCase)
 
     if (s.expression.name !== undefined) {
       let x = this.lookup(s.expression.name)
@@ -346,7 +346,7 @@ class Context {
       for (let i = 0; i < n.args[0].names.length; i++) {
         if (n.args[0].names[i].arg.type.name !== c.parameters.parameter[i].type.name) {
           throw new Error(`Excuse me old spirit, the type of your argument '${n.args[0].names[i].arg.value}' does not match the required type '${c.parameters.parameter[i].type.name}'.`)
-        } 
+        }
       }
     } else {
       throw new Error(`Excuse me forgetful spirit. Your instance has no constructor! How embarrassing!`)
@@ -381,7 +381,7 @@ class Context {
     return d
   }
   Parameter(p) {
-    p.name = this.analyze(p.name) 
+    p.name = this.analyze(p.name)
     p.type = this.analyze(p.type)
     p.type = getType(p.type)
     this.add(p.name, p)
@@ -475,7 +475,7 @@ class Context {
     } else if (e.op === "!") {
       check(e.right).isBoolean()
       e.type = Type.LOVE
-    } 
+    }
     return e
   }
   Identifier(i) {
@@ -504,7 +504,7 @@ class Context {
         x = this.lookup(p.property[0].accessValue.name)
         p.property[0].accessValue.type = x.type
         check(p.property[0].accessValue).HerdAccessIsAnna()
-       }
+      }
     } else if (p.source !== "Frozen") {
       check(p.source).isTrollsOrAny()
     }
