@@ -41,9 +41,15 @@ export default function generate(program) {
     },
     Variable(d) {
       if (d.mutability === 'Meltable') {
+        if (d._return === true) {
+          return `let ${gen(d.name)} = ${gen(d.expression)};`
+        }
         output.push(`let ${gen(d.name)} = ${gen(d.expression)};`)
       }
       else {
+        if (d._return === true) {
+          return `const ${gen(d.name)} = ${gen(d.expression)};`
+        }
         output.push(`const ${gen(d.name)} = ${gen(d.expression)};`)
       }
     },
@@ -119,8 +125,11 @@ export default function generate(program) {
       return property
     },
     ForLoop(s) {
-      const i = targetName(s.start)
-      output.push(`for (let ${i}; ${i} ${op} ${gen(s.limit)}; ${s.increment}++) {`)
+      console.log(s)
+      // const i = targetName(s.start)
+      s.start._return = true
+      s.increment._return = true
+      output.push(`for (${gen(s.start)} ${gen(s.limit)}; ${gen(s.increment)}) {`)
       gen(s.body)
       output.push("}")
     },
@@ -182,11 +191,17 @@ export default function generate(program) {
     Argument(a) {
       return gen(a.arg)
     },
-    Increment(s) {
+    Incrementer(s) {
       if (s.op === "++") {
+        if (s._return === true) {
+          return `${gen(s.operand)}++`
+        }
         output.push(`${gen(s.operand)}++;`)
       }
       if (s.op === "--") {
+        if (s._return === true) {
+          return `${gen(s.operand)}--`
+        }
         output.push(`${gen(s.operand)}--;`)
       }
     },
@@ -209,7 +224,7 @@ export default function generate(program) {
       return `${e.op}(${gen(e.right)})`
     },
     Identifier(i) {
-      return `${(i.name)}`
+      return `${gen(i.name)}`
     },
     GetProperty(p) {
       let property = `${p.source}`
@@ -231,7 +246,10 @@ export default function generate(program) {
       output.push(`${targetCode};`)
     },
     String(s) {
-      return s
+      console.log("SOS\n", s)
+      let name = s.includes("~") ? (s.replace(/[~]+/g, '')) : s
+      console.log("NAMEEEEE: ", name)
+      return name
     },
     Booley(e) {
       return e.value === 'Hans'? false : true
