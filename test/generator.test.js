@@ -166,8 +166,8 @@ const fixtures = [
     expected: dedent`
       let x = 0;
       let y = 2;
-      let result = ""; 
-      switch (x + y) {
+      let result = "";
+      switch ((x + y)) {
         case 1:
           result = "The sum was one.";
           break;

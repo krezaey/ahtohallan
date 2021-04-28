@@ -86,10 +86,12 @@ const check = self => ({
     )
   },
   hasNoFunctionOrFunctionReturnTypeMatches(expression) {
-    must(
-      self.function == null || self.function.returnType === expression.type || expression.type === Type.ANY || self.function.returnType === Type.ANY,
-      `You must return ${self.function.returnType.name}! You simply must bad spirit!`
-    )
+    if (self.function !== null) {
+      must(
+        self.function.returnType === expression.type || expression.type === Type.ANY || self.function.returnType === Type.ANY,
+        `You must return ${self.function.returnType.name}! You simply must bad spirit!`
+      )
+    }
   },
   nonDuplicateVariableDeclaration(name) {
     must(

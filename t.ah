@@ -1,16 +1,7 @@
-Ice Samantha Fizz~Buzz() {
-        Let~It~Go (Meltable Anna i = 0 ❅ i <= 100 ❅ i++ ❅) {
-          Get~This~Right (i % 3 == 0 && i % 5 == 0 ❅) {
-            Sing("FizzBuzz") ❅
-          }
-          The~Next~Right~Thing (i % 3 == 0 ❅) {
-            Sing("Fizz") ❅
-          }
-          The~Next~Right~Thing (i % 5 == 0 ❅) {
-            Sing("Buzz") ❅
-          }
-          Into~The~Unknown {
-            Sing(i) ❅
-          }
-        }
-      }
+Meltable Anna x = 0 ❅ 
+Get~This~Right (x < 1 ❅) {
+  Sing("X is less than 1!") ❅
+}
+The~Next~Right~Thing (x == 1 ❅) {
+  Sing("X is equal to 1!") ❅
+}

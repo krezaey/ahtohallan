@@ -54,15 +54,12 @@ export default function generate(program) {
       }
     },
     ReturnStatement(r) {
-      console.log(r.expression)
-      console.log("sdsd", gen(r.expression))
       output.push(`return ${gen(r.expression)};`)
     },
     ShortReturnStatement(r) {
       output.push(`return;`)
     },
     Function(f) {
-      console.log(gen(f.parameters))
       output.push(`function ${gen(f.name)}(${gen(f.parameters).join(", ")}) {`)
       gen(f.body)
       output.push(`}`)
@@ -92,13 +89,9 @@ export default function generate(program) {
         output.push(`} else if (${gen(s.condition[i])}) {`)
         gen(s.body[i])
       }
-      console.log(s.body)
-      if (s.alternate.length > 0) {
-        console.log("We have the else")
-        output.push("} else {")
-        gen(s.alternate)
-        output.push("}")
-      }
+      output.push("} else {")
+      gen(s.alternate)
+      output.push("}")
     },
     WhileLoop(s) {
       output.push(`while (${gen(s.expression)}) {`)
@@ -125,8 +118,6 @@ export default function generate(program) {
       return property
     },
     ForLoop(s) {
-      console.log(s)
-      // const i = targetName(s.start)
       s.start._return = true
       s.increment._return = true
       output.push(`for (${gen(s.start)} ${gen(s.limit)}; ${gen(s.increment)}) {`)
@@ -134,9 +125,15 @@ export default function generate(program) {
       output.push("}")
     },
     SwitchStatement(s) { // this is incomplete, please work on later
-      output.push(`switch (${gen(s.condition)}) {`)
-      gen(s.body)
+      output.push(`switch (${gen(s.expression)}) {`)
+      for (let i = 0; i < s.cases.length, i < s.body.length; i++) {
+        output.push(`case ${gen(s.cases[i])}:`)
+        gen(s.body[i])
+      }
+      output.push(`default:`)
+      gen(s.defaultCase)
       output.push("}")
+      // expression, cases, body, defaultCase)
       // switch (s.condition) {
       // if (s.alternate.constructor === SwitchStatement) {
       //   output.push(`} case1 (${gen(s.condition)}) {`)
@@ -234,8 +231,6 @@ export default function generate(program) {
       output.push(property)
     },
     Call(c) {
-      console.log("Call name, ", c.name)
-      console.log("Meep! ", standardFunctions.get(c.name))
       const targetCode = standardFunctions.has(c.name)
         ? standardFunctions.get(c.name)(gen(c.args))
         : `${gen(c.name)}(${gen(c.args).join(", ")})`
@@ -246,16 +241,13 @@ export default function generate(program) {
       output.push(`${targetCode};`)
     },
     String(s) {
-      console.log("SOS\n", s)
       let name = s.includes("~") ? (s.replace(/[~]+/g, '')) : s
-      console.log("NAMEEEEE: ", name)
       return name
     },
     Booley(e) {
       return e.value === 'Hans'? false : true
     },
     Integer(e) {
-      console.log(e)
       return e.value
     },
     Float(e) {
