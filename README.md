@@ -7,8 +7,7 @@ Ahtohallan
 
 ## Introduction
 
-Hello, hello, and welcome to the show! This is Ahtohallan, a
-a magical language from the depths of the FCU (Frozen Cinematic
+Hello, hello, and welcome to the show! This is Ahtohallan, a magical language from the depths of the FCU (Frozen Cinematic
 Universe). Although it is inspired by our love of the FCU, one doesn't
 need to be a Frozen connoisseur to understand or use Ahtohallan!
 If you are, however, we hope you have fun seeing all the magical things
@@ -30,7 +29,7 @@ Ahtohallan introduces these language features:
 - No primitive types
 - Typed parameters 
 - Function return types
-- Mininal Built-in functions
+- Minimal Built-in functions
 - In Ahtohallan, you can break and return from programs! You are not limited to being within a loop/switch statement, or a function. You can halt a program, or make a program return a value. How magical!
 - Introducing universe appropriate error messages! 
 
@@ -116,7 +115,7 @@ Variables at declaration should be indicated whether they are constants or not. 
 
 ## Comments
 
-Single and multi-lined comments are encased in `~*` and `*~` at the beginning and the end of comments respectively. With multi-lined comments, it is not required to insert `*` at the beginning of each new line, but it is recommended.
+Single and multi-line comments are encased in `~*` and `*~` at the beginning and the end of comments respectively. With multi-line comments, it is not required to insert `*` at the beginning of each new line, but it is recommended.
 
 ```
 ~* This is a single-line comment. *~
@@ -225,7 +224,7 @@ Ahtohallan defines these as semantic errors:
 
 - Non-distinct fields in classes
 - Accessing fields that do not exist in classes
-- Unmutable variables being changed
+- Immutable variables being changed
 - Non-integer increment or decrement operations
 - Undeclared identifiers
 - Redeclared identifiers
@@ -342,7 +341,7 @@ function fizzBuzz() {
 }
 ```
 
-### 5. Here is a ice block that handles a Herd and an instance of Trolls.
+### 5. Here is an ice block that handles a Herd and an instance of Trolls.
 
 Ahtohallan:
 
