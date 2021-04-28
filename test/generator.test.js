@@ -152,6 +152,8 @@ const fixtures = [
   {
     name: "switch statement program",
     source: `
+      Meltable Anna x = 0 ❅
+      Meltable Anna y = 2 ❅
       Meltable Olaf result = "" ❅
       All~Is~Found(x + y ❅) {
         Show~Yourself(1):
@@ -167,6 +169,8 @@ const fixtures = [
       Arendelle result ❅
       `,
     expected: dedent`
+      let x = 0;
+      let y = 2;
       let result = ""; 
       switch (x + y) {
         case 1:
