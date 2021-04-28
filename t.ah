@@ -1,15 +1,8 @@
-Meltable Anna j ❅ 
-Snow S {
-  Meltable Herd[] y ❅ 
-  Water( Anna x ) {
-    Frozen.x = x ❅
-    Frozen.y.x = 2 ❅
-    }
-  Crystal Anna fff () {
-    Arendelle Frozen.j ❅ 
+Ice Olaf Even~Odd(Anna num) {
+  Get~This~Right (num % 2 == 0 ❅) {
+    Arendelle "This number is even." ❅
   }
-  } 
-  Meltable Olaf x = "sds"  ❅ 
-  Unmeltable Trolls[[]] y = [[1:2 ❅,x:2 ❅,3:2 ❅]] ❅ 
-  y[[x]] = 3.0 ❅
-  Sing(y.x) ❅
+  Into~The~Unknown {
+    Arendelle "This number is odd." ❅
+  }
+}

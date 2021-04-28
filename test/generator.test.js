@@ -12,7 +12,6 @@ const fixtures = [
   {
     name: "small program",
     source: `
-      Meltable Anna num = 2 ❅
       Ice Olaf Even~Odd(Anna num) {
         Get~This~Right (num % 2 == 0 ❅) {
           Arendelle "This number is even." ❅
@@ -23,12 +22,10 @@ const fixtures = [
       }
     `,
     expected: dedent`
-      let num = 2;
       function Even~Odd(num) {
-        if (num % 2 === 0) {
+        if (((num % 2) === 0)) {
           return "This number is even.";
-        }
-        else {
+        } else {
           return "This number is odd.";
         }
       }
@@ -236,7 +233,7 @@ const fixtures = [
 describe("The Code Generator", () => {
   for (const fixture of fixtures) {
     it(`produces expected js output for the ${fixture.name} program`, () => {
-      const actual = generate(optimize(analyze(parse(fixture.source))))
+      const actual = generate(analyze(parse(fixture.source)))
       assert.deepEqual(actual, fixture.expected)
     })
   }

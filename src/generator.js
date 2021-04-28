@@ -21,7 +21,17 @@ export default function generate(program) {
     }
   })(new Map())
 
-  const gen = node => generators[node.constructor.name](node)
+  // const getValue = node => {
+  //   if (node.name !== undefined) {
+  //     return node.name
+  //   }
+  // }
+
+  const gen = node => {
+    // console.log(`About to analyze a ${node.constructor.name}`)
+    // console.log(node)
+    return generators[node.constructor.name](node)
+  }
 
   const generators = {
     // Key idea: when generating an expression, just return the JS string; when
@@ -38,13 +48,16 @@ export default function generate(program) {
       }
     },
     ReturnStatement(r) {
+      console.log(r.expression)
+      console.log("sdsd", gen(r.expression))
       output.push(`return ${gen(r.expression)};`)
     },
     ShortReturnStatement(r) {
       output.push(`return;`)
     },
     Function(f) {
-      output.push(`function ${gen(f.name)} (${gen(f.parameters).join(", ")}) {`)
+      console.log(gen(f.parameters))
+      output.push(`function ${gen(f.name)}(${gen(f.parameters).join(", ")}) {`)
       gen(f.body)
       output.push(`}`)
     },
@@ -130,9 +143,9 @@ export default function generate(program) {
       output.push(`new ${gen(n.identifier)}(${gen(n.args).join(", ")})`)
 
     },
-    // Array(a) {
-    //   return a.map(gen)
-    // },
+    Array(a) {
+      return a.map(gen)
+    },
     ArrayExpression(e) {
       return `[${gen(e.elements).join(",")}]`
     },
@@ -145,15 +158,12 @@ export default function generate(program) {
     DictionaryEntries(d) {
       return `${gen(d.entries).join(", ")}`
     },
-    Parameter(p) {
-      return targetName(p)
-    },
     Parameters(p) {
-      let params = ``
-      for (let p of p.parameter) {
-        params += `${gen(p)}, `
-      }
-      // return `${gen(p.parameter).join(", ")}`
+      let params = []
+      p.parameter.forEach(param => {
+        params.push(`${param.name}`)
+      });
+      return params
     },
     Arguments(a) {
       let args = ``
@@ -217,18 +227,22 @@ export default function generate(program) {
       }
       output.push(`${targetCode};`)
     },
+    String(s) {
+      return s
+    },
     Booley(e) {
       return e
     },
     Integer(e) {
-      return e
+      console.log(e)
+      return e.value
     },
     Float(e) {
-      return e
+      return e.value
     },
     Phrase(e) {
       // This ensures in JavaScript they get quotes!
-      return JSON.stringify(e)
+      return JSON.stringify(e.value)
     },
     // String(e) {
     //   // This ensures in JavaScript they get quotes!
