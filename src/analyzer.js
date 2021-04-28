@@ -458,7 +458,7 @@ class Context {
       } else {
         e.type = Type.OLAF
       }
-    } if (["-", "*", "/", "%", "**", "<", "<=", ">", ">="].includes(e.op)) {
+    } if (["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "=="].includes(e.op)) {
       check(e.left).isNumeric()
       check(e.right).isNumeric()
       if (e.left.type.name === e.right.type.name && e.op !== "/") {

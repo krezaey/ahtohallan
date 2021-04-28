@@ -1,4 +1,4 @@
-import { IfStatement, Type, SwitchStatement } from "./ast.js"
+// import { IfStatement, Type, SwitchStatement } from "./ast.js"
 import * as stdlib from "./stdlib.js"
 
 export default function generate(program) {
@@ -12,14 +12,14 @@ export default function generate(program) {
   // etc. This is because "switch", for example, is a legal name in Carlos,
   // but not in JS. So, the Carlos variable "switch" must become something
   // like "switch_1". We handle this by mapping each name to its suffix.
-  const targetName = (mapping => {
-    return entity => {
-      if (!mapping.has(entity)) {
-        mapping.set(entity, mapping.size + 1)
-      }
-      return `${entity.name ?? entity.description}_${mapping.get(entity)}`
-    }
-  })(new Map())
+  // const targetName = (mapping => {
+  //   return entity => {
+  //     if (!mapping.has(entity)) {
+  //       mapping.set(entity, mapping.size + 1)
+  //     }
+  //     return `${entity.name ?? entity.description}_${mapping.get(entity)}`
+  //   }
+  // })(new Map())
 
   // const getValue = node => {
   //   if (node.name !== undefined) {
@@ -28,7 +28,7 @@ export default function generate(program) {
   // }
 
   const gen = node => {
-    console.log(`About to analyze a ${node.constructor.name}`)
+    //console.log(`About to analyze a ${node.constructor.name}`)
     // console.log(node)
     return generators[node.constructor.name](node)
   }
@@ -47,9 +47,9 @@ export default function generate(program) {
         output.push(`let ${gen(d.name)} = ${gen(d.expression)};`)
       }
       else {
-        if (d._return === true) {
-          return `const ${gen(d.name)} = ${gen(d.expression)};`
-        }
+        // if (d._return === true) {
+        //   return `const ${gen(d.name)} = ${gen(d.expression)};`
+        // }
         output.push(`const ${gen(d.name)} = ${gen(d.expression)};`)
       }
     },
@@ -89,9 +89,14 @@ export default function generate(program) {
         output.push(`} else if (${gen(s.condition[i])}) {`)
         gen(s.body[i])
       }
-      output.push("} else {")
-      gen(s.alternate)
-      output.push("}")
+      if (s.alternate.length === 0) {
+        output.push("}")
+      }
+      else {
+        output.push("} else {")
+        gen(s.alternate)
+        output.push("}")
+      }
     },
     WhileLoop(s) {
       output.push(`while (${gen(s.expression)}) {`)
@@ -99,12 +104,12 @@ export default function generate(program) {
       output.push("}")
     },
     Access(a) {
-      console.log(a)
+      //console.log(a)
       let method
       let property = ""
       switch (a.accessMethod) {
         case "[[]]":
-          method = "[]"
+          method = "[[]]"
           break
         case ".":
           method = "."
@@ -125,7 +130,7 @@ export default function generate(program) {
       gen(s.body)
       output.push("}")
     },
-    SwitchStatement(s) { // this is incomplete, please work on later
+    SwitchStatement(s) {
       output.push(`switch (${gen(s.expression)}) {`)
       for (let i = 0; i < s.cases.length, i < s.body.length; i++) {
         output.push(`case ${gen(s.cases[i])}:`)
@@ -140,7 +145,6 @@ export default function generate(program) {
     },
     NewInstance(n) {
       output.push(`new ${gen(n.identifier)}(${gen(n.args).join(", ")})`)
-
     },
     Array(a) {
       return a.map(gen)
@@ -169,10 +173,9 @@ export default function generate(program) {
       for (let arg of a.names) {
         args += `${gen(arg)},`
       }
-      if (a.names.length > 0) {
-        args = args.slice(0, this.args.length - 2)
+      if (a.names.length > 0 && a.names !== undefined) {
+        args = args.slice(0, args.length - 2)
       }
-      // output.push(arguments)
       return args
     },
     Argument(a) {
@@ -203,6 +206,7 @@ export default function generate(program) {
         output.push(`${gen(s.variable)}+= ${gen(s.operand)};`)
       }
       if (s.op === "-=") {
+        s.operand._return = true
         output.push(`${gen(s.variable)}-= ${gen(s.operand)};`)
       }
     },
@@ -226,7 +230,7 @@ export default function generate(program) {
       if (p._return === true) {
         return property
       }
-      output.push(property)
+      //output.push(property)
     },
     Call(c) {
       const targetCode = standardFunctions.has(c.name)

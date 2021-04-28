@@ -23,7 +23,7 @@ const semanticChecks = [
     'array of Classes',
     'Snow S {Meltable Anna x ❅ Water( Anna x ) {Frozen.x = x ❅}} Unmeltable Herd[] x = [Open~Door S(1), Open~Door S(3)]❅',
   ],
-  ['function return types', `Ice Olaf f(Olaf s) { Arendelle s ❅ }`],
+  ['function return types', `Ice Olaf f(Olaf s) { Arendelle s ❅ } f("Hello") ❅`],
   ['simplest syntactically correct program', 'Closed~Door ❅'],
   ['multiple statements', 'Sing(1) ❅ Closed~Door ❅ x += 3 ❅ Arendelle ❅'],
   [

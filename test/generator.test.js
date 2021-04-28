@@ -1,7 +1,7 @@
 import assert from "assert"
 import parse from "../src/parser.js"
 import analyze from "../src/analyzer.js"
-import optimize from "../src/optimizer.js"
+// import optimize from "../src/optimizer.js"
 import generate from "../src/generator.js"
 
 function dedent(s) {
@@ -10,7 +10,7 @@ function dedent(s) {
 
 const fixtures = [
   {
-    name: "small program",
+    name: "small",
     source: `
       Ice Olaf Even~Odd(Anna num) {
         Get~This~Right (num % 2 == 0 ❅) {
@@ -32,7 +32,7 @@ const fixtures = [
     `,
   },
   {
-    name: "if program",
+    name: "if",
     source: `
       Meltable Anna x = 0 ❅ 
       Get~This~Right (x < 1 ❅) {
@@ -57,24 +57,24 @@ const fixtures = [
     `,
   },
   {
-    name: "while program",
+    name: "while",
     source: `
       Meltable Love x = Hans ❅
-      Lost~In~The~Woods(x == Kristoff ❅) {
-        Unmeltable Olaf y = "TRUEEE!" ❅
+      Lost~In~The~Woods(!Kristoff ❅) {
+        Unmeltable Olaf y = "TRUEEE! Or is it?" ❅
         Sing(y) ❅
       }
     `,
     expected: dedent`
       let x = false;
-      while ((x === true)) {
-        const y = "TRUEEE!";
+      while (!(true)) {
+        const y = "TRUEEE! Or is it?";
         console.log(y);
       }
     `,
   },
   {
-    name: "function program",
+    name: "function",
     source: `
       Ice Anna Square (Anna Number) {
         Arendelle Number * Number ❅
@@ -87,7 +87,7 @@ const fixtures = [
     `,
   },
   {
-    name: "arrays program",
+    name: "arrays",
     source: `
       Meltable Anna population = 8 ❅
       Meltable Herd[] citizens = ["Sage", "Keziah", "Elise", "Ona", "Dr. Toal", "Michael", "Ameya", "Salem"] ❅
@@ -112,7 +112,23 @@ const fixtures = [
     `,
   },
   {
-    name: "class program",
+    name: "dictionary",
+    source: `
+      Unmeltable Trolls[[]] whoDoesAnnaLove = [["Hans": Hans ❅, "Kristoff": Kristoff ❅, "LoveCount": 2.5 ❅]] ❅ 
+      Sing("Is Anna's love true or false? Let's see.") ❅    
+      Sing(whoDoesAnnaLove[["Kristoff"]]) ❅
+      Arendelle ❅
+    `,
+    expected: dedent`
+      const whoDoesAnnaLove = {"Hans":false, "Kristoff":true, "LoveCount":2.5};
+      console.log("Is Anna's love true or false? Let's see.");
+      console.log(whoDoesAnnaLove["Kristoff"]);
+      return;
+    `
+  },
+  {
+    //new instance cannot be set to variable
+    name: "class creation",
     source: `
       Snow Point {
         Meltable Love state = Hans ❅
@@ -145,7 +161,7 @@ const fixtures = [
     `,
   },
   {
-    name: "switch statement program",
+    name: "switch statement",
     source: `
       Meltable Anna x = 0 ❅
       Meltable Anna y = 2 ❅
@@ -182,7 +198,7 @@ const fixtures = [
     `,
   },
   {
-    name: "for loops program",
+    name: "for loop",
     source: `
       Ice Samantha Fizz~Buzz() {
         Let~It~Go (Meltable Anna i = 0 ❅ i <= 100 ❅ i++ ❅) {
@@ -224,6 +240,66 @@ const fixtures = [
     `,
     expected: dedent`
       console.log("Hello, Hello, and Welcome to my Show");
+    `,
+  },
+  {
+    name: "increment and decrement",
+    source: `
+      Ice Samantha inc() {
+        Meltable Anna x = 2 ❅
+        Meltable Anna y = 0 ❅
+        x++ ❅
+        x-- ❅
+        Get~This~Right (x == 2 ❅) {
+          Sing("We're back at where we started!") ❅
+        }
+        Let~It~Go (Meltable Anna i = 10 ❅ i == 3 ❅ i-- ❅) {
+          Sing("Let it Go!") ❅
+          y-= 1 ❅
+        }
+      }
+    `,
+    expected: dedent`
+      function inc() {
+        let x = 2;
+        let y = 0;
+        x++;
+        x--;
+        if ((x === 2)) {
+          console.log("We're back at where we started!");
+        }
+        for (let i = 10; (i === 3); i--) {
+          console.log("Let it Go!");
+          y-= 1;
+        }
+      }
+    `,
+  },
+  {
+    name: "multiple parameters and arguments",
+    source: `
+      Ice Olaf IceIceBaby(Olaf s, Anna n) {
+        Unmeltable Olaf result = "HEY!" ❅
+        Unmeltable Olaf failure = "NO GOOD!" ❅
+        Unmeltable Anna target = 5 ❅
+        Get~This~Right (n == target ❅) {
+          Arendelle result ❅
+        }
+        Arendelle failure ❅
+      }
+      IceIceBaby("HEY!", 1)❅
+    `,
+    expected: dedent`
+      function IceIceBaby(s, n) {
+        const result = "HEY!";
+        const failure = "NO GOOD!";
+        const target = 5;
+        if ((n === target)) {
+          return result;
+        }
+        return failure;
+      }
+      IceIceBaby("HEY!", 1);
     `,
   },
 ]
