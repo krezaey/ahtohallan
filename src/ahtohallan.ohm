@@ -6,7 +6,7 @@ Ahtohallan {
     BreakStatement = break terminal
     ReturnStatement = return Expression  --long
                     | return terminal   --short
-    Assignment = Increment| PlainAssignment
+    Assignment = Increment | PlainAssignment
     PlainAssignment = (GetProperty | identifier) "=" Expression
     Increment = Incrementer | IncrementalAssignment
     IncrementalAssignment = (identifier | GetProperty) incAssignop Expression

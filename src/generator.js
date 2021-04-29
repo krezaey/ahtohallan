@@ -1,4 +1,3 @@
-// import { IfStatement, Type, SwitchStatement } from "./ast.js"
 import * as stdlib from "./stdlib.js"
 
 export default function generate(program) {
@@ -8,28 +7,7 @@ export default function generate(program) {
     [stdlib.functions.Sing.name, x => `console.log(${x})`],
   ])
 
-  // Variable and function names in JS will be suffixed with _1, _2, _3,
-  // etc. This is because "switch", for example, is a legal name in Carlos,
-  // but not in JS. So, the Carlos variable "switch" must become something
-  // like "switch_1". We handle this by mapping each name to its suffix.
-  // const targetName = (mapping => {
-  //   return entity => {
-  //     if (!mapping.has(entity)) {
-  //       mapping.set(entity, mapping.size + 1)
-  //     }
-  //     return `${entity.name ?? entity.description}_${mapping.get(entity)}`
-  //   }
-  // })(new Map())
-
-  // const getValue = node => {
-  //   if (node.name !== undefined) {
-  //     return node.name
-  //   }
-  // }
-
   const gen = node => {
-    //console.log(`About to analyze a ${node.constructor.name}`)
-    // console.log(node)
     return generators[node.constructor.name](node)
   }
 
@@ -40,6 +18,7 @@ export default function generate(program) {
       gen(p.instructions)
     },
     Variable(d) {
+      d.expression._return = true
       if (d.mutability === 'Meltable') {
         if (d._return === true) {
           return `let ${gen(d.name)} = ${gen(d.expression)};`
@@ -47,9 +26,9 @@ export default function generate(program) {
         output.push(`let ${gen(d.name)} = ${gen(d.expression)};`)
       }
       else {
-        // if (d._return === true) {
-        //   return `const ${gen(d.name)} = ${gen(d.expression)};`
-        // }
+        if (d._return === true) {
+          return `const ${gen(d.name)} = ${gen(d.expression)};`
+        }
         output.push(`const ${gen(d.name)} = ${gen(d.expression)};`)
       }
     },
@@ -104,7 +83,6 @@ export default function generate(program) {
       output.push("}")
     },
     Access(a) {
-      //console.log(a)
       let method
       let property = ""
       switch (a.accessMethod) {
@@ -144,7 +122,7 @@ export default function generate(program) {
       output.push("break;")
     },
     NewInstance(n) {
-      output.push(`new ${gen(n.identifier)}(${gen(n.args).join(", ")})`)
+      return `new ${gen(n.identifier)}(${gen(n.args).join(", ")})`
     },
     Array(a) {
       return a.map(gen)
@@ -171,9 +149,9 @@ export default function generate(program) {
     Arguments(a) {
       let args = ``
       for (let arg of a.names) {
-        args += `${gen(arg)},`
+        args += `${gen(arg)}, `
       }
-      if (a.names.length > 0 && a.names !== undefined) {
+      if (args.length > 0) {
         args = args.slice(0, args.length - 2)
       }
       return args
@@ -230,16 +208,11 @@ export default function generate(program) {
       if (p._return === true) {
         return property
       }
-      //output.push(property)
     },
     Call(c) {
       const targetCode = standardFunctions.has(c.name)
         ? standardFunctions.get(c.name)(gen(c.args))
         : `${gen(c.name)}(${gen(c.args).join(", ")})`
-      // // Calls in expressions vs in statements are handled differently
-      // if (c.name instanceof Type || c.name.type.returnType !== Type.SAMANTHA) {
-      //   return targetCode
-      // }
       output.push(`${targetCode};`)
     },
     String(s) {
@@ -262,10 +235,6 @@ export default function generate(program) {
       // This ensures in JavaScript they get quotes!
       return JSON.stringify(e.value)
     },
-    // String(e) {
-    //   // This ensures in JavaScript they get quotes!
-    //   return e
-    // }, 
   }
 
   gen(program)

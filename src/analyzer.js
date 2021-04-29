@@ -434,8 +434,6 @@ class Context {
   IncrementalAssignment(i) {
     i.variable = this.analyze(i.variable)
     i.operand = this.analyze(i.operand)
-    console.log(i.operand)
-    console.log(i.op)
     return i
   }
   BinaryExpression(e) {

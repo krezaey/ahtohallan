@@ -1,8 +1,9 @@
 import assert from "assert"
 import parse from "../src/parser.js"
 import analyze from "../src/analyzer.js"
-// import optimize from "../src/optimizer.js"
 import generate from "../src/generator.js"
+
+// node src/ahtohallan.js t.ah js
 
 function dedent(s) {
   return `${s}`.replace(/(?<=\n)\s+/g, "").trim()
@@ -98,6 +99,13 @@ const fixtures = [
           Sing(citizens[i] + " is on the Arendelle watchlist for suspicious activities") ❅
         }    
       }
+      Let~It~Go(Unmeltable Anna j = 0 ❅ j < population ❅ j++ ❅) {
+        Get~This~Right(j % 2 ❅) {
+          Sing(citizens[j] + " is a trusted citizen of Arendelle") ❅
+        } Into~The~Unknown{
+          Sing(citizens[j] + " is on the Arendelle watchlist for suspicious activities") ❅
+        }    
+      }
     `,
     expected: dedent`
     let population = 8;
@@ -107,6 +115,13 @@ const fixtures = [
         console.log((citizens[i] + " is a trusted citizen of Arendelle"));
       } else {
         console.log((citizens[i] + " is on the Arendelle watchlist for suspicious activities"));
+      }
+    }
+    for (const j = 0; (j < population); j++) {
+      if ((j % 2)) {
+        console.log((citizens[j] + " is a trusted citizen of Arendelle"));
+      } else {
+        console.log((citizens[j] + " is on the Arendelle watchlist for suspicious activities"));
       }
     }
     `,
@@ -132,32 +147,31 @@ const fixtures = [
       Snow Point {
         Meltable Love state = Hans ❅
       
-        Water (Olaf name, Anna segments, Elsa length) {
+        Water (Olaf name, Anna segments) {
           Frozen.name = name ❅
           Frozen.segments = segments ❅
-          Frozen.length = length ❅
         }
       
         Crystal Samantha Print~Point~Info() {
           Sing(Frozen.name) ❅
         }
       }
-
+      Meltable Point p = Open~Door Point("Hello", 1) ❅
     `,
     expected: dedent`
       class Point {
         this.state = false;
 
-        constructor(name, segments, length) {
+        constructor(name, segments) {
           this.name = name;
           this.segments = segments;
-          this.length = length;
         }
 
         function PrintPointInfo () {
           console.log(this.name);
         }
       }
+      let p = new Point("Hello", 1);
     `,
   },
   {
