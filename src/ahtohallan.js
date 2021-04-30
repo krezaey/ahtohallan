@@ -6,7 +6,7 @@ import process from 'process'
 import { Program } from './ast.js'
 import parse from './parser.js'
 import analyze from './analyzer.js'
-// import optimize from './optimizer.js'
+import optimize from './optimizer.js'
 import generate from './generator.js'
 
 const help = `Ahtohallan compiler
@@ -26,8 +26,8 @@ function compile(source, outputType) {
     return parse(source)
   } else if (outputType === 'analyzed') {
     return analyze(parse(source))
-    // } else if (outputType === 'optimized') {
-    // return optimize(analyze(parse(source)))
+    } else if (outputType === 'optimized') {
+    return optimize(analyze(parse(source)))
   } else if (outputType === 'js') {
     //return generate(optimize(analyze(parse(source))))
     return generate(analyze(parse(source)))
@@ -40,8 +40,7 @@ Program.prototype[util.inspect.custom] = function () {
   // Return a compact and pretty string representation of the node graph,
   // taking care of cycles. Written here from scratch because the built-in
   // inspect function, while nice, isn't nice enough. Defined properly in
-  // the AST root class prototype so it automatically runs on console.log.
-  const tags = new Map()
+  // the AST root class pr  const tags = new Map()
 
   function tag(node) {
     if (tags.has(node) || typeof node !== 'object' || node === null) return
