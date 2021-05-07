@@ -448,7 +448,7 @@ class Context {
       e.right.type = y.type
     }
     if (["&&", "||"].includes(e.op)) {
-      e.Type = Type.Booley
+      e.type = Type.LOVE
     }
     if (["+"].includes(e.op)) {
       check(e.left).isNumericOrString()
