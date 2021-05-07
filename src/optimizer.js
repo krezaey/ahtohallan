@@ -78,12 +78,15 @@ const optimizers = {
       } else if (s.condition[i] === true) {
         s.condition = true
         if (i == 0) {
-          // If its the irst thing in the if just return the body
+          // If its the first thing in the if just return the body
           return optimize (s.body[i])
          }
       }
     }
-    s.body = optimize(s.body)
+    s.body = optimize(body)
+    if (s.body.length === 0) {
+      return optimize (s.alternate)
+    }
     s.alternate = optimize(s.alternate)
     return s
   },
@@ -91,9 +94,9 @@ const optimizers = {
     w.expression = optimize(w.expression)
     if (w.expression === false) {
       // If false don't bother parsing
-      return
+      return []
     }
-    w.body = optimize(x.body)
+    w.body = optimize(w.body)
     return w
   },
 
@@ -234,7 +237,9 @@ const optimizers = {
     return p
   },
   Call(c) {
+    console.log(c)
     c.args = optimize(c.args)
+    c.name = optimize(c.name)
     return c
   },
   String(s) {
