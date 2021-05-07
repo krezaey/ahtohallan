@@ -26,20 +26,6 @@ export default function optimize(node) {
   return optimizers[node.constructor.name](node)
 }
 
-// const Calculate = (l, op, r) => {
-//   // 
-//     // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
-//     switch(op) {
-//       case "+":
-//         return l + r
-//       case "-":
-//         // code block
-//         break;
-//       default:
-//         // code block
-//     }
-// }
-
 const optimizers = {
   Program(p) {
     p.instructions = optimize(p.instructions)
@@ -82,11 +68,19 @@ const optimizers = {
   },
   IfStatement(s) {
     s.condition = optimize(s.condition)
+    let body = s.body
+    let condition = s.condition
     for (let i = 0; i < s.condition.length; i++) {
       if (s.condition[i] === false){
         // prune it out
-        s.body.splice(i)
-        s.condition.splice(i)
+        body.splice(i)
+        condition.splice(i)
+      } else if (s.condition[i] === true) {
+        s.condition = true
+        if (i == 0) {
+          // If its the irst thing in the if just return the body
+          return optimize (s.body[i])
+         }
       }
     }
     s.body = optimize(s.body)
@@ -103,11 +97,6 @@ const optimizers = {
     return w
   },
 
-  //export class Access {
-//   constructor(accessValue, accessMethod) {
-//     Object.assign(this, { accessMethod, accessValue })
-//   }
-// }
   Access(a) {
     a.accessValue = optimize(a.accessValue)
     a.accessMethod= optimize(a.accessMethod)
@@ -189,13 +178,8 @@ const optimizers = {
     return a
   },
   BinaryExpression(e) {
-
-    e.left = optimize(e.left)
-    e.right = optimize(e.right)
     // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
     //if ((e.left.name !== undefined) && (e.right.name !== undefined)) {
-    console.log(e.left)
-    console.log(e.right)
     if (e.op == "&&") {
       if (e.left === false) return false
       else if (e.right === false) return false
