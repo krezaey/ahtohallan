@@ -178,6 +178,9 @@ const optimizers = {
   PlainAssignment(a) {
     a.variable = optimize(a.variable)
     a.expression = optimize(a.expression)
+    if (a.expression.expression === a.variable.name) {
+      return []
+    }
     return a
   },
   IncrementalAssignment(a) {
@@ -191,17 +194,21 @@ const optimizers = {
     e.right = optimize(e.right)
     // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
     //if ((e.left.name !== undefined) && (e.right.name !== undefined)) {
-    console.log
-      if (e.op == "&&") {
-        if (e.left === false) return false
-        else if (e.right === false) return false
-        else return true
-      } else if (e.op == "||") {
-        if (e.left == true) return true
-        else if (e.right == true) return true
-        else return false
-      } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
-        
+    console.log(e.left)
+    console.log(e.right)
+    if (e.op == "&&") {
+      if (e.left === false) return false
+      else if (e.right === false) return false
+      else if (e.left === true) return e.right
+      else if (e.right === true) return e.left
+      else return e.left && e.right
+    } else if (e.op == "||") {
+      if (e.left == true) return true
+      else if (e.right == true) return true
+      else if (e.left == false) return e.right
+      else if (e.right == false) return e.left
+      else return e.let || e.right
+    } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
         if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
         else if (e.left === 0 && e.op === "+") return e.right
         else if (e.left === 1 && e.op === "*") return e.right
@@ -259,6 +266,9 @@ const optimizers = {
     return p
   },
   Booley(b) {
+    return b
+  },
+  Boolean(b) {
     return b
   },
   Number(n) {
