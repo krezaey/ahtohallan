@@ -17,13 +17,28 @@
 //   - for-loop with low > high is a no-op
 //   - if-true and if-false reduce to only the taken arm
 
+
 import * as ast from "./ast.js"
 
 export default function optimize(node) {
   console.log("Optimizing ", node.constructor.name)
-  console.log("Hello", optimizers[node.constructor.name](node))
+  // console.log("Hello", optimizers[node.constructor.name](node))
   return optimizers[node.constructor.name](node)
 }
+
+// const Calculate = (l, op, r) => {
+//   // 
+//     // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
+//     switch(op) {
+//       case "+":
+//         return l + r
+//       case "-":
+//         // code block
+//         break;
+//       default:
+//         // code block
+//     }
+// }
 
 const optimizers = {
   Program(p) {
@@ -31,7 +46,11 @@ const optimizers = {
     return p
   },
   Variable(d) {
-    d.expression = optimize(d.expression)
+    if (d.expression !== null) {
+      d.expression = optimize(d.expression)
+    } else if (d.name !== null && d.expression === null) {
+      d.expression = optimize(d.name)
+    }
     return d
   },
   ReturnStatement(r) { 
@@ -167,10 +186,12 @@ const optimizers = {
     return a
   },
   BinaryExpression(e) {
+
     e.left = optimize(e.left)
     e.right = optimize(e.right)
     // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
-    if ((e.left.name !== undefined) && (e.right.name !== undefined)) {
+    //if ((e.left.name !== undefined) && (e.right.name !== undefined)) {
+    console.log
       if (e.op == "&&") {
         if (e.left === false) return false
         else if (e.right === false) return false
@@ -179,36 +200,37 @@ const optimizers = {
         if (e.left == true) return true
         else if (e.right == true) return true
         else return false
-      } else if ([ast.Type.Anna, ast.Type.Elsa].includes(e.type)) {
-        if (e.op == "+") return e.left + e.right
-        else if (e.op == "-") return e.left - e.right
-        else if (e.op == "*") return e.left * e.right
-        else if (e.op == "/") return e.left / e.right
-        else if (e.op == "**") return e.left ** e.right
-        else if (e.op == "<") return e.left < e.right
-        else if (e.op == "<=") return e.left <= e.right
-        else if (e.op == "==") return e.left == e.right
-        else if (e.op == "!=") return e.left != e.right
-        else if (e.op == ">=") return e.left >= e.right
-        else if (e.op == ">") return e.left > e.right
+      } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
+        
+        if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
         else if (e.left === 0 && e.op === "+") return e.right
         else if (e.left === 1 && e.op === "*") return e.right
-        else if (e.right === 1 && e.op === "*") return e.left
-        else if (e.left === 0 && e.op === "-") return new ast.UnaryExpression("-", e.right)
+        else if (e.left === 0 && e.op === "-") return optimize (new ast.UnaryExpression("-", e.right))
         else if (e.left === 1 && e.op === "**") return 1
-        else if (e.left === 0 && ["*", "/"].includes(e.op) && e.right === 1) return 0
-        // Numeric constant folding when right operand is constant
-        if (["+", "-"].includes(e.op && e.right == 0)) return e.left
-        else if (["*", "/"].includes(e.op) && e.right == 1) return e.left
+        else if (e.op === "+") return e.left + e.right
+        else if (e.op === "-") return e.left - e.right
+        else if (e.op === "*") return e.left * e.right
+        else if (e.op === "/") return e.left / e.right
+        else if (e.op === "**") return e.left ** e.right
+        else if (e.op === "<") return e.left < e.right
+        else if (e.op === "<=") return e.left <= e.right
+        else if (e.op === "==") return e.left === e.right
+        else if (e.op === "!=") return e.left !== e.right
+        else if (e.op === ">=") return e.left >= e.right
+        else if (e.op === ">") return e.left > e.right
+      } 
+      else if (e.right.constructor === Number) {
+      // Numeric constant folding when right operand is constant
+        if (["+", "-"].includes(e.op) && e.right === 0) return e.left
+        else if (["*", "/"].includes(e.op) && e.right === 1) return e.left
         else if (e.op === "*" && e.right === 0) return 0
-        else if (e.op === "**" && e.right === 0 ) return 1
+        else if (e.op === "**" && e.right === 0) return 1
       }
-    }
     return e
   },  
   UnaryExpression(e) {
     e.right = optimize(e.right)
-    if (e.right.constructor.name === "Float" || e.right.constructor.name === "Integer") {
+    if (["Number", "Anna", "Elsa"].includes(e.right.constructor.name)) {
       if (e.op === "-") return -e.right
     } else if (e.right.constructor.name === "Booley") return !e.right
     return e
@@ -239,4 +261,7 @@ const optimizers = {
   Booley(b) {
     return b
   },
+  Number(n) {
+    return n
+  }
 }

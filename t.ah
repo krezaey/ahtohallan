@@ -1,13 +1,1 @@
-Snow Point {
-  Meltable Love state = Hans ❅
-
-  Water (Olaf name, Anna segments) {
-    Frozen.name = name ❅
-    Frozen.segments = segments ❅
-  }
-
-  Crystal Samantha Print~Point~Info() {
-    Sing(Frozen.name) ❅
-  }
-}
-Meltable Point p = Open~Door Point("Hello", 1) ❅
+Unmeltable Anna x = 3 + 4 ❅
