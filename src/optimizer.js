@@ -62,21 +62,41 @@ const optimizers = {
   },
   IfStatement(s) {
     s.condition = optimize(s.condition)
+    for (let i = 0; i < s.condition.length; i++) {
+      if (s.condition[i] === false){
+        // prune it out
+        s.body.splice(i)
+        s.condition.splice(i)
+      }
+    }
     s.body = optimize(s.body)
     s.alternate = optimize(s.alternate)
     return s
   },
   WhileLoop(w) {
     w.expression = optimize(w.expression)
+    if (w.expression === false) {
+      // If false don't bother parsing
+      return
+    }
     w.body = optimize(x.body)
     return w
   },
+
+  //export class Access {
+//   constructor(accessValue, accessMethod) {
+//     Object.assign(this, { accessMethod, accessValue })
+//   }
+// }
   Access(a) {
+    a.accessValue = optimize(a.accessValue)
+    a.accessMethod= optimize(a.accessMethod)
     return a
   },
   ForLoop(f) {
     f.start = optimize(f.start)
     f.limit = optimize(f.limit)
+    f.increment = optimize(f.increment)
     f.body = optimize(f.body)
     return f
   },
@@ -91,11 +111,17 @@ const optimizers = {
     return b
   },
   NewInstance(i) {
+    i.identifier = optimize(i.identifier)
+    i.args = optimize(i.args)
     return i
   },
+  Array(a) {
+    // Flatmap since each element can be an array
+    return a.flatMap(optimize)
+  },
   ArrayExpression(a) {
-    i.values = optimize(i.values)
-    return i
+    a.values = optimize(a.values)
+    return a
   },
   Dictionary(d) {
     d.entries = optimize(d.entries)
@@ -103,6 +129,7 @@ const optimizers = {
   },
   DictionaryEntry(d) {
     d.value = optimize(d.value)
+    d.key = optimize(d.key)
     return d   
   },
   DictionaryEntries(d) {
@@ -110,6 +137,8 @@ const optimizers = {
     return d
   },
   Parameter(p) {
+    p.type = optimize(p.type)
+    p.name = optimize(p.name)
     return p
   },
   Parameters(p) {
@@ -125,17 +154,24 @@ const optimizers = {
     return a
   },
   Incrementer(i) {
+    i.operand = optimize(i.operand)
     return i
   },
   PlainAssignment(a) {
+    a.variable = optimize(a.variable)
     a.expression = optimize(a.expression)
     return a
   },
   IncrementalAssignment(a) {
     a.operand = optimize(a.operand)
+    a.variable = optimize(a.variable)
     return a
   },
   BinaryExpression(e) {
+    e.left = optimize(e.left)
+    e.right = optimize(e.right)
+    ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
+
     // To Do
 
     return e
@@ -161,13 +197,13 @@ const optimizers = {
     c.args = optimize(c.args)
     return c
   },
-  Type(t) {
-    t.name = optimize(t.name)
-    return t
+  String(s) {
+    return(s)
   },
-  Booley(b) {
-    return b
-  },
+  // Type(t) {
+  //   t.name = optimize(t.name)
+  //   return t
+  // },
   Integer(i) {
     return i
   },
@@ -176,6 +212,9 @@ const optimizers = {
   },
   Phrase(p) {
     return p
+  },
+  Booley(b) {
+    return b
   },
     
 
@@ -219,7 +258,7 @@ const optimizers = {
   WhileStatement(s) {
     s.test = optimize(s.test)
     if (s.test === false) {
-      // while false is a no-op
+      // while false is a no-op 
       return []
     }
     s.body = optimize(s.body)

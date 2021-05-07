@@ -447,6 +447,9 @@ class Context {
       let y = this.lookup(e.right.name)
       e.right.type = y.type
     }
+    if (["&&", "||"].includes(e.op)) {
+      e.Type = Type.Booley
+    }
     if (["+"].includes(e.op)) {
       check(e.left).isNumericOrString()
       check(e.right).isNumericOrString()
