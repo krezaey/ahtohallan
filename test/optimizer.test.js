@@ -74,6 +74,7 @@ const tests = [
   ],
 ] 
 
+
 describe("The Optimizer", () => {
   for (const [scenario, before, after] of tests) {
     it(`${scenario}`, () => {
