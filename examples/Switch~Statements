@@ -1,0 +1,17 @@
+Meltable Anna x = 0 ❅
+Meltable Anna y = 2 ❅
+Meltable Olaf result = "" ❅
+
+All~Is~Found(x + y ❅) {
+    Show~Yourself(1):
+        result = "The sum was one." ❅
+        Closed~Door ❅
+    Show~Yourself(2):
+        result = "The sum was two." ❅
+        Closed~Door ❅
+    I~Seek~The~Truth:
+        result = "The sum was something else not listed." ❅
+        Closed~Door ❅
+}
+
+Arendelle result ❅

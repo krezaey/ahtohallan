@@ -1,0 +1,8 @@
+Ice Olaf Even~Odd(Anna num) {
+  Get~This~Right (num % 2 == 0 ❅) {
+    Arendelle "This number is even." ❅
+  }
+  Into~The~Unknown {
+    Arendelle "This number is odd." ❅
+  }
+}

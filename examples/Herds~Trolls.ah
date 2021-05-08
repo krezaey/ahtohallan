@@ -1,0 +1,12 @@
+Meltable Herd[] Vegetables = ["Cabbage", "Turnip", "Radish", "Carrot"] ❅
+Sing(Vegetables) ❅
+~* ["Cabbage", "Turnip", "Radish", "Carrot"] *~
+
+Unmeltable Trolls[[]] reindeer = [[
+  First~Name: "Sven" ❅,
+  Last~Name: "Bjorgman" ❅,
+  Age: 16 ❅,
+  Species: "Reindeer" ❅
+]] ❅
+
+Sing(reindeer[[Age]]) ❅
