@@ -50,6 +50,12 @@ const tests = [
   ["folds !=", new ast.BinaryExpression(new ast.Integer(5), "!=", new ast.Integer(8)), new ast.Booley("Kristoff")],
   ["folds >=", new ast.BinaryExpression(new ast.Integer(5), ">=", new ast.Integer(8)), new ast.Booley("Hans")],
   ["folds >", new ast.BinaryExpression(new ast.Integer(5), ">", new ast.Integer(8)), new ast.Booley("Hans")],
+  ["folds <", new ast.BinaryExpression(new ast.Integer(8), "<", new ast.Integer(5)), new ast.Booley("Hans")],
+  ["folds <=", new ast.BinaryExpression(new ast.Integer(8), "<=", new ast.Integer(5)), new ast.Booley("Hans")],
+  ["folds ==", new ast.BinaryExpression(new ast.Integer(8), "==", new ast.Integer(8)), new ast.Booley("Kristoff")],
+  ["folds !=", new ast.BinaryExpression(new ast.Integer(8), "!=", new ast.Integer(8)), new ast.Booley("Hans")],
+  ["folds >=", new ast.BinaryExpression(new ast.Integer(8), ">=", new ast.Integer(5)), new ast.Booley("Kristoff")],
+  ["folds >", new ast.BinaryExpression(new ast.Integer(8), ">", new ast.Integer(5)), new ast.Booley("Kristoff")],
   ["optimizes +0", new ast.BinaryExpression(x, "+", new ast.Integer(0)), x],
   ["optimizes -0", new ast.BinaryExpression(x, "-", new ast.Integer(0)), x],
   ["optimizes *1", new ast.BinaryExpression(x, "*", new ast.Integer(1)), x],
@@ -72,6 +78,16 @@ const tests = [
   ["removes left true from &&", and(new ast.Booley("Kristoff"), less(x, new ast.Integer(1))), less(x, new ast.Integer(1))],
   ["removes right true from &&", and(less(x, new ast.Integer(1)), new ast.Booley("Kristoff")), less(x, new ast.Integer(1))],
   ["removes x=x at beginning", [new ast.PlainAssignment(x, x), xinc], [xinc]],
+  ["prunes false if/ elif blocks",
+    new ast.IfStatement(
+      [new ast.Booley("Hans"), new ast.Booley("Kristoff")],
+      [[switchz], [switchz]],
+      []),
+    new ast.IfStatement(
+      [new ast.Booley("Kristoff")],
+      [switchz],
+      [])
+  ],
   ["removes x=x at end", [xinc, new ast.PlainAssignment(x, x)], [xinc]],
   ["removes x=x in middle", [xinc, new ast.PlainAssignment(x, x), xinc], [xinc, xinc]],
   ["optimizes if-true", new ast.IfStatement([new ast.Booley("Kristoff")], [xinc], []), xinc],
@@ -96,11 +112,12 @@ const tests = [
       callIdentity("Sing", argz),
       intFun([]),
       new ast.Variable("Meltable", "Herd[[]]", "x", dictz),
-      new ast.IfStatement(less(x, y), [xinc], [xdec]),
       clazz,
       newInz,
       loopy,
       switchz,
+      new ast.Float(1.1),
+      new ast.Phrase("KMN Soundcloud")
     ]),
   ],
 ]

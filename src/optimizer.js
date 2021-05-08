@@ -74,22 +74,29 @@ const optimizers = {
   },
   IfStatement(s) {
     s.condition = optimize(s.condition)
-    let body = s.body
-    let condition = s.condition
+    console.log(s.condition)
+
+    let removals = []
+    let body = []
+    let condition = []
     for (let i = 0; i < s.condition.length; i++) {
-      if (s.condition[i] === new ast.Booley("Hans")) {
+      console.log(s.condition[i].value, "at index", i)
+      if (s.condition[i].value === "Hans") {
         // prune it out
-        body.splice(i)
-        condition.splice(i)
+        removals.push(i)
       } else if (s.condition[i].value === "Kristoff") {
-        s.condition = new ast.Booley("Kristoff")
-        if (i == 0) {
-          // If its the first thing in the if just return the body
-          return optimize(s.body[i])
-        }
+        if (i === 0) { return optimize(s.body[i]) }
       }
     }
+    for (let i = 0; i < s.condition.length; i++) {
+      if (!removals.includes(i)) {
+        condition.push(s.condition[i])
+        body.push(s.body[i])
+      }
+    }
+    s.condition = condition
     s.body = optimize(body)
+    console.log(body)
     if (s.body.length === 0) {
       return optimize(s.alternate)
     }
