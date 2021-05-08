@@ -42,7 +42,7 @@ const optimizers = {
     }
     return d
   },
-  ReturnStatement(r) { 
+  ReturnStatement(r) {
     r.expression = optimize(r.expression)
     return r
   },
@@ -62,7 +62,7 @@ const optimizers = {
     c.parameters = optimize(c.parameters)
     c.body = optimize(c.body)
     return c
-  }, 
+  },
   Method(m) {
     m.parameters = optimize(m.parameters)
     m.body = optimize(m.body)
@@ -77,7 +77,7 @@ const optimizers = {
     let body = s.body
     let condition = s.condition
     for (let i = 0; i < s.condition.length; i++) {
-      if (s.condition[i] === false){
+      if (s.condition[i] === false) {
         // prune it out
         body.splice(i)
         condition.splice(i)
@@ -85,13 +85,13 @@ const optimizers = {
         s.condition = true
         if (i == 0) {
           // If its the first thing in the if just return the body
-          return optimize (s.body[i])
-         }
+          return optimize(s.body[i])
+        }
       }
     }
     s.body = optimize(body)
     if (s.body.length === 0) {
-      return optimize (s.alternate)
+      return optimize(s.alternate)
     }
     s.alternate = optimize(s.alternate)
     return s
@@ -108,7 +108,7 @@ const optimizers = {
 
   Access(a) {
     a.accessValue = optimize(a.accessValue)
-    a.accessMethod= optimize(a.accessMethod)
+    a.accessMethod = optimize(a.accessMethod)
     return a
   },
   ForLoop(f) {
@@ -147,7 +147,7 @@ const optimizers = {
   DictionaryEntry(d) {
     d.value = optimize(d.value)
     d.key = optimize(d.key)
-    return d   
+    return d
   },
   DictionaryEntries(d) {
     d.entries = optimize(d.entries)
@@ -162,7 +162,7 @@ const optimizers = {
     return p
   },
   Arguments(a) {
-    a.names = optimize(a.names) 
+    a.names = optimize(a.names)
     return a
   },
   Argument(a) {
@@ -187,42 +187,44 @@ const optimizers = {
     return a
   },
   BinaryExpression(e) {
+    e.left = optimize(e.left)
+    e.right = optimize(e.right)
     if (e.op == "&&") {
-      if (e.left === false) return false
-      else if (e.right === false) return false
-      else if (e.left === true) return e.right
-      else if (e.right === true) return e.left
+      if (e.left.value == "Hans") return new ast.Booley("Hans")
+      else if (e.right.value === "Hans") return new ast.Booley("Hans")
+      else if (e.left.value === "Kristoff") return e.right
+      else if (e.right.value === "Kristoff") return e.left
     } else if (e.op == "||") {
-      if (e.left == true) return true
-      else if (e.right == true) return true
-      else if (e.left == false) return e.right
-      else if (e.right == false) return e.left
-    } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
-      if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
+      if (e.left.value == "Kristoff") return new ast.Booley("Kristoff")
+      else if (e.right.value == "Kristoff") new ast.Booley("Kristoff")
+      else if (e.left.value == "Hans") return e.right
+      else if (e.right.value == "Hans") return e.left
+    } else if (["Float", "Integer"].includes(e.left.constructor.name)) {
+      if (e.left === 0 && ["*", "/"].includes(e.op)) return new ast.Float(0)
       else if (e.left === 0 && e.op === "+") return e.right
       else if (e.left === 1 && e.op === "*") return e.right
-      else if (e.left === 0 && e.op === "-") return optimize (new ast.UnaryExpression("-", e.right))
-      else if (e.left === 1 && e.op === "**") return 1
-      else if (e.op === "+") return e.left + e.right
-      else if (e.op === "-") return e.left - e.right
-      else if (e.op === "*") return e.left * e.right
-      else if (e.op === "/") return e.left / e.right
-      else if (e.op === "**") return e.left ** e.right
-      else if (e.op === "<") return e.left < e.right
-      else if (e.op === "<=") return e.left <= e.right
-      else if (e.op === "==") return e.left === e.right
-      else if (e.op === "!=") return e.left !== e.right
-      else if (e.op === ">=") return e.left >= e.right
-      else if (e.op === ">") return e.left > e.right
-    } else if (e.right.constructor === Number) {
+      else if (e.left === 0 && e.op === "-") return optimize(new ast.UnaryExpression("-", e.right))
+      else if (e.left === 1 && e.op === "**") return new ast.Float(1)
+      else if (e.op === "+") return new ast.Float(e.left.value + e.right.value)
+      else if (e.op === "-") return new ast.Float(e.left.value - e.right.value)
+      else if (e.op === "*") return new ast.Float(e.left.value * e.right.value)
+      else if (e.op === "/") return new ast.Float(e.left.value / e.right.value)
+      else if (e.op === "**") return new ast.Float(e.left.value ** e.right.value)
+      else if (e.op === "<") return new ast.Float(e.left.value < e.right.value)
+      else if (e.op === "<=") return new ast.Float(e.left.value <= e.right.value)
+      else if (e.op === "==") return new ast.Float(e.left.value === e.right.value)
+      else if (e.op === "!=") return new ast.Float(e.left.value !== e.right.value)
+      else if (e.op === ">=") return new ast.Float(e.left.value >= e.right.value)
+      else if (e.op === ">") return new ast.Float(e.left.value > e.right.value)
+    } else if (["Float", "Integer"].includes(e.right.constructor.name)) {
       // Numeric constant folding when right operand is constant
       if (["+", "-"].includes(e.op) && e.right === 0) return e.left
       else if (["*", "/"].includes(e.op) && e.right === 1) return e.left
-      else if (e.op === "*" && e.right === 0) return 0
-      else if (e.op === "**" && e.right === 0) return 1
+      else if (e.op === "*" && e.right === 0) return new ast.Float(0)
+      else if (e.op === "**" && e.right === 0) return new ast.Float(1)
     }
     return e
-  },  
+  },
   UnaryExpression(e) {
     e.right = optimize(e.right)
     if (["Number", "Anna", "Elsa"].includes(e.right.constructor.name)) {
@@ -246,10 +248,16 @@ const optimizers = {
   String(s) {
     return s
   },
-  Boolean(b) {
+  Booley(b) {
     return b
   },
-  Number(n) {
+  Integer(n) {
+    return n
+  },
+  Float(n) {
+    return n
+  },
+  Phrase(n) {
     return n
   }
 }
