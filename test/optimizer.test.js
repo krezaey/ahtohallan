@@ -10,7 +10,7 @@ const xdec = new ast.Incrementer(x, "--")
 const yinc = new ast.Incrementer(y, "++")
 const incAss = new ast.IncrementalAssignment(y, "+=", new ast.Integer(3))
 const return1p1 = new ast.ReturnStatement(new ast.BinaryExpression(new ast.Integer(1), "+", new ast.Integer(1)))
-const return2 = new ast.ReturnStatement(new ast.Integer(2))
+const return2 = new ast.ReturnStatement(new ast.Float(2))
 const returnX = new ast.ReturnStatement(x)
 const onePlusTwo = new ast.BinaryExpression(new ast.Integer(1), "+", new ast.Integer(2))
 const identity = new ast.Function("Anna", "id", [], returnX)
@@ -63,14 +63,14 @@ const tests = [
   ["folds negation", new ast.UnaryExpression("-", new ast.Integer(8)), new ast.Float(-8)],
   ["optimizes 1**", new ast.BinaryExpression(new ast.Integer(1), "**", x), new ast.Float(1)],
   ["optimizes **0", new ast.BinaryExpression(x, "**", new ast.Integer(0)), new ast.Float(1)],
-  ["removes left false from ||", or(new ast.Booley("Hans"), less(x, new ast.Integer(1))), less(x, new ast.Float(1))],
-  ["removes right false from ||", or(less(x, new ast.Integer(1)), new ast.Booley("Hans")), less(x, new ast.Float(1))],
+  ["removes left false from ||", or(new ast.Booley("Hans"), less(x, new ast.Integer(1))), less(x, new ast.Integer(1))],
+  ["removes right false from ||", or(less(x, new ast.Integer(1)), new ast.Booley("Hans")), less(x, new ast.Integer(1))],
   ["bails true for || right true", or(less(x, new ast.Integer(1)), new ast.Booley("Kristoff")), new ast.Booley("Kristoff")],
   ["bails true for || left true", or(new ast.Booley("Kristoff"), less(x, new ast.Integer(1))), new ast.Booley("Kristoff")],
   ["bails false for && right false", and(less(x, new ast.Integer(1)), new ast.Booley("Hans")), new ast.Booley("Hans")],
   ["bails false for && left false", and(new ast.Booley("Hans"), less(x, new ast.Integer(1))), new ast.Booley("Hans")],
-  ["removes left true from &&", and(new ast.Booley("Kristoff"), less(x, new ast.Integer(1))), less(x, new ast.Float(1))],
-  ["removes right true from &&", and(less(x, new ast.Integer(1)), new ast.Booley("Kristoff")), less(x, new ast.Float(1))],
+  ["removes left true from &&", and(new ast.Booley("Kristoff"), less(x, new ast.Integer(1))), less(x, new ast.Integer(1))],
+  ["removes right true from &&", and(less(x, new ast.Integer(1)), new ast.Booley("Kristoff")), less(x, new ast.Integer(1))],
   ["removes x=x at beginning", [new ast.PlainAssignment(x, x), xinc], [xinc]],
   ["removes x=x at end", [xinc, new ast.PlainAssignment(x, x)], [xinc]],
   ["removes x=x in middle", [xinc, new ast.PlainAssignment(x, x), xinc], [xinc, xinc]],
@@ -79,7 +79,7 @@ const tests = [
   ["optimizes while-false", new ast.WhileLoop(new ast.Booley("Hans"), [xinc]), []],
   ["applies if-false after folding", new ast.IfStatement([eq(new ast.Integer(1), new ast.Integer(1))], [xinc], []), xinc],
   ["optimizes in functions", intFun(return1p1), intFun(return2)],
-  ["optimizes in array literals", array(new ast.Integer(0), onePlusTwo, new ast.Integer(9)), array(new ast.Float(0), new ast.Float(3), new ast.Float(9))],
+  ["optimizes in array literals", array(new ast.Integer(0), onePlusTwo, new ast.Integer(9)), array(new ast.Integer(0), new ast.Float(3), new ast.Integer(9))],
   ["optimizes in arguments", callIdentity("Sing", [times(new ast.Integer(3), new ast.Integer(5))]), callIdentity("Sing", [new ast.Float(15)])],
   [
     "passes through nonoptimizable constructs",

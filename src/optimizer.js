@@ -77,12 +77,12 @@ const optimizers = {
     let body = s.body
     let condition = s.condition
     for (let i = 0; i < s.condition.length; i++) {
-      if (s.condition[i] === false) {
+      if (s.condition[i] === new ast.Booley("Hans")) {
         // prune it out
         body.splice(i)
         condition.splice(i)
-      } else if (s.condition[i] === true) {
-        s.condition = true
+      } else if (s.condition[i].value === "Kristoff") {
+        s.condition = new ast.Booley("Kristoff")
         if (i == 0) {
           // If its the first thing in the if just return the body
           return optimize(s.body[i])
@@ -98,7 +98,7 @@ const optimizers = {
   },
   WhileLoop(w) {
     w.expression = optimize(w.expression)
-    if (w.expression === false) {
+    if (w.expression.value === "Hans") {
       // If false don't bother parsing
       return []
     }
@@ -189,46 +189,46 @@ const optimizers = {
   BinaryExpression(e) {
     e.left = optimize(e.left)
     e.right = optimize(e.right)
-    if (e.op == "&&") {
-      if (e.left.value == "Hans") return new ast.Booley("Hans")
+    if (e.op === "&&") {
+      if (e.left.value === "Hans") return new ast.Booley("Hans")
       else if (e.right.value === "Hans") return new ast.Booley("Hans")
       else if (e.left.value === "Kristoff") return e.right
       else if (e.right.value === "Kristoff") return e.left
-    } else if (e.op == "||") {
-      if (e.left.value == "Kristoff") return new ast.Booley("Kristoff")
-      else if (e.right.value == "Kristoff") new ast.Booley("Kristoff")
-      else if (e.left.value == "Hans") return e.right
-      else if (e.right.value == "Hans") return e.left
+    } else if (e.op === "||") {
+      if (e.left.value === "Kristoff") return new ast.Booley("Kristoff")
+      else if (e.right.value === "Kristoff") return new ast.Booley("Kristoff")
+      else if (e.left.value === "Hans") return e.right
+      else if (e.right.value === "Hans") return e.left
     } else if (["Float", "Integer"].includes(e.left.constructor.name)) {
-      if (e.left === 0 && ["*", "/"].includes(e.op)) return new ast.Float(0)
-      else if (e.left === 0 && e.op === "+") return e.right
-      else if (e.left === 1 && e.op === "*") return e.right
-      else if (e.left === 0 && e.op === "-") return optimize(new ast.UnaryExpression("-", e.right))
-      else if (e.left === 1 && e.op === "**") return new ast.Float(1)
+      if (e.left.value === 0 && ["*", "/"].includes(e.op)) return new ast.Float(0)
+      else if (e.left.value === 0 && e.op === "+") return e.right
+      else if (e.left.value === 1 && e.op === "*") return e.right
+      else if (e.left.value === 0 && e.op === "-") return optimize(new ast.UnaryExpression("-", e.right))
+      else if (e.left.value === 1 && e.op === "**") return new ast.Float(1)
       else if (e.op === "+") return new ast.Float(e.left.value + e.right.value)
       else if (e.op === "-") return new ast.Float(e.left.value - e.right.value)
       else if (e.op === "*") return new ast.Float(e.left.value * e.right.value)
       else if (e.op === "/") return new ast.Float(e.left.value / e.right.value)
       else if (e.op === "**") return new ast.Float(e.left.value ** e.right.value)
-      else if (e.op === "<") return new ast.Float(e.left.value < e.right.value)
-      else if (e.op === "<=") return new ast.Float(e.left.value <= e.right.value)
-      else if (e.op === "==") return new ast.Float(e.left.value === e.right.value)
-      else if (e.op === "!=") return new ast.Float(e.left.value !== e.right.value)
-      else if (e.op === ">=") return new ast.Float(e.left.value >= e.right.value)
-      else if (e.op === ">") return new ast.Float(e.left.value > e.right.value)
+      else if (e.op === "<") return new ast.Booley((e.left.value < e.right.value) ? "Kristoff" : "Hans")
+      else if (e.op === "<=") return new ast.Booley(e.left.value <= e.right.value ? "Kristoff" : "Hans")
+      else if (e.op === "==") return new ast.Booley(e.left.value === e.right.value ? "Kristoff" : "Hans")
+      else if (e.op === "!=") return new ast.Booley(e.left.value !== e.right.value ? "Kristoff" : "Hans")
+      else if (e.op === ">=") return new ast.Booley(e.left.value >= e.right.value ? "Kristoff" : "Hans")
+      else if (e.op === ">") return new ast.Booley(e.left.value > e.right.value ? "Kristoff" : "Hans")
     } else if (["Float", "Integer"].includes(e.right.constructor.name)) {
       // Numeric constant folding when right operand is constant
-      if (["+", "-"].includes(e.op) && e.right === 0) return e.left
-      else if (["*", "/"].includes(e.op) && e.right === 1) return e.left
-      else if (e.op === "*" && e.right === 0) return new ast.Float(0)
-      else if (e.op === "**" && e.right === 0) return new ast.Float(1)
+      if (["+", "-"].includes(e.op) && e.right.value === 0) return e.left
+      else if (["*", "/"].includes(e.op) && e.right.value === 1) return e.left
+      else if (e.op === "*" && e.right.value === 0) return new ast.Float(0)
+      else if (e.op === "**" && e.right.value === 0) return new ast.Float(1)
     }
     return e
   },
   UnaryExpression(e) {
     e.right = optimize(e.right)
-    if (["Number", "Anna", "Elsa"].includes(e.right.constructor.name)) {
-      if (e.op === "-") return -e.right
+    if (["Integer", "Float"].includes(e.right.constructor.name)) {
+      if (e.op === "-") return new ast.Float(-1 * e.right.value)
     }
     return e
   },
