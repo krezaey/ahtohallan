@@ -6,7 +6,6 @@ import generate from "../src/generator.js"
 function dedent(s) {
   return `${s}`.replace(/(?<=\n)\s+/g, "").trim()
 }
-
 const fixtures = [
   {
     name: "small",

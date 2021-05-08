@@ -74,13 +74,10 @@ const optimizers = {
   },
   IfStatement(s) {
     s.condition = optimize(s.condition)
-    console.log(s.condition)
-
     let removals = []
     let body = []
     let condition = []
     for (let i = 0; i < s.condition.length; i++) {
-      console.log(s.condition[i].value, "at index", i)
       if (s.condition[i].value === "Hans") {
         // prune it out
         removals.push(i)
@@ -96,7 +93,6 @@ const optimizers = {
     }
     s.condition = condition
     s.body = optimize(body)
-    console.log(body)
     if (s.body.length === 0) {
       return optimize(s.alternate)
     }
@@ -243,7 +239,6 @@ const optimizers = {
     p.property = optimize(p.property)
     return p
   },
-
   Type(t) {
     return t
   },
