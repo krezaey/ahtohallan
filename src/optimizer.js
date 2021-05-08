@@ -16,13 +16,16 @@
 //   - for-loop over empty array is a no-op
 //   - for-loop with low > high is a no-op
 //   - if-true and if-false reduce to only the taken arm
+// 
+// What the Ahtohallan team added
+//   - Prune off any if/ else if false conditional groups so that they just don't exist
+//   - In the case of &&, if one of the values is false, return false
+//   - In the case of || if one of the values if true, return true
 
 
 import * as ast from "./ast.js"
 
 export default function optimize(node) {
-  console.log("Optimizing ", node.constructor.name)
-  // console.log("Hello", optimizers[node.constructor.name](node))
   return optimizers[node.constructor.name](node)
 }
 
@@ -195,30 +198,29 @@ const optimizers = {
       else if (e.left == false) return e.right
       else if (e.right == false) return e.left
     } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
-        if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
-        else if (e.left === 0 && e.op === "+") return e.right
-        else if (e.left === 1 && e.op === "*") return e.right
-        else if (e.left === 0 && e.op === "-") return optimize (new ast.UnaryExpression("-", e.right))
-        else if (e.left === 1 && e.op === "**") return 1
-        else if (e.op === "+") return e.left + e.right
-        else if (e.op === "-") return e.left - e.right
-        else if (e.op === "*") return e.left * e.right
-        else if (e.op === "/") return e.left / e.right
-        else if (e.op === "**") return e.left ** e.right
-        else if (e.op === "<") return e.left < e.right
-        else if (e.op === "<=") return e.left <= e.right
-        else if (e.op === "==") return e.left === e.right
-        else if (e.op === "!=") return e.left !== e.right
-        else if (e.op === ">=") return e.left >= e.right
-        else if (e.op === ">") return e.left > e.right
-      } 
-      else if (e.right.constructor === Number) {
+      if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
+      else if (e.left === 0 && e.op === "+") return e.right
+      else if (e.left === 1 && e.op === "*") return e.right
+      else if (e.left === 0 && e.op === "-") return optimize (new ast.UnaryExpression("-", e.right))
+      else if (e.left === 1 && e.op === "**") return 1
+      else if (e.op === "+") return e.left + e.right
+      else if (e.op === "-") return e.left - e.right
+      else if (e.op === "*") return e.left * e.right
+      else if (e.op === "/") return e.left / e.right
+      else if (e.op === "**") return e.left ** e.right
+      else if (e.op === "<") return e.left < e.right
+      else if (e.op === "<=") return e.left <= e.right
+      else if (e.op === "==") return e.left === e.right
+      else if (e.op === "!=") return e.left !== e.right
+      else if (e.op === ">=") return e.left >= e.right
+      else if (e.op === ">") return e.left > e.right
+    } else if (e.right.constructor === Number) {
       // Numeric constant folding when right operand is constant
-        if (["+", "-"].includes(e.op) && e.right === 0) return e.left
-        else if (["*", "/"].includes(e.op) && e.right === 1) return e.left
-        else if (e.op === "*" && e.right === 0) return 0
-        else if (e.op === "**" && e.right === 0) return 1
-      }
+      if (["+", "-"].includes(e.op) && e.right === 0) return e.left
+      else if (["*", "/"].includes(e.op) && e.right === 1) return e.left
+      else if (e.op === "*" && e.right === 0) return 0
+      else if (e.op === "**" && e.right === 0) return 1
+    }
     return e
   },  
   UnaryExpression(e) {
@@ -232,12 +234,11 @@ const optimizers = {
     p.property = optimize(p.property)
     return p
   },
-  //can someone call me on zoom -SAlem 
+
   Type(t) {
     return t
   },
   Call(c) {
-    console.log(c)
     c.args = optimize(c.args)
     c.name = optimize(c.name)
     return c

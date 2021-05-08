@@ -3,8 +3,6 @@ import parse from "../src/parser.js"
 import analyze from "../src/analyzer.js"
 import generate from "../src/generator.js"
 
-// node src/ahtohallan.js t.ah js
-
 function dedent(s) {
   return `${s}`.replace(/(?<=\n)\s+/g, "").trim()
 }

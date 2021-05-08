@@ -17,7 +17,7 @@ export class ReturnStatement {
 }
 
 export class ShortReturnStatement {
-  // Empty
+  // Intentionally Empty
 }
 
 export class Function {
@@ -81,7 +81,7 @@ export class SwitchStatement {
 }
 
 export class BreakStatement {
-  // Nothing here, intentionally
+  // Intentionally empty
 }
 
 export class NewInstance {

@@ -12,8 +12,8 @@ export default function generate(program) {
   }
 
   const generators = {
-    // Key idea: when generating an expression, just return the JS string; when
-    // generating a statement, write lines of translated JS to the output array.
+    // Key idea: when generating an expression, just return the JS string.
+    // when generating a statement, write lines of translated JS to the output array.
     Program(p) {
       gen(p.instructions)
     },
@@ -70,8 +70,7 @@ export default function generate(program) {
       }
       if (s.alternate.length === 0) {
         output.push("}")
-      }
-      else {
+      } else {
         output.push("} else {")
         gen(s.alternate)
         output.push("}")
@@ -182,8 +181,7 @@ export default function generate(program) {
       if (s.op === "+=") {
         s.operand._return = true
         output.push(`${gen(s.variable)}+= ${gen(s.operand)};`)
-      }
-      else if (s.op === "-=") {
+      } else if (s.op === "-=") {
         s.operand._return = true
         output.push(`${gen(s.variable)}-= ${gen(s.operand)};`)
       }
@@ -236,7 +234,6 @@ export default function generate(program) {
       return JSON.stringify(e.value)
     },
   }
-
   gen(program)
   return output.join("\n")
 }

@@ -1,7 +1,6 @@
 import assert from "assert"
 import optimize from "../src/optimizer.js"
 import * as ast from "../src/ast.js"
-import { type } from "os"
 
 const x = new ast.Variable("Meltable", "Anna", "x", null)
 const y = new ast.Variable("Meltable", "Anna", "y", 1)
@@ -105,7 +104,6 @@ const tests = [
     ]),
   ],
 ] 
-
 
 describe("The Optimizer", () => {
   for (const [scenario, before, after] of tests) {
