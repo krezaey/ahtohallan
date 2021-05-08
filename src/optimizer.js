@@ -47,6 +47,7 @@ const optimizers = {
     return r
   },
   Function(d) {
+    d.parameters = optimize(d.parameters)
     d.body = optimize(d.body)
     return d
   },
@@ -55,10 +56,12 @@ const optimizers = {
     return c
   },
   Constructor(c) {
+    c.parameters = optimize(c.parameters)
     c.body = optimize(c.body)
     return c
   }, 
   Method(m) {
+    m.parameters = optimize(m.parameters)
     m.body = optimize(m.body)
     return m
   },
@@ -181,20 +184,16 @@ const optimizers = {
     return a
   },
   BinaryExpression(e) {
-    // ["-", "*", "/", "%", "**", "<", "<=", ">", ">=", "==", "+"]
-    //if ((e.left.name !== undefined) && (e.right.name !== undefined)) {
     if (e.op == "&&") {
       if (e.left === false) return false
       else if (e.right === false) return false
       else if (e.left === true) return e.right
       else if (e.right === true) return e.left
-      else return e.left && e.right
     } else if (e.op == "||") {
       if (e.left == true) return true
       else if (e.right == true) return true
       else if (e.left == false) return e.right
       else if (e.right == false) return e.left
-      else return e.let || e.right
     } else if (["Anna", "Elsa", "Number"].includes(e.left.constructor.name)) {
         if (e.left === 0 && ["*", "/"].includes(e.op)) return 0
         else if (e.left === 0 && e.op === "+") return e.right
@@ -226,15 +225,16 @@ const optimizers = {
     e.right = optimize(e.right)
     if (["Number", "Anna", "Elsa"].includes(e.right.constructor.name)) {
       if (e.op === "-") return -e.right
-    } else if (e.right.constructor.name === "Booley") return !e.right
+    }
     return e
-  },
-  Identifier(i) {
-    return i
   },
   GetProperty(p) {
     p.property = optimize(p.property)
     return p
+  },
+  //can someone call me on zoom -SAlem 
+  Type(t) {
+    return t
   },
   Call(c) {
     console.log(c)
@@ -244,18 +244,6 @@ const optimizers = {
   },
   String(s) {
     return s
-  },
-  Integer(i) {
-    return i
-  },
-  Float(f) {
-    return f
-  },
-  Phrase(p) {
-    return p
-  },
-  Booley(b) {
-    return b
   },
   Boolean(b) {
     return b
